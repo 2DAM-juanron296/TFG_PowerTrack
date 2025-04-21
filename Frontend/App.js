@@ -3,14 +3,14 @@ import { StyleSheet, View, ActivityIndicator } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useEffect, useState } from "react";
 import * as Font from "expo-font";
+import "expo-router/entry";
 
 import { Main } from "./components/Main";
 import { Login } from "./components/Login";
 
 export default function App() {
-  const isLoggedIn = false;
+  const [isLoggedIn, setLoggedIn] = useState(true);
   const [fontsLoaded, setFontsLoaded] = useState(false);
-  //console.log({ Login, Main });
 
   useEffect(() => {
     async function loadFonts() {
@@ -43,7 +43,8 @@ export default function App() {
     <SafeAreaProvider>
       <View style={styles.container}>
         <StatusBar style="light" />
-        {isLoggedIn ? <Main /> : <Login />}
+        {/*{isLoggedIn ? <Main /> : <Login setLoggedIn={setLoggedIn} />}*/}
+        <Main />
       </View>
     </SafeAreaProvider>
   );
