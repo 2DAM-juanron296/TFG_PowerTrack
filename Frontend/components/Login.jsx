@@ -5,7 +5,7 @@ import { showMessage } from "react-native-flash-message";
 import { styled } from "nativewind";
 import { useRouter } from "expo-router";
 
-export function Login() {
+export function Login({ onSuccess }) {
   const StyledPresable = styled(Pressable);
   const router = useRouter();
 
@@ -30,13 +30,8 @@ export function Login() {
     try {
       const response = await fetch("http://192.168.1.132:8000/api/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username,
-          password,
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
       });
 
       const data = await response.json();
@@ -50,7 +45,7 @@ export function Login() {
       console.log("Token:", data.token);
       console.log("User:", data.user);
 
-      router.replace("/");
+      onSuccess();
     } catch (error) {
       console.error("Error al iniciar sesión", error);
       alert("Error de conexión con el servidor");
