@@ -9,3 +9,6 @@ export const TrainingIcon = () => (
 export const ProfileIcon = () => (
   <FontAwesome name="user" size={24} color="#25AEA6" />
 );
+export const LogoutIcon = () => (
+  <MaterialCommunityIcons name="logout" size={28} color="#25AEA6" />
+);

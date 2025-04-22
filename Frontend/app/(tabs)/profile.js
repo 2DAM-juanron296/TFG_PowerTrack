@@ -5,7 +5,7 @@ export default function Index() {
   return (
     <Screen>
       <View className="justify-center items-center">
-        <Text className="text-white">Pantalla Perfil</Text>
+        <Text className="text-white text-lg">Pantalla Perfil</Text>
       </View>
     </Screen>
   );

@@ -3,8 +3,12 @@ import { View, Pressable, Image } from "react-native";
 import { Link } from "expo-router";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { AuthProvider } from "../context/AuthContext";
+import { Logout } from "../components/Logout";
+import { useRouter } from "expo-router";
 
 export default function Layout() {
+  const router = useRouter();
+
   return (
     <AuthProvider>
       <SafeAreaProvider>
@@ -19,14 +23,22 @@ export default function Layout() {
                 color: "#25AEA6",
               },
               headerTitleAlign: "center",
-              headerTitle: "Power Track",
-              headerRight: () => {},
+              headerTitle: "PowerTrack",
+              headerRight: () => (
+                <View className="w-8 justify-center items-center">
+                  <Logout
+                    onSuccess={() => {
+                      router.replace("/login");
+                    }}
+                  />
+                </View>
+              ),
               headerLeft: () => (
                 <Link asChild href="/home">
                   <Pressable>
                     <Image
                       source={require("../assets/images/PowerTrackIcon.png")}
-                      className="w-12 h-12 m-2"
+                      className="w-9 h-9 m-1"
                     />
                   </Pressable>
                 </Link>

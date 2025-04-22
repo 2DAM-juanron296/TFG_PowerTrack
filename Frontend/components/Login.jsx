@@ -3,11 +3,12 @@ import { useState } from "react";
 import { Screen } from "./Screen";
 import { showMessage } from "react-native-flash-message";
 import { styled } from "nativewind";
-import { useRouter } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useAuth } from "../context/AuthContext";
 
 export function Login({ onSuccess }) {
-  const StyledPresable = styled(Pressable);
-  const router = useRouter();
+  const StyledPressable = styled(Pressable);
+  const { login } = useAuth();
 
   // Variables para el Login
   const [username, setUsername] = useState("");
@@ -45,6 +46,9 @@ export function Login({ onSuccess }) {
       console.log("Token:", data.token);
       console.log("User:", data.user);
 
+      await AsyncStorage.setItem("userToken", data.token);
+
+      login(data.token);
       onSuccess();
     } catch (error) {
       console.error("Error al iniciar sesión", error);
@@ -76,14 +80,14 @@ export function Login({ onSuccess }) {
             onChangeText={setPassword}
           />
 
-          <StyledPresable
+          <StyledPressable
             className="bg-[#25AEA6] rounded-md mt-8 w-60 px-2 py-2 justify-center items-center"
             onPress={handleLogin}
           >
             <Text className="text-lg" style={{ fontFamily: "Inter-Bold" }}>
               LOGIN
             </Text>
-          </StyledPresable>
+          </StyledPressable>
         </View>
       </View>
     </Screen>

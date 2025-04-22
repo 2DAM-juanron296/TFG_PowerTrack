@@ -10,7 +10,6 @@ export default function Index() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
   const router = useRouter();
 
-  // Carga las fuentes
   useEffect(() => {
     async function loadFonts() {
       await Font.loadAsync({
@@ -23,18 +22,16 @@ export default function Index() {
     loadFonts();
   }, []);
 
-  // Redirige según el estado de login
   useEffect(() => {
     if (fontsLoaded) {
       if (isLoggedIn) {
         router.replace("/(tabs)/home");
       } else {
-        router.replace("./login"); // Redirige a la pantalla de login
+        router.replace("./login");
       }
     }
   }, [fontsLoaded, isLoggedIn, router]);
 
-  // Pantalla de carga mientras se cargan las fuentes
   if (!fontsLoaded) {
     return (
       <View
@@ -49,7 +46,4 @@ export default function Index() {
       </View>
     );
   }
-
-  // No necesitas renderizar nada aquí, las redirecciones se manejan arriba
-  return null;
 }

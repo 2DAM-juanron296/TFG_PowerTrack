@@ -4,8 +4,8 @@ import { Screen } from "./Screen";
 export function Main() {
   return (
     <Screen>
-      <View className="justify-center items-center">
-        <Text className="text-white">Pantalla Principal</Text>
+      <View className="justify-center items-center text-center">
+        <Text className="text-white text-lg">PowerTrack</Text>
       </View>
     </Screen>
   );

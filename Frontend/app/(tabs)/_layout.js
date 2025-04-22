@@ -8,8 +8,13 @@ export default function TabsLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarStyle: { backgroundColor: "#000" },
+        tabBarStyle: {
+          backgroundColor: "#000",
+          borderTopWidth: 0,
+          overflow: "hidden",
+        },
         tabBarActiveTintColor: "#25AEA6",
+        tabBarActiveBackgroundColor: "#1d1d1d",
         tabBarInactiveTintColor: "white",
         tabBarLabelStyle: { fontFamily: "Inter-Bold", fontSize: 11 },
       }}
@@ -19,6 +24,11 @@ export default function TabsLayout() {
         options={{
           title: "Home",
           tabBarIcon: () => <HomeIcon />,
+          tabBarItemStyle: {
+            borderTopLeftRadius: 10,
+            borderTopRightRadius: 10,
+            marginHorizontal: 25,
+          },
         }}
       />
       <Tabs.Screen
@@ -26,6 +36,11 @@ export default function TabsLayout() {
         options={{
           title: "Training",
           tabBarIcon: () => <TrainingIcon />,
+          tabBarItemStyle: {
+            borderTopLeftRadius: 10,
+            borderTopRightRadius: 10,
+            marginHorizontal: 25,
+          },
         }}
       />
       <Tabs.Screen
@@ -33,6 +48,11 @@ export default function TabsLayout() {
         options={{
           title: "Profile",
           tabBarIcon: () => <ProfileIcon />,
+          tabBarItemStyle: {
+            borderTopLeftRadius: 10,
+            borderTopRightRadius: 10,
+            marginHorizontal: 25,
+          },
         }}
       />
     </Tabs>
