@@ -56,23 +56,25 @@ export function Login({ onSuccess }) {
     }
   };
 
+  const handleRegister = async () => {};
+
   return (
     <Screen style={{ color: "#010410" }}>
-      <View className="justify-center items-center">
+      <View className="flex-1 justify-center items-center mb-14">
         <Image
           source={require("../assets/images/PowerTrackIcon.png")}
           className="w-20 h-20 mb-5"
         />
-        <View className="border-2 border-[#25AEA6] rounded-xl bg-[#0F0F0F] w-80 py-12 justify-center items-center">
+        <View className="border-2 border-[#25AEA6] rounded-xl bg-[#0F0F0F] w-80 full py-14 justify-center items-center">
           <TextInput
-            className="bg-[#54807D] rounded-md w-56 p-3 text-left"
+            className="bg-[#54807D] rounded-md w-60 p-4 text-left"
             placeholder="Username"
             placeholderTextColor={"#222"}
             style={{ fontFamily: "Inter-SemiBold" }}
             onChangeText={setUsername}
           />
           <TextInput
-            className="bg-[#54807D] rounded-md mt-6 w-56 p-3 text-left"
+            className="bg-[#54807D] rounded-md mt-6 w-60 p-4 text-left"
             placeholder="Password"
             placeholderTextColor={"#222"}
             style={{ fontFamily: "Inter-SemiBold" }}
@@ -81,7 +83,7 @@ export function Login({ onSuccess }) {
           />
 
           <StyledPressable
-            className="bg-[#25AEA6] rounded-md mt-8 w-60 px-2 py-2 justify-center items-center"
+            className="bg-[#25AEA6] rounded-md mt-8 w-64 px-2 py-3 justify-center items-center"
             onPress={handleLogin}
           >
             <Text className="text-lg" style={{ fontFamily: "Inter-Bold" }}>
@@ -89,6 +91,19 @@ export function Login({ onSuccess }) {
             </Text>
           </StyledPressable>
         </View>
+      </View>
+      <View className="m-4 justify-center items-center">
+        <Text
+          className="text-white mb-1"
+          style={{ fontFamily: "Inter-Regular" }}
+        >
+          ¿No tienes una cuenta?
+        </Text>
+        <Pressable asChild onPress={handleRegister}>
+          <Text className="text-white" style={{ fontFamily: "Inter-SemiBold" }}>
+            Regístrate
+          </Text>
+        </Pressable>
       </View>
     </Screen>
   );

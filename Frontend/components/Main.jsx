@@ -5,7 +5,7 @@ export function Main() {
   return (
     <Screen>
       <View className="justify-center items-center text-center">
-        <Text className="text-white text-lg">PowerTrack</Text>
+        <Text className="text-white text-lg">Pantalla Principal</Text>
       </View>
     </Screen>
   );

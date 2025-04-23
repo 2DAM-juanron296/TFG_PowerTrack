@@ -6,8 +6,8 @@ import { useRouter } from "expo-router";
 import { useAuth } from "../context/AuthContext";
 
 export default function Index() {
-  const { isLoggedIn } = useAuth();
   const [fontsLoaded, setFontsLoaded] = useState(false);
+  const { isLoggedIn } = useAuth();
   const router = useRouter();
 
   useEffect(() => {

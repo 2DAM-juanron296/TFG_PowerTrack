@@ -2,57 +2,70 @@ import { Tabs } from "expo-router";
 import { HomeIcon } from "../../components/Icons";
 import { TrainingIcon } from "../../components/Icons";
 import { ProfileIcon } from "../../components/Icons";
+import { useState } from "react";
 
 export default function TabsLayout() {
+  const [focusedTab, setFocusedTab] = useState("home");
+
+  const getTabStyle = (tabName) => {
+    const isFocused = focusedTab === tabName;
+    return {
+      marginHorizontal: 20,
+      backgroundColor: isFocused ? "#222" : "transparent",
+      borderTopWidth: isFocused ? 0.5 : 0,
+      borderLeftWidth: isFocused ? 0.5 : 0,
+      borderRightWidth: isFocused ? 0.5 : 0,
+      borderColor: isFocused ? "#333" : "transparent",
+      borderTopLeftRadius: isFocused ? 10 : 0,
+      borderTopRightRadius: isFocused ? 10 : 0,
+    };
+  };
+
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: "#000",
+          backgroundColor: "#0F0F0F",
           borderTopWidth: 0,
-          overflow: "hidden",
+          height: 55,
         },
         tabBarActiveTintColor: "#25AEA6",
-        tabBarActiveBackgroundColor: "#1d1d1d",
         tabBarInactiveTintColor: "white",
         tabBarLabelStyle: { fontFamily: "Inter-Bold", fontSize: 11 },
       }}
     >
       <Tabs.Screen
         name="home"
+        listeners={{
+          focus: () => setFocusedTab("home"),
+        }}
         options={{
           title: "Home",
           tabBarIcon: () => <HomeIcon />,
-          tabBarItemStyle: {
-            borderTopLeftRadius: 10,
-            borderTopRightRadius: 10,
-            marginHorizontal: 25,
-          },
+          tabBarItemStyle: getTabStyle("home"),
         }}
       />
       <Tabs.Screen
         name="training"
+        listeners={{
+          focus: () => setFocusedTab("training"),
+        }}
         options={{
           title: "Training",
           tabBarIcon: () => <TrainingIcon />,
-          tabBarItemStyle: {
-            borderTopLeftRadius: 10,
-            borderTopRightRadius: 10,
-            marginHorizontal: 25,
-          },
+          tabBarItemStyle: getTabStyle("training"),
         }}
       />
       <Tabs.Screen
         name="profile"
+        listeners={{
+          focus: () => setFocusedTab("profile"),
+        }}
         options={{
           title: "Profile",
           tabBarIcon: () => <ProfileIcon />,
-          tabBarItemStyle: {
-            borderTopLeftRadius: 10,
-            borderTopRightRadius: 10,
-            marginHorizontal: 25,
-          },
+          tabBarItemStyle: getTabStyle("profile"),
         }}
       />
     </Tabs>

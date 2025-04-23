@@ -10,6 +10,7 @@ export default function LoginScreen() {
     <Screen>
       <Stack.Screen
         options={{
+          headerShown: false,
           headerTintColor: "black",
           headerLeft: () => {},
           headerTitle: "",
