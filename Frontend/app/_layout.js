@@ -17,11 +17,13 @@ export default function Layout() {
             screenOptions={{
               headerStyle: { backgroundColor: "black" },
               headerTintColor: "white",
+              animation: "simple_push",
               headerTitleStyle: {
                 fontFamily: "Inter-Bold",
                 fontSize: 25,
                 color: "#25AEA6",
               },
+              contentStyle: { backgroundColor: "black" },
               headerTitleAlign: "center",
               headerTitle: "PowerTrack",
               headerRight: () => (

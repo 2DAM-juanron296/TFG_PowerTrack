@@ -5,6 +5,7 @@ import { showMessage } from "react-native-flash-message";
 import { styled } from "nativewind";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAuth } from "../context/AuthContext";
+import { Link } from "expo-router";
 
 export function Login({ onSuccess }) {
   const StyledPressable = styled(Pressable);
@@ -56,8 +57,6 @@ export function Login({ onSuccess }) {
     }
   };
 
-  const handleRegister = async () => {};
-
   return (
     <Screen style={{ color: "#010410" }}>
       <View className="flex-1 justify-center items-center mb-14">
@@ -99,11 +98,16 @@ export function Login({ onSuccess }) {
         >
           ¿No tienes una cuenta?
         </Text>
-        <Pressable asChild onPress={handleRegister}>
-          <Text className="text-white" style={{ fontFamily: "Inter-SemiBold" }}>
-            Regístrate
-          </Text>
-        </Pressable>
+        <Link asChild href="/register">
+          <Pressable>
+            <Text
+              className="text-white"
+              style={{ fontFamily: "Inter-SemiBold" }}
+            >
+              Regístrate
+            </Text>
+          </Pressable>
+        </Link>
       </View>
     </Screen>
   );

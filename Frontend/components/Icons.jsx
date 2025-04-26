@@ -12,3 +12,6 @@ export const ProfileIcon = () => (
 export const LogoutIcon = () => (
   <MaterialCommunityIcons name="logout" size={28} color="#25AEA6" />
 );
+export const UserDefaultIcon = () => (
+  <FontAwesome name="user-circle" size={80} color="#25AEA6" />
+);

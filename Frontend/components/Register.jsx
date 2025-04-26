@@ -30,7 +30,7 @@ export function Register({ onSuccess }) {
     }
 
     try {
-      const response = await fetch("http://192.168.0.23:8000/api/register", {
+      const response = await fetch("http://192.168.1.132:8000/api/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password, email, name }),
@@ -46,7 +46,7 @@ export function Register({ onSuccess }) {
       console.log("Registro exitoso");
 
       await AsyncStorage.setItem("userToken", data.token);
-      await AsyncStorage.setItem("username", username);
+      //await AsyncStorage.setItem("username", username);
 
       login(data.token);
       onSuccess();

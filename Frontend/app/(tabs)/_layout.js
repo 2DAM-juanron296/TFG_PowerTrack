@@ -58,6 +58,17 @@ export default function TabsLayout() {
         }}
       />
       <Tabs.Screen
+        name="chat"
+        listeners={{
+          focus: () => setFocusedTab("chat"),
+        }}
+        options={{
+          title: "Chat",
+          tabBarIcon: () => <HomeIcon />,
+          tabBarItemStyle: getTabStyle("home"),
+        }}
+      />
+      <Tabs.Screen
         name="profile"
         listeners={{
           focus: () => setFocusedTab("profile"),
