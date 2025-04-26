@@ -15,3 +15,4 @@ export const LogoutIcon = () => (
 export const UserDefaultIcon = () => (
   <FontAwesome name="user-circle" size={80} color="#25AEA6" />
 );
+export const ChatIcon = () => <Entypo name="chat" size={24} color="#25AEA6" />;

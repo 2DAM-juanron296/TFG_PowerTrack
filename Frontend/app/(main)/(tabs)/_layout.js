@@ -1,16 +1,20 @@
-import { Tabs } from "expo-router";
-import { HomeIcon } from "../../components/Icons";
-import { TrainingIcon } from "../../components/Icons";
-import { ProfileIcon } from "../../components/Icons";
+import { Link, Stack, Tabs, useRouter } from "expo-router";
+import { ChatIcon, HomeIcon } from "../../../components/Icons";
+import { TrainingIcon } from "../../../components/Icons";
+import { ProfileIcon } from "../../../components/Icons";
 import { useState } from "react";
+import { Image, Pressable, SafeAreaViewBase, View } from "react-native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { Logout } from "../../../components/Logout";
 
 export default function TabsLayout() {
   const [focusedTab, setFocusedTab] = useState("home");
+  const router = useRouter();
 
   const getTabStyle = (tabName) => {
     const isFocused = focusedTab === tabName;
     return {
-      marginHorizontal: 20,
+      marginHorizontal: 16,
       backgroundColor: isFocused ? "#222" : "transparent",
       borderTopWidth: isFocused ? 0.5 : 0,
       borderLeftWidth: isFocused ? 0.5 : 0,
@@ -64,8 +68,8 @@ export default function TabsLayout() {
         }}
         options={{
           title: "Chat",
-          tabBarIcon: () => <HomeIcon />,
-          tabBarItemStyle: getTabStyle("home"),
+          tabBarIcon: () => <ChatIcon />,
+          tabBarItemStyle: getTabStyle("chat"),
         }}
       />
       <Tabs.Screen

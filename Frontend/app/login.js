@@ -12,6 +12,7 @@ export default function LoginScreen() {
         options={{
           headerShown: false,
           headerTintColor: "black",
+          animation: "fade",
           headerLeft: () => {},
           headerTitle: "",
           headerRight: () => {},

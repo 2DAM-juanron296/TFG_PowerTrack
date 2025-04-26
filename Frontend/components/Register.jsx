@@ -1,16 +1,14 @@
 import { View, Text, TextInput, Pressable, Image } from "react-native";
 import { useState } from "react";
-import { Screen } from "./Screen";
 import { showMessage } from "react-native-flash-message";
 import { styled } from "nativewind";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAuth } from "../context/AuthContext";
-import { Link, useRouter } from "expo-router";
+import { Link } from "expo-router";
 
 export function Register({ onSuccess }) {
   const StyledPressable = styled(Pressable);
   const { login } = useAuth();
-  const router = useRouter();
 
   // Variables para el Login
   const [name, setName] = useState("");

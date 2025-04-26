@@ -6,6 +6,7 @@ import { useAuth } from "../context/AuthContext";
 
 export default function LoginScreen() {
   const { isLoggedIn } = useAuth();
+  const router = useRouter();
 
   // Redirigimos si ya está logueado
   if (isLoggedIn) {
@@ -18,16 +19,18 @@ export default function LoginScreen() {
         options={{
           headerShown: false,
           headerTintColor: "black",
-          contentStyle: {
-            backgroundColor: "black",
-          },
-          animation: "simple_push",
+          animation: "fade",
           headerLeft: () => {},
           headerTitle: "",
           headerRight: () => {},
         }}
       />
-      <Register onSuccess={() => {}} />;
+      <Register
+        onSuccess={() => {
+          router.replace("/(tabs)/home");
+        }}
+      />
+      ;
     </Screen>
   );
 }
