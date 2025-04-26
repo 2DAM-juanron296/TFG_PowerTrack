@@ -1,5 +1,5 @@
 import { Link, Stack, useRouter } from "expo-router";
-import { Image, Pressable, View } from "react-native";
+import { Pressable, View, Image } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Logout } from "../../components/Logout";
 
