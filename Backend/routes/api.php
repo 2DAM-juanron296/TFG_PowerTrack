@@ -16,13 +16,14 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-Route::post('/login', [AuthController::class, 'login']);
+
+Route::controller(AuthController::class)->group(function (){
+    Route::post('/login', 'login');
+    Route::post('/register', 'register');
+});
+
 
 Route::middleware('auth:sanctum')->group(function() {
 
     Route::post('/logout', [AuthController::class, 'logout']);
-
-    Route::get('/user', function (Request $request) {
-        return $request->user();
-    });
 });
