@@ -3,8 +3,16 @@ import { ChatIcon, HomeIcon } from "../../../components/Icons";
 import { TrainingIcon } from "../../../components/Icons";
 import { ProfileIcon } from "../../../components/Icons";
 import { useState } from "react";
+
 export default function TabsLayout() {
   const [focusedTab, setFocusedTab] = useState("home");
+
+  const tabs = {
+    home: <HomeIcon />,
+    training: <TrainingIcon />,
+    chat: <ChatIcon />,
+    profile: <ProfileIcon />,
+  };
 
   const getTabStyle = (tabName) => {
     const isFocused = focusedTab === tabName;
@@ -27,57 +35,27 @@ export default function TabsLayout() {
         tabBarStyle: {
           backgroundColor: "#0F0F0F",
           borderTopWidth: 0,
-          height: 55,
+          height: 53,
         },
         tabBarActiveTintColor: "#25AEA6",
         tabBarInactiveTintColor: "white",
         tabBarLabelStyle: { fontFamily: "Inter-Bold", fontSize: 11 },
       }}
     >
-      <Tabs.Screen
-        name="home"
-        listeners={{
-          focus: () => setFocusedTab("home"),
-        }}
-        options={{
-          title: "Home",
-          tabBarIcon: () => <HomeIcon />,
-          tabBarItemStyle: getTabStyle("home"),
-        }}
-      />
-      <Tabs.Screen
-        name="training"
-        listeners={{
-          focus: () => setFocusedTab("training"),
-        }}
-        options={{
-          title: "Training",
-          tabBarIcon: () => <TrainingIcon />,
-          tabBarItemStyle: getTabStyle("training"),
-        }}
-      />
-      <Tabs.Screen
-        name="chat"
-        listeners={{
-          focus: () => setFocusedTab("chat"),
-        }}
-        options={{
-          title: "Chat",
-          tabBarIcon: () => <ChatIcon />,
-          tabBarItemStyle: getTabStyle("chat"),
-        }}
-      />
-      <Tabs.Screen
-        name="profile"
-        listeners={{
-          focus: () => setFocusedTab("profile"),
-        }}
-        options={{
-          title: "Profile",
-          tabBarIcon: () => <ProfileIcon />,
-          tabBarItemStyle: getTabStyle("profile"),
-        }}
-      />
+      {Object.keys(tabs).map((name) => (
+        <Tabs.Screen
+          key={name}
+          name={name}
+          listeners={{
+            focus: () => setFocusedTab(name),
+          }}
+          options={{
+            title: name.charAt(0).toUpperCase() + name.slice(1),
+            tabBarIcon: () => tabs[name],
+            tabBarItemStyle: getTabStyle(name),
+          }}
+        />
+      ))}
     </Tabs>
   );
 }
