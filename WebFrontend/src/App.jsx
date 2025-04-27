@@ -1,14 +1,14 @@
-import "./App.css";
-import { Buenas } from "./buenas";
+import { Route, Routes } from "react-router-dom";
+import { Login } from "./pages/Login";
+import { Home } from "./pages/Home";
 
-function App() {
+export default function App() {
   return (
     <>
-      <div className="flex h-screen justify-center items-center">
-        <Buenas />
-      </div>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/home" element={<Home />} />
+      </Routes>
     </>
   );
 }
-
-export default App;
