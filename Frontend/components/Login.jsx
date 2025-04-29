@@ -1,11 +1,11 @@
 import { View, Text, TextInput, Pressable, Image } from "react-native";
 import { useState } from "react";
 import { Screen } from "./Screen";
-import { showMessage } from "react-native-flash-message";
 import { styled } from "nativewind";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "expo-router";
+import Toast from "react-native-toast-message";
 
 export function Login({ onSuccess }) {
   const StyledPressable = styled(Pressable);
@@ -17,12 +17,15 @@ export function Login({ onSuccess }) {
 
   const handleLogin = async () => {
     if (!username || !password) {
-      //alert("Complete ambos campos");
-      showMessage({
-        message: "Complete ambos campos",
-        type: "danger",
-        duration: 2000,
-        color: "#FF0000",
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "Debe completar ambos campos",
+        text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
+        text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
+        position: "bottom",
+        animation: true,
+        visibilityTime: 5000,
       });
       return;
     }
@@ -39,7 +42,16 @@ export function Login({ onSuccess }) {
       const data = await response.json();
 
       if (!response.ok) {
-        alert(data.message || "Error en login");
+        Toast.show({
+          type: "error",
+          text1: "Error",
+          text2: data.message,
+          text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
+          text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
+          position: "bottom",
+          animation: true,
+          visibilityTime: 5000,
+        });
         return;
       }
 
