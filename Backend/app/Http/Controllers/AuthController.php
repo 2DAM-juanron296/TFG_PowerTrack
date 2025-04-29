@@ -28,6 +28,30 @@ class AuthController extends Controller
         ]);
     }
 
+    public function loginAdmin(Request $request)
+    {
+        $request->validate([
+            'username' => 'required',
+            'password' => 'required'
+        ]);
+
+        $user = User::where('username', $request->username)->first();
+
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return response()->json(['message' => 'Credenciales Incorrectas'], 401);
+        }
+
+        if (!$user->admin) {
+            return response()->json(['message' => 'No tienes permisos de administrador'], 403);
+        }
+
+        return response()->json([
+            'message' => 'Login exitoso - Admin',
+            'token' => $user->createToken('token')->plainTextToken,
+            'user' => $user        
+        ]);
+    }
+
     public function register(Request $request)
     {
         $request->validate([

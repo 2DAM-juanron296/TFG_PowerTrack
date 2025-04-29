@@ -19,6 +19,7 @@ use App\Http\Controllers\AuthController;
 
 Route::controller(AuthController::class)->group(function (){
     Route::post('/login', 'login');
+    Route::post('/loginAdmin', 'loginAdmin');
     Route::post('/register', 'register');
 });
 
