@@ -60,7 +60,6 @@ export function Layout() {
     <>
       <Header />
       <div>
-        <h1 className="text-white">Bienvenido a tu aplicación</h1>
         <Outlet />
         <button
           className="bg-[#25AEA6] text-black rounded-md mt-8 w-96 py-3 flex justify-center items-center text-lg"
