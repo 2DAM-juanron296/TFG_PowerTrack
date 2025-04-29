@@ -1,6 +1,9 @@
 @import "tailwindcss";
 
 :root {
-  background-color: #1a1a1a;
+  background-color: #000;
 }
 
+body {
+  font-family: 'Inter', sans-serif;
+}
