@@ -1,16 +1,18 @@
 // src/pages/App.jsx
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/useAuth";
 import toast from "react-hot-toast";
+import { Header } from "../components/Header";
 
-export function Home() {
+export function Layout() {
   const navigate = useNavigate();
   const { logout } = useAuth();
 
   useEffect(() => {
-    if (!localStorage.getItem("userToken")) {
-      navigate("/login");
+    const token = localStorage.getItem("userToken");
+    if (!token) {
+      navigate("/login", { replace: true });
     }
   }, [navigate]);
 
@@ -55,15 +57,19 @@ export function Home() {
   };
 
   return (
-    <div>
-      <h1 className="text-white">Bienvenido a tu aplicación</h1>
-      <button
-        className="bg-[#25AEA6] text-black rounded-md mt-8 w-96 py-3 flex justify-center items-center text-lg"
-        style={{ fontFamily: "Inter", fontWeight: 800, cursor: "pointer" }}
-        onClick={handleLogout}
-      >
-        LOGOUT
-      </button>
-    </div>
+    <>
+      <Header />
+      <div>
+        <h1 className="text-white">Bienvenido a tu aplicación</h1>
+        <Outlet />
+        <button
+          className="bg-[#25AEA6] text-black rounded-md mt-8 w-96 py-3 flex justify-center items-center text-lg"
+          style={{ fontFamily: "Inter", fontWeight: 800, cursor: "pointer" }}
+          onClick={handleLogout}
+        >
+          LOGOUT
+        </button>
+      </div>
+    </>
   );
 }

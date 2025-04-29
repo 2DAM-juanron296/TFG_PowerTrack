@@ -1,7 +1,9 @@
 import { Route, Routes, Navigate } from "react-router-dom";
 import { Login } from "./pages/Login";
-import { Home } from "./pages/Home";
+import { Layout } from "./pages/Layout";
 import { useAuth } from "./context/useAuth";
+import { Users } from "./components/Users";
+import { Routines } from "./components/Routines";
 
 export default function App() {
   const { isLoggedIn } = useAuth();
@@ -15,8 +17,12 @@ export default function App() {
         />
         <Route
           path="/home"
-          element={isLoggedIn ? <Home /> : <Navigate to="/login" replace />}
-        />
+          element={isLoggedIn ? <Layout /> : <Navigate to="/login" replace />}
+        >
+          <Route index element={<Users />} />
+          <Route path="routines" element={<Routines />} />
+          <Route path="users" element={<Users />} />
+        </Route>
         <Route
           path="*"
           element={<Navigate to={isLoggedIn ? "/home" : "/login"} replace />}
