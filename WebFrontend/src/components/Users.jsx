@@ -1,3 +1,7 @@
 export function Users() {
-  return <div className="text-white">Página Users</div>;
+  return (
+    <div className="text-[#25AEA6] text-3xl" style={{ fontWeight: 800 }}>
+      Lista de Usuarios
+    </div>
+  );
 }

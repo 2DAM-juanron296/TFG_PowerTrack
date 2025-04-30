@@ -5,12 +5,15 @@ import { useAuth } from "../context/useAuth";
 
 export function Login() {
   const { login } = useAuth();
+  const [isDisabled, setIsDisabled] = useState(false);
 
   // Variables para el Login
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = async () => {
+    setIsDisabled(true);
+
     if (!username || !password) {
       toast.error("Debe completar ambos campos", {
         style: {
@@ -20,6 +23,7 @@ export function Login() {
           fontWeight: 400,
         },
       });
+      setIsDisabled(false);
       return;
     }
 
@@ -44,6 +48,7 @@ export function Login() {
             fontWeight: 400,
           },
         });
+        setIsDisabled(false);
         return;
       }
 
@@ -56,12 +61,20 @@ export function Login() {
       login(data.token);
     } catch (error) {
       console.error("Error al iniciar sesión", error);
-      alert("Error de conexión con el servidor");
+      toast.error("Error de conexión con el servidor", {
+        style: {
+          background: "#333",
+          color: "#fff",
+          fontFamily: "Inter",
+          fontWeight: 400,
+        },
+      });
+      setIsDisabled(false);
     }
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-[#010410] text-white p-5">
+    <div className="flex justify-center items-center min-h-screen text-white p-5">
       <div className="flex flex-col items-center mb-14">
         {/* Logo */}
         <div className="mb-5">
@@ -78,7 +91,7 @@ export function Login() {
           <input
             type="text"
             className="bg-[#54807D] text-black rounded-md p-4 w-80 mb-4 text-left placeholder-[#222] focus:outline-none"
-            style={{ fontFamily: "Inter", fontWeight: 600 }}
+            style={{ fontWeight: 600 }}
             placeholder="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
@@ -88,7 +101,7 @@ export function Login() {
           <input
             type="password"
             className="bg-[#54807D] text-black rounded-md mt-6 mb-6 w-80 p-4 text-left placeholder-[#222] focus:outline-none"
-            style={{ fontFamily: "Inter", fontWeight: 600 }}
+            style={{ fontWeight: 600 }}
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -96,11 +109,15 @@ export function Login() {
 
           {/* Login Button */}
           <button
-            className="bg-[#25AEA6] text-black rounded-md mt-8 w-96 py-3 flex justify-center items-center text-lg"
-            style={{ fontFamily: "Inter", fontWeight: 800, cursor: "pointer" }}
+            className={`bg-[#25AEA6] text-black hover:bg-[#1d8d87] transition-colors rounded-md mt-8 w-96 py-3 flex justify-center items-center text-lg cursor-pointer ${isDisabled ? "opacity-50" : ""}`}
+            style={{
+              fontWeight: 800,
+              transition: "opacity 0.3s ease",
+            }}
             onClick={handleLogin}
+            disabled={isDisabled}
           >
-            LOGIN
+            {isDisabled ? "Iniciando Sesión..." : "LOGIN"}
           </button>
         </div>
       </div>

@@ -4,9 +4,22 @@ import { Layout } from "./pages/Layout";
 import { useAuth } from "./context/useAuth";
 import { Users } from "./components/Users";
 import { Routines } from "./components/Routines";
+import { useEffect } from "react";
 
 export default function App() {
   const { isLoggedIn } = useAuth();
+
+  useEffect(() => {
+    const handleClosedApp = () => {
+      localStorage.clear();
+    };
+
+    window.addEventListener("beforeunload", handleClosedApp);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleClosedApp);
+    };
+  }, []);
 
   return (
     <>
