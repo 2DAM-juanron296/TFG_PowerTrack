@@ -2,10 +2,16 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../context/useAuth";
 import toast from "react-hot-toast";
 import { useState } from "react";
+import { NavLink, useLocation } from "react-router-dom";
 
 export function Header() {
   const { logout } = useAuth();
   const [isDisabled, setIsDisabled] = useState(false);
+  const location = useLocation();
+
+  const isUsersActive =
+    location.pathname === "/home" || location.pathname === "/home/users";
+  const isRoutinesActive = location.pathname === "/home/routines";
 
   const handleLogout = async () => {
     try {
@@ -72,21 +78,21 @@ export function Header() {
         </div>
 
         {/* NAVEGACIÓN */}
-        <nav className="flex justify-center gap-80 pt-12">
-          <Link
-            className="text-white hover:text-[#25AEA6] transition-colors text-xl"
-            style={{ fontWeight: 600 }}
+        <nav className="flex justify-center gap-80 pt-2">
+          <NavLink
             to="/home/users"
+            className={`text-xl transition-colors ${isUsersActive ? "text-[#25AEA6]" : "text-white hover:text-[#25AEA6]"}`}
+            style={{ fontWeight: 600 }}
           >
             Users
-          </Link>
-          <Link
-            className="text-white hover:text-[#25AEA6] transition-colors text-xl"
-            style={{ fontWeight: 600 }}
+          </NavLink>
+          <NavLink
             to="/home/routines"
+            className={`text-xl transition-colors ${isRoutinesActive ? "text-[#25AEA6]" : "text-white hover:text-[#25AEA6]"}`}
+            style={{ fontWeight: 600 }}
           >
             Routines
-          </Link>
+          </NavLink>
         </nav>
 
         {/* Botón LOGOUT */}
