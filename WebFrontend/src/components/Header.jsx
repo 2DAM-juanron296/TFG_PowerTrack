@@ -84,14 +84,14 @@ export function Header() {
             className={`text-xl transition-colors ${isUsersActive ? "text-[#25AEA6]" : "text-white hover:text-[#25AEA6]"}`}
             style={{ fontWeight: 600 }}
           >
-            Users
+            Usuarios
           </NavLink>
           <NavLink
             to="/home/routines"
             className={`text-xl transition-colors ${isRoutinesActive ? "text-[#25AEA6]" : "text-white hover:text-[#25AEA6]"}`}
             style={{ fontWeight: 600 }}
           >
-            Routines
+            Rutinas
           </NavLink>
         </nav>
 
