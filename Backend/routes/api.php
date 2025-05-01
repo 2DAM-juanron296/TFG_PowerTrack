@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +18,7 @@ use App\Http\Controllers\AuthController;
 */
 
 
+// Rutas públicas
 Route::controller(AuthController::class)->group(function (){
     Route::post('/login', 'login');
     Route::post('/loginAdmin', 'loginAdmin');
@@ -24,7 +26,17 @@ Route::controller(AuthController::class)->group(function (){
 });
 
 
+// Rutas de prueba
+
+
+
 Route::middleware('auth:sanctum')->group(function() {
 
+    // Logout
     Route::post('/logout', [AuthController::class, 'logout']);
+
+    // Users
+    Route::controller(UserController::class)->group(function() {
+        Route::get('/users', 'index');
+    });
 });
