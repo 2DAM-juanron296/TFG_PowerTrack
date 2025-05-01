@@ -66,13 +66,13 @@ export function Header() {
             alt="PowerTrack Logo"
             className="w-16 h-16"
           />
-          <div className="text-white text-3xl" style={{ fontWeight: 600 }}>
+          <div className="text-white text-4xl" style={{ fontWeight: 600 }}>
             PowerTrack
           </div>
         </div>
 
         {/* NAVEGACIÓN */}
-        <nav className="flex justify-center gap-80">
+        <nav className="flex justify-center gap-80 pt-12">
           <Link
             className="text-white hover:text-[#25AEA6] transition-colors text-xl"
             style={{ fontWeight: 600 }}
