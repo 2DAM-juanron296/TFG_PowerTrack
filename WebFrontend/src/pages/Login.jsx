@@ -86,39 +86,46 @@ export function Login() {
         </div>
 
         {/* Login Box */}
-        <div className="border-2 border-[#25AEA6] rounded-xl bg-[#0F0F0F] w-xl py-14 flex flex-col justify-center items-center">
-          {/* Username Input */}
-          <input
-            type="text"
-            className="bg-[#54807D] text-black rounded-md p-4 w-80 mb-4 text-left placeholder-[#222] focus:outline-none"
-            style={{ fontWeight: 600 }}
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-
-          {/* Password Input */}
-          <input
-            type="password"
-            className="bg-[#54807D] text-black rounded-md mt-6 mb-6 w-80 p-4 text-left placeholder-[#222] focus:outline-none"
-            style={{ fontWeight: 600 }}
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-
-          {/* Login Button */}
-          <button
-            className={`bg-[#25AEA6] text-black hover:bg-[#1d8d87] transition-colors rounded-md mt-8 w-96 py-3 flex justify-center items-center text-lg cursor-pointer ${isDisabled ? "opacity-50" : ""}`}
-            style={{
-              fontWeight: 800,
-              transition: "opacity 0.3s ease",
+        <div className="border-2 border-[#25AEA6] rounded-xl bg-[#0F0F0F] w-xl py-14">
+          <form
+            className="flex flex-col justify-center items-center"
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleLogin();
             }}
-            onClick={handleLogin}
-            disabled={isDisabled}
           >
-            {isDisabled ? "Iniciando Sesión..." : "LOGIN"}
-          </button>
+            {/* Username Input */}
+            <input
+              type="text"
+              className="bg-[#54807D] text-black rounded-md p-4 w-80 mb-4 text-left placeholder-[#222] focus:outline-none"
+              style={{ fontWeight: 600 }}
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+
+            {/* Password Input */}
+            <input
+              type="password"
+              className="bg-[#54807D] text-black rounded-md mt-6 mb-6 w-80 p-4 text-left placeholder-[#222] focus:outline-none"
+              style={{ fontWeight: 600 }}
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+
+            {/* Login Button */}
+            <button
+              className={`bg-[#25AEA6] text-black hover:bg-[#1d8d87] transition-colors rounded-md mt-8 w-96 py-3 flex justify-center items-center text-lg cursor-pointer ${isDisabled ? "opacity-50" : ""}`}
+              style={{
+                fontWeight: 800,
+                transition: "opacity 0.3s ease",
+              }}
+              disabled={isDisabled}
+            >
+              {isDisabled ? "Iniciando Sesión..." : "LOGIN"}
+            </button>
+          </form>
         </div>
       </div>
     </div>
