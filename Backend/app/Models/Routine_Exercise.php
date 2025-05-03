@@ -23,7 +23,7 @@ class Routine_Exercise extends Model
         return $this->belongsTo(Exercise::class, 'exercise_id');
     }
 
-    public function routine_exercise_sets() {
+    public function sets() {
         return $this->hasMany(Routine_Exercise_Set::class, 'routine_exercise_id');
     }
 }
