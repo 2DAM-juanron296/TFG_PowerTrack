@@ -4,6 +4,8 @@ import { Layout } from "./pages/Layout";
 import { useAuth } from "./context/useAuth";
 import { Users } from "./components/Users";
 import { Routines } from "./components/Routines";
+import { CreateUser } from "./components/CreateUser";
+import { CreateRoutine } from "./components/CreateRoutine";
 //import { useEffect } from "react";
 
 export default function App() {
@@ -34,7 +36,9 @@ export default function App() {
         >
           <Route index element={<Users />} />
           <Route path="routines" element={<Routines />} />
+          <Route path="routines/create" element={<CreateRoutine />} />
           <Route path="users" element={<Users />} />
+          <Route path="users/create" element={<CreateUser />} />
         </Route>
         <Route
           path="*"
