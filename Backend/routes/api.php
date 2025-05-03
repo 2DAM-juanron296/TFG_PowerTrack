@@ -7,6 +7,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\MuscleGroupController;
 use App\Http\Controllers\RoutineController;
+use App\Http\Controllers\RoutineExerciseController;
+use App\Http\Controllers\RoutineExerciseSetController;
 use App\Http\Controllers\UserController;
 
 /*
@@ -51,6 +53,20 @@ Route::middleware('auth:sanctum')->group(function() {
     
         Route::post('/createRoutine', 'store');
         Route::delete('/deleteRoutine/{id}', 'delete');
+    });
+
+    // Routine Exercises
+    Route::controller(RoutineExerciseController::class)->group(function() {
+        Route::get('/routineExercises/{idRoutine}', 'index');
+
+        Route::post('/createRoutineExercise/{idRoutine}', 'store');
+    });
+
+    // Routine Exercise Sets
+    Route::controller(RoutineExerciseSetController::class)->group(function() {
+        Route::get('/routineExerciseSets/{idRoutineExercise}', 'index');
+
+        Route::post('/createRoutineExerciseSet/{idRoutineExercise}', 'store');
     });
 
     // Muscle Groups
