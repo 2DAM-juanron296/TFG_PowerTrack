@@ -3,6 +3,7 @@ import { useAuth } from "../context/useAuth";
 import toast from "react-hot-toast";
 import { useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
+import { logoutUser } from "../api/auth";
 
 export function Header() {
   const { logout } = useAuth();
@@ -16,20 +17,9 @@ export function Header() {
   const handleLogout = async () => {
     try {
       setIsDisabled(true);
-      const token = localStorage.getItem("userToken");
+      const [data, res] = await logoutUser();
 
-      const response = await fetch("http://192.168.1.132:8000/api/logout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
+      if (res) {
         toast.error(data.message, {
           style: {
             background: "#333",
@@ -46,8 +36,6 @@ export function Header() {
       console.log("Token:", data.token);
       console.log("User:", data.user);
 
-      localStorage.setItem("userToken", data.token);
-
       logout(data.token);
     } catch (error) {
       console.error("Error al iniciar sesión", error);
@@ -63,8 +51,8 @@ export function Header() {
   };
 
   return (
-    <header className="pt-12">
-      <div className="grid grid-cols-3 items-center px-12">
+    <header className="pt-10 pb-2">
+      <div className="grid grid-cols-3 items-center px-10">
         {/* LOGO */}
         <div className="flex items-center gap-3">
           <img
@@ -78,17 +66,17 @@ export function Header() {
         </div>
 
         {/* NAVEGACIÓN */}
-        <nav className="flex justify-center gap-80 pt-2">
+        <nav className="flex justify-center gap-30 pt-2">
           <NavLink
             to="/home/users"
-            className={`text-xl transition-colors ${isUsersActive ? "text-[#25AEA6]" : "text-white hover:text-[#25AEA6]"}`}
+            className={`text-lg transition-colors ${isUsersActive ? "text-[#25AEA6]" : "text-white hover:text-[#25AEA6]"}`}
             style={{ fontWeight: 600 }}
           >
             Usuarios
           </NavLink>
           <NavLink
             to="/home/routines"
-            className={`text-xl transition-colors ${isRoutinesActive ? "text-[#25AEA6]" : "text-white hover:text-[#25AEA6]"}`}
+            className={`text-lg transition-colors ${isRoutinesActive ? "text-[#25AEA6]" : "text-white hover:text-[#25AEA6]"}`}
             style={{ fontWeight: 600 }}
           >
             Rutinas
