@@ -23,8 +23,9 @@ export const AuthProvider = ({ children }) => {
     checkLogin();
   }, []);
 
-  const login = (token) => {
+  const login = (token, user_id) => {
     localStorage.setItem("userToken", token);
+    localStorage.setItem("user_id", user_id);
     setAuthState({
       isLoggedIn: true,
       userToken: token,
@@ -33,7 +34,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    localStorage.removeItem("userToken");
+    localStorage.clear();
     setAuthState({
       isLoggedIn: false,
       userToken: null,
