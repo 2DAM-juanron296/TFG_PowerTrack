@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useAuth } from "../context/useAuth";
+import { loginUser } from "../api/auth";
 
 export function Login() {
   const { login } = useAuth();
@@ -31,15 +32,9 @@ export function Login() {
     console.log("Password: ", password);
 
     try {
-      const response = await fetch("http://192.168.1.132:8000/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-      });
+      const [data, res] = await loginUser(username, password);
 
-      const data = await response.json();
-
-      if (!response.ok) {
+      if (res) {
         toast.error(data.message, {
           style: {
             background: "#333",
@@ -56,9 +51,7 @@ export function Login() {
       console.log("Token:", data.token);
       console.log("User:", data.user);
 
-      localStorage.setItem("userToken", data.token);
-
-      login(data.token);
+      login(data.token, data.user.id);
     } catch (error) {
       console.error("Error al iniciar sesión", error);
       toast.error("Error de conexión con el servidor", {
