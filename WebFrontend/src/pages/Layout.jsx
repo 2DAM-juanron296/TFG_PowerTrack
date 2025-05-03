@@ -17,7 +17,7 @@ export function Layout() {
     <>
       <div className="flex flex-col min-h-screen">
         <Header />
-        <main className="flex mt-16 justify-center items-center">
+        <main className="flex mt-8 justify-center items-center">
           <Outlet />
         </main>
       </div>
