@@ -59,14 +59,14 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::controller(RoutineExerciseController::class)->group(function() {
         Route::get('/routineExercises/{idRoutine}', 'index');
 
-        Route::post('/createRoutineExercise/{idRoutine}', 'store');
+        Route::post('/createRoutineExercise', 'store');
     });
 
     // Routine Exercise Sets
     Route::controller(RoutineExerciseSetController::class)->group(function() {
         Route::get('/routineExerciseSets/{idRoutineExercise}', 'index');
 
-        Route::post('/createRoutineExerciseSet/{idRoutineExercise}', 'store');
+        Route::post('/createRoutineExerciseSet', 'store');
     });
 
     // Muscle Groups
