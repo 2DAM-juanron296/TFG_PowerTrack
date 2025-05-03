@@ -4,6 +4,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ExerciseController;
+use App\Http\Controllers\MuscleGroupController;
+use App\Http\Controllers\RoutineController;
 use App\Http\Controllers\UserController;
 
 /*
@@ -25,9 +28,7 @@ Route::controller(AuthController::class)->group(function (){
     Route::post('/register', 'register');
 });
 
-
 // Rutas de prueba
-
 
 
 Route::middleware('auth:sanctum')->group(function() {
@@ -38,5 +39,31 @@ Route::middleware('auth:sanctum')->group(function() {
     // Users
     Route::controller(UserController::class)->group(function() {
         Route::get('/users', 'index');
+        Route::get('/users/routines', 'getRoutines');
+    
+        Route::post('/createUser', 'store');
+        Route::delete('/deleteUser/{id}', 'delete');
+    });
+
+    // Routines
+    Route::controller(RoutineController::class)->group(function() {
+        Route::get('/routines', 'index');
+    
+        Route::post('/createRoutine', 'store');
+        Route::delete('/deleteRoutine/{id}', 'delete');
+    });
+
+    // Muscle Groups
+    Route::controller(MuscleGroupController::class)->group(function() {
+        Route::get('/muscleGroups', 'index');
+
+        Route::post('/createMuscleGroup', 'store');
+    });
+
+    // Exercises
+    Route::controller(ExerciseController::class)->group(function() {
+        Route::get('/exercises', 'index');
+
+        Route::post('/createExercise', 'store');
     });
 });
