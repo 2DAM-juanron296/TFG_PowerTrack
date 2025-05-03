@@ -12,7 +12,7 @@ class ExerciseController extends Controller
         $exercises = Exercise::get();
 
         return response()->json([
-            'message' => 'Ejercicios recogidos',
+            'message' => 'Ejercicios totales recogidos',
             'exercises' => $exercises
         ], 200);
     }
