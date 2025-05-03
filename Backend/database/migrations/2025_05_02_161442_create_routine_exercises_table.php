@@ -13,9 +13,6 @@ return new class extends Migration
     {
         Schema::create('routine_exercises', function (Blueprint $table) {
             $table->id();
-            $table->integer('sets')->nullable();
-            $table->integer('reps')->nullable();
-            $table->double('weight')->nullable();
             $table->integer('order');
 
             $table->unsignedBigInteger('routine_id');
