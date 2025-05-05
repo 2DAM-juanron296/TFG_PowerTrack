@@ -21,25 +21,31 @@ class RoutineExerciseSetController extends Controller
 
     public function store(Request $request) {
 
+        $sets = [];
+
         try 
         {
             $request->validate([
-                'order' => 'required|integer',
-                'reps' => 'required|integer',
-                'weight' => 'required|double',
-                'routine_exercise_id' => 'required|exists:routine_exercises,id'
-            ]);
+                'sets' => 'required|array',
+                'sets.*.routine_exercise_id' => 'required|exists:routine_exercises,id',
+                'sets.*.order' => 'required|integer',
+                'sets.*.reps' => 'required|integer',
+                'sets.*.weight' => 'required|numeric|decimal:0,2',
+            ]); 
 
-            $created = Routine_Exercise_Set::create($request->all());
+            foreach ($request->sets as $set) {
+                $created = Routine_Exercise_Set::create($set);
+                $sets[] = $created;
+            }
 
-            if (!$created)
+            if (empty($sets))
                 return response()->json([
-                    'message' => 'Error el set para el ejercicio'
+                    'message' => 'Error al añadir los sets'
                 ], 400);
             
             return response()->json([
-                'message' => 'Set añadida al ejercicio',
-                'set' => $created
+                'message' => 'Sets añadidos al ejercicio',
+                'sets' => $sets
             ], 201);
 
         } catch (Exception $e) {

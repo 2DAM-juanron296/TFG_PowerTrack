@@ -9,6 +9,8 @@ class Routine_Exercise_Set extends Model
 {
     use HasFactory;
 
+    protected $table = 'routine_exercise_sets';
+
     protected $fillable = [
         'order',
         'reps',

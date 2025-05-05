@@ -10,17 +10,20 @@ use Illuminate\Http\Request;
 class RoutineExerciseController extends Controller
 {
     public function  index($idRoutine) {
-        $exercises = Routine_Exercise::where('routine_id', $idRoutine)
+        $exercises = Routine_Exercise::with('exercise:id,name')
+                                     ->where('routine_id', $idRoutine)
                                      ->orderBy('order')
                                      ->get();
 
         return response()->json([
             'message' => 'Ejercicios de Rutina recogidos',
-            'routine_exercises' => $exercises
+            'exercises' => $exercises
         ], 200);
     }
 
     public function store(Request $request) {
+
+        $exercises = [];
 
         try 
         {
@@ -33,16 +36,17 @@ class RoutineExerciseController extends Controller
             
             foreach ($request->exercises as $exercise) {
                 $created = Routine_Exercise::create($exercise);
+                $exercises[] = $created; 
             }
 
-            if (!$created)
+            if (empty($exercises))
                 return response()->json([
                     'message' => 'Error al crear ejercicio para la rutina'
                 ], 400);
             
             return response()->json([
                 'message' => 'Ejercicios añadidos a la Rutina',
-                'exercise' => $request->exercises
+                'exercises' => $exercises
             ], 201);
 
         } catch (Exception $e) {

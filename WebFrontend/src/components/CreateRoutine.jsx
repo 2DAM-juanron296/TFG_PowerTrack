@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { createRoutine } from "../api/routines";
 import { createExercisesRoutine, fetchExercises } from "../api/exercises";
 import { ExercisesTable } from "./ExercisesTable";
+import { createExerciseSets } from "../api/sets";
 
 export function CreateRoutine() {
   const navigate = useNavigate();
@@ -133,6 +134,52 @@ export function CreateRoutine() {
         },
       });
 
+      console.log("Ejercicios", dataEx.exercises);
+      //return;
+
+      const updatedSets = sets.map((set) => {
+        const matching = dataEx.exercises.find(
+          (ex) => ex.exercise_id === set.routine_exercise_id,
+        );
+
+        if (!matching) {
+          console.warn("No se encontró routine_exercise_id para el set", set);
+          return set;
+        }
+
+        return {
+          ...set,
+          routine_exercise_id: matching.id,
+        };
+      });
+
+      const [dataSet, resSet] = await createExerciseSets({
+        sets: updatedSets,
+      });
+
+      if (resSet) {
+        toast.error(dataSet.message, {
+          style: {
+            background: "#333",
+            color: "#fff",
+            fontFamily: "Inter",
+            fontWeight: 400,
+          },
+        });
+        return;
+      }
+
+      toast.success(dataSet.message, {
+        style: {
+          background: "#333",
+          color: "#fff",
+          fontFamily: "Inter",
+          fontWeight: 400,
+        },
+      });
+
+      console.log("Ejercicios Laravel: ", dataEx.exercises);
+
       navigate("home/routines");
     } catch (error) {
       console.error("Error al crear la rutina", error);
@@ -159,15 +206,16 @@ export function CreateRoutine() {
         </h2>
       </div>
       <button
-        className="bg-[#FF9811] text-black px-2 py-2 mb-4 rounded-md font-semibold hover:bg-[#e68a0f]"
-        onClick={() =>
-          console.log("Ejercicios seleccionados", selectedExercises)
-        }
+        className="bg-[#FF9811] text-black px-2 py-2 mb-4 rounded-md font-semibold hover:bg-[#e68a0f] cursor-pointer"
+        onClick={() => {
+          console.log("Ejercicios seleccionados", selectedExercises),
+            console.log("Sets", sets);
+        }}
       >
         Ver ejercicios seleccionados
       </button>
 
-      <div className="grid grid-cols-3 gap-10 max-w-5xl mx-auto">
+      <div className="grid-rows-2 gap-10 max-w-5xl mx-auto">
         {/* Columna izquierda: Nombre y Descripción */}
         <form
           onSubmit={(e) => {
@@ -202,7 +250,7 @@ export function CreateRoutine() {
           <div className="flex justify-center items-center gap-3">
             <button
               type="submit"
-              className="bg-[#FF9811] text-black px-4 py-2 rounded-md font-semibold hover:bg-[#e68a0f]"
+              className="bg-[#FF9811] text-black px-4 py-2 rounded-md font-semibold hover:bg-[#e68a0f] cursor-pointer"
             >
               Crear Rutina
             </button>
@@ -211,13 +259,13 @@ export function CreateRoutine() {
                 e.preventDefault();
                 handleCancel();
               }}
-              className="bg-[#FF9811] text-black px-4 py-2 rounded-md font-semibold hover:bg-[#e68a0f]"
+              className="bg-[#FF9811] text-black px-4 py-2 rounded-md font-semibold hover:bg-[#e68a0f] cursor-pointer"
             >
               Cancelar
             </button>
           </div>
         </form>
-        <div className="w-3xl">
+        <div className="mt-15">
           <ExercisesTable
             exercises={exercises}
             selectedExercises={selectedExercises}
