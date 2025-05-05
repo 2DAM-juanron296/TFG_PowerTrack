@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { deleteRoutine, fetchRoutines } from "../api/routines";
+import { fetchRoutineExercises } from "../api/exercises";
 
 export function Routines() {
   const [routines, setRoutines] = useState([]);
@@ -81,6 +82,36 @@ export function Routines() {
     }
   };
 
+  const handleSeeExercises = (id) => async () => {
+    try {
+      const [data, res] = await fetchRoutineExercises(id);
+
+      if (res) {
+        toast.error(data.message, {
+          style: {
+            background: "#333",
+            color: "#fff",
+            fontFamily: "Inter",
+            fontWeight: 400,
+          },
+        });
+        return;
+      }
+
+      console.log("Ejercicios de la rutina", data.routine_exercises);
+    } catch (error) {
+      console.error("Error al obtener los ejercicios de la rutina", error);
+      toast.error("Error al obtener los ejercicios de la rutina", {
+        style: {
+          background: "#333",
+          color: "#fff",
+          fontFamily: "Inter",
+          fontWeight: 400,
+        },
+      });
+    }
+  };
+
   return (
     <div className="p-8">
       <div
@@ -141,11 +172,18 @@ export function Routines() {
                     Editar
                   </button>
                   <button
-                    className="bg-[#FF9811] text-black p-2 rounded-md ml-10 cursor-pointer"
+                    className="bg-[#FF9811] text-black p-2 rounded-md ml-5 cursor-pointer"
                     style={{ fontWeight: 600 }}
                     onClick={handleDelete(routine.id)}
                   >
                     Eliminar
+                  </button>
+                  <button
+                    className="bg-[#FF9811] text-black p-2 rounded-md ml-5 cursor-pointer"
+                    style={{ fontWeight: 600 }}
+                    onClick={handleSeeExercises(routine.id)}
+                  >
+                    Ver ejercicios Consola
                   </button>
                 </td>
               </tr>
