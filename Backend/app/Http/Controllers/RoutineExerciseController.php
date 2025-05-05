@@ -25,12 +25,15 @@ class RoutineExerciseController extends Controller
         try 
         {
             $request->validate([
-                'order' => 'required|integer',
-                'routine_id' => 'required|exists:routines,id',
-                'exercise_id' => 'required|exists:exercises,id',
+                'exercises' => 'required|array', 
+                'exercises.*.routine_id' => 'required|exists:routines,id', 
+                'exercises.*.exercise_id' => 'required|exists:exercises,id', 
+                'exercises.*.order' => 'required|integer', 
             ]);
-
-            $created = Routine_Exercise::create($request->all());
+            
+            foreach ($request->exercises as $exercise) {
+                $created = Routine_Exercise::create($exercise);
+            }
 
             if (!$created)
                 return response()->json([
@@ -38,8 +41,8 @@ class RoutineExerciseController extends Controller
                 ], 400);
             
             return response()->json([
-                'message' => 'Ejercicio añadido a la Rutina',
-                'exercise' => $created
+                'message' => 'Ejercicios añadidos a la Rutina',
+                'exercise' => $request->exercises
             ], 201);
 
         } catch (Exception $e) {
