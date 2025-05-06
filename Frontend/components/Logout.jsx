@@ -1,8 +1,10 @@
 import { Pressable } from "react-native";
 import { styled } from "nativewind";
 import { useAuth } from "../context/AuthContext";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LogoutIcon } from "./Icons";
+import { logoutUser } from "../context/api/auth";
+import Toast from "react-native-toast-message";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export function Logout({ onSuccess }) {
   const StyledPressable = styled(Pressable);
@@ -10,33 +12,42 @@ export function Logout({ onSuccess }) {
 
   const handleLogout = async () => {
     try {
-      const token = await AsyncStorage.getItem("userToken");
+      const [data, res] = await logoutUser();
 
-      const response = await fetch("http://192.168.1.132:8000/api/logout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      const data = await response.json();
       //console.log("Response:", data);
 
-      if (!response.ok) {
-        alert(data.message || "Error en logout");
+      if (res) {
+        Toast.show({
+          type: "error",
+          text1: "Error",
+          text2: data.message,
+          text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
+          text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
+          position: "bottom",
+          animation: true,
+          visibilityTime: 5000,
+        });
         return;
       }
 
       console.log("Logout exitoso");
       console.log("Message:", data.message);
 
+      await AsyncStorage.clear();
+
       logout();
       onSuccess();
     } catch (error) {
-      console.error("Error al cerrar sesión", error);
-      alert("Error de conexión con el servidor");
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: error,
+        text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
+        text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
+        position: "bottom",
+        animation: true,
+        visibilityTime: 5000,
+      });
     }
   };
 

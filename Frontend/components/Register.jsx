@@ -2,9 +2,11 @@ import { View, Text, TextInput, Pressable, Image } from "react-native";
 import { useState } from "react";
 import { showMessage } from "react-native-flash-message";
 import { styled } from "nativewind";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "expo-router";
+import { registerUser } from "../context/api/auth";
+import Toast from "react-native-toast-message";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export function Register({ onSuccess }) {
   const StyledPressable = styled(Pressable);
@@ -18,39 +20,54 @@ export function Register({ onSuccess }) {
 
   const handleRegister = async () => {
     if (!username || !password || !email || !name) {
-      showMessage({
-        message: "Complete ambos campos",
-        type: "danger",
-        duration: 2000,
-        color: "#FF0000",
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "Complete todos los campos",
+        text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
+        text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
+        position: "bottom",
+        animation: true,
+        visibilityTime: 5000,
       });
       return;
     }
 
     try {
-      const response = await fetch("http://192.168.1.132:8000/api/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password, email, name }),
-      });
+      const [data, res] = await registerUser(username, password, email, name);
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        alert(data.message || "Error en registro");
+      if (res) {
+        Toast.show({
+          type: "error",
+          text1: "Error",
+          text2: data.message,
+          text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
+          text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
+          position: "bottom",
+          animation: true,
+          visibilityTime: 5000,
+        });
         return;
       }
 
       console.log("Registro exitoso");
 
       await AsyncStorage.setItem("userToken", data.token);
-      //await AsyncStorage.setItem("username", username);
+      await AsyncStorage.setItem("username", username);
 
       login(data.token);
       onSuccess();
     } catch (error) {
-      console.error("Error al registrarte", error);
-      alert("Error de conexión con el servidor");
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: error,
+        text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
+        text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
+        position: "bottom",
+        animation: true,
+        visibilityTime: 5000,
+      });
     }
   };
 

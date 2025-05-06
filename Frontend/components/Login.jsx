@@ -1,11 +1,12 @@
 import { View, Text, TextInput, Pressable, Image } from "react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Screen } from "./Screen";
 import { styled } from "nativewind";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "expo-router";
 import Toast from "react-native-toast-message";
+import { loginUser } from "../context/api/auth";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export function Login({ onSuccess }) {
   const StyledPressable = styled(Pressable);
@@ -33,15 +34,9 @@ export function Login({ onSuccess }) {
     console.log("Password: ", password);
 
     try {
-      const response = await fetch("http://192.168.1.132:8000/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-      });
+      const [data, res] = await loginUser(username, password);
 
-      const data = await response.json();
-
-      if (!response.ok) {
+      if (res) {
         Toast.show({
           type: "error",
           text1: "Error",
@@ -55,6 +50,17 @@ export function Login({ onSuccess }) {
         return;
       }
 
+      Toast.show({
+        type: "success",
+        text1: "Éxito",
+        text2: data.message,
+        text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
+        text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
+        position: "bottom",
+        animation: true,
+        visibilityTime: 5000,
+      });
+
       console.log("Login exitoso");
       console.log("Token:", data.token);
       console.log("User:", data.user);
@@ -64,8 +70,16 @@ export function Login({ onSuccess }) {
       login(data.token);
       onSuccess();
     } catch (error) {
-      console.error("Error al iniciar sesión", error);
-      alert("Error de conexión con el servidor");
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: error,
+        text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
+        text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
+        position: "bottom",
+        animation: true,
+        visibilityTime: 5000,
+      });
     }
   };
 

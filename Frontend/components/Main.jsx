@@ -5,6 +5,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
 import { TrainingCard } from "../components/TrainingCard";
 import { Link, useRouter } from "expo-router";
+import { seeTokenIP } from "../context/api/auth";
 
 export function Main() {
   const [trainings, setTrainings] = useState(["buenas"]);
@@ -18,6 +19,7 @@ export function Main() {
     };
 
     getUsername();
+    seeTokenIP();
   }, []);
 
   return (
