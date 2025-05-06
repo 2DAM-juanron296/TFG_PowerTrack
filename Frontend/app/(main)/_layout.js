@@ -35,7 +35,7 @@ export default function MainLayout() {
               <Pressable>
                 <Image
                   source={require("../../assets/images/PowerTrackIcon.png")}
-                  className="w-9 h-9 m-1"
+                  className="w-10 h-10 m-1"
                 />
               </Pressable>
             </Link>
