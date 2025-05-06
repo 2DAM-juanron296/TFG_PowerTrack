@@ -58,7 +58,7 @@ class AuthController extends Controller
             'username' => 'required',
             'password' => 'required',
             'email' => 'required',
-            'name' => 'reqired'
+            'name' => 'required'
         ]);
 
         $user = User::where('username', $request->username)->first();
@@ -80,10 +80,10 @@ class AuthController extends Controller
         }
 
         return response()->json([
-            'message' => 'Login exitoso',
+            'message' => 'Registro exitoso',
             'token' => $user->createToken('token')->plainTextToken,
             'user' => $user        
-        ]);
+        ], 200);
     }
 
     public function logout(Request $request)
