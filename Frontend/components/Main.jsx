@@ -53,32 +53,34 @@ export function Main() {
           </Text>
         </View>
       ) : (
-        <FlatList
-          data={trainings}
-          keyExtractor={(train) => train}
-          renderItem={() => (
-            <View className="items-center">
-              <ScrollView>
-                <TrainingCard />
-                <TrainingCard />
-                <TrainingCard />
-                <TrainingCard />
-                <View className="justify-center items-center mt-5">
-                  <Link asChild href="../trainHistory">
-                    <Pressable>
-                      <Text
-                        className="text-white"
-                        style={{ fontFamily: "Inter-SemiBold" }}
-                      >
-                        Ver más...
-                      </Text>
-                    </Pressable>
-                  </Link>
-                </View>
-              </ScrollView>
-            </View>
-          )}
-        />
+        <View className="mx-10">
+          <FlatList
+            data={trainings}
+            keyExtractor={(train) => train}
+            renderItem={() => (
+              <View className="items-center">
+                <ScrollView>
+                  <TrainingCard />
+                  <TrainingCard />
+                  <TrainingCard />
+                  <TrainingCard />
+                  <View className="justify-center items-center mt-5">
+                    <Link asChild href="../trainHistory">
+                      <Pressable>
+                        <Text
+                          className="text-white"
+                          style={{ fontFamily: "Inter-SemiBold" }}
+                        >
+                          Ver más...
+                        </Text>
+                      </Pressable>
+                    </Link>
+                  </View>
+                </ScrollView>
+              </View>
+            )}
+          />
+        </View>
       )}
     </Screen>
   );

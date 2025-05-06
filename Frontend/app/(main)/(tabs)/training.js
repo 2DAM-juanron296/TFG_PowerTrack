@@ -1,11 +1,66 @@
-import { View, Text } from "react-native";
+import { View, Text, Pressable, ScrollView, FlatList } from "react-native";
 import { Screen } from "../../../components/Screen";
+import { styled } from "nativewind";
+import { useState } from "react";
+import { RoutineCard } from "../../../components/RoutineCard";
+import { Link } from "expo-router";
 
 export default function Index() {
+  const StyledPresable = styled(Pressable);
+  const [routines, setRoutines] = useState(["buenas"]);
+
   return (
     <Screen>
-      <View className="justify-center items-center">
-        <Text className="text-white text-lg">Pantalla Entrenamiento</Text>
+      <View className="justify-start items-start mx-10 my-12">
+        <View>
+          <Text className="text-2xl mb-8 text-[#25AEA6] font-bold">
+            Rutinas
+          </Text>
+
+          <View className="flex-row justify-between items-center w-full gap-3">
+            <Link asChild href="../createRoutine">
+              <StyledPresable className="flex-1 justify-center items-center border bg-[#0f0f0f] rounded-lg p-4">
+                <Text className="text-white text-lg font-bold">
+                  Nueva Rutina
+                </Text>
+              </StyledPresable>
+            </Link>
+
+            <StyledPresable className="flex-1 justify-center items-center border bg-[#0f0f0f] rounded-lg p-4">
+              <Text className="text-white text-lg font-bold">Explorar</Text>
+            </StyledPresable>
+          </View>
+        </View>
+
+        <View className="mt-20">
+          <Text className="text-2xl mb-8 text-[#25AEA6] font-bold">
+            Mis Rutinas
+          </Text>
+
+          {routines.length === 0 ? (
+            <View className="flex-row justify-center items-center w-full mt-5">
+              <Text
+                className="text-white text-md"
+                style={{ fontFamily: "Inter-Bold" }}
+              >
+                NO HAY RUTINAS ACTUALMENTE
+              </Text>
+            </View>
+          ) : (
+            <FlatList
+              data={routines}
+              keyExtractor={(r) => r}
+              renderItem={() => (
+                <View className="items-center">
+                  <ScrollView>
+                    <RoutineCard />
+                    <RoutineCard />
+                  </ScrollView>
+                </View>
+              )}
+            />
+          )}
+        </View>
       </View>
     </Screen>
   );
