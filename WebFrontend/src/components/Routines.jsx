@@ -4,10 +4,12 @@ import { useNavigate } from "react-router-dom";
 import { deleteRoutine, fetchRoutines } from "../api/routines";
 import { fetchRoutineExercises } from "../api/exercises";
 import { fetchExerciseSets } from "../api/sets";
+import ClipLoader from "react-spinners/ClipLoader";
 
 export function Routines() {
   const [routines, setRoutines] = useState([]);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
 
   const [showModal, setShowModal] = useState(false);
   const [modalExercises, setModalExercises] = useState([]);
@@ -18,6 +20,7 @@ export function Routines() {
   }, []);
 
   const getRoutines = async () => {
+    setLoading(true);
     try {
       const [data, res] = await fetchRoutines();
 
@@ -44,6 +47,8 @@ export function Routines() {
           fontWeight: 400,
         },
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -184,41 +189,54 @@ export function Routines() {
             </tr>
           </thead>
           <tbody>
-            {routines.map((routine) => (
-              <tr key={routine.id} className="hover:bg-[#1d1d1d]">
-                <td className="px-6 py-4 border-b border-[#333] text-center">
-                  {routine.name}
-                </td>
-                <td className="px-6 py-4 border-b border-[#333] text-center">
-                  {routine.description}
-                </td>
-                <td className="px-6 py-4 border-b border-[#333] text-center">
-                  {routine.user_username}
-                </td>
-                <td className="px-6 py-4 border-b border-[#333] text-center">
-                  <button
-                    className="bg-[#FF9811] text-black px-3 py-2 rounded-md cursor-pointer"
-                    style={{ fontWeight: 600 }}
-                  >
-                    Editar
-                  </button>
-                  <button
-                    className="bg-[#FF9811] text-black p-2 rounded-md ml-5 cursor-pointer"
-                    style={{ fontWeight: 600 }}
-                    onClick={handleDelete(routine.id)}
-                  >
-                    Eliminar
-                  </button>
-                  <button
-                    className="bg-[#FF9811] text-black p-2 rounded-md ml-5 cursor-pointer"
-                    style={{ fontWeight: 600 }}
-                    onClick={handleSeeExercises(routine.id)}
-                  >
-                    Ver ejercicios
-                  </button>
+            {loading ? (
+              <tr>
+                <td colSpan="4" className="text-center py-6">
+                  <div className="flex justify-center items-center gap-4 py-5">
+                    <ClipLoader color="#25AEA6" size={35} />
+                    <span className="text-white text-lg">
+                      Cargando rutinas...
+                    </span>
+                  </div>
                 </td>
               </tr>
-            ))}
+            ) : (
+              routines.map((routine) => (
+                <tr key={routine.id} className="hover:bg-[#1d1d1d]">
+                  <td className="px-6 py-4 border-b border-[#333] text-center">
+                    {routine.name}
+                  </td>
+                  <td className="px-6 py-4 border-b border-[#333] text-center">
+                    {routine.description}
+                  </td>
+                  <td className="px-6 py-4 border-b border-[#333] text-center">
+                    {routine.user_username}
+                  </td>
+                  <td className="px-6 py-4 border-b border-[#333] text-center">
+                    <button
+                      className="bg-[#FF9811] text-black px-3 py-2 rounded-md cursor-pointer"
+                      style={{ fontWeight: 600 }}
+                    >
+                      Editar
+                    </button>
+                    <button
+                      className="bg-[#FF9811] text-black p-2 rounded-md ml-5 cursor-pointer"
+                      style={{ fontWeight: 600 }}
+                      onClick={handleDelete(routine.id)}
+                    >
+                      Eliminar
+                    </button>
+                    <button
+                      className="bg-[#FF9811] text-black p-2 rounded-md ml-5 cursor-pointer"
+                      style={{ fontWeight: 600 }}
+                      onClick={handleSeeExercises(routine.id)}
+                    >
+                      Ver ejercicios
+                    </button>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>

@@ -4,9 +4,11 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { deleteUser, fetchUsers } from "../api/users";
+import ClipLoader from "react-spinners/ClipLoader";
 
 export function Users() {
   const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const MySwal = withReactContent(Swal);
 
@@ -16,6 +18,7 @@ export function Users() {
   }, []);
 
   const getUsers = async () => {
+    setLoading(true);
     try {
       const [data, res] = await fetchUsers();
 
@@ -42,6 +45,8 @@ export function Users() {
           fontWeight: 400,
         },
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -139,34 +144,47 @@ export function Users() {
             </tr>
           </thead>
           <tbody>
-            {users.map((user) => (
-              <tr key={user.id} className="hover:bg-[#1d1d1d]">
-                <td className="px-6 py-4 border-b border-[#333] text-center">
-                  {user.name}
-                </td>
-                <td className="px-6 py-4 border-b border-[#333] text-center">
-                  {user.username}
-                </td>
-                <td className="px-6 py-4 border-b border-[#333] text-center">
-                  {user.email}
-                </td>
-                <td className="px-6 py-4 border-b border-[#333] text-center">
-                  <button
-                    className="bg-[#FF9811] text-black px-3 py-2 rounded-md cursor-pointer"
-                    style={{ fontWeight: 600 }}
-                  >
-                    Editar
-                  </button>
-                  <button
-                    className="bg-[#FF9811] text-black p-2 rounded-md ml-10 cursor-pointer"
-                    style={{ fontWeight: 600 }}
-                    onClick={handleDelete(user.id)}
-                  >
-                    Eliminar
-                  </button>
+            {loading ? (
+              <tr>
+                <td colSpan="4" className="text-center py-6">
+                  <div className="flex justify-center items-center gap-4 py-5">
+                    <ClipLoader color="#25AEA6" size={35} />
+                    <span className="text-white text-lg">
+                      Cargando usuarios...
+                    </span>
+                  </div>
                 </td>
               </tr>
-            ))}
+            ) : (
+              users.map((user) => (
+                <tr key={user.id} className="hover:bg-[#1d1d1d]">
+                  <td className="px-6 py-4 border-b border-[#333] text-center">
+                    {user.name}
+                  </td>
+                  <td className="px-6 py-4 border-b border-[#333] text-center">
+                    {user.username}
+                  </td>
+                  <td className="px-6 py-4 border-b border-[#333] text-center">
+                    {user.email}
+                  </td>
+                  <td className="px-6 py-4 border-b border-[#333] text-center">
+                    <button
+                      className="bg-[#FF9811] text-black px-3 py-2 rounded-md cursor-pointer"
+                      style={{ fontWeight: 600 }}
+                    >
+                      Editar
+                    </button>
+                    <button
+                      className="bg-[#FF9811] text-black p-2 rounded-md ml-10 cursor-pointer"
+                      style={{ fontWeight: 600 }}
+                      onClick={handleDelete(user.id)}
+                    >
+                      Eliminar
+                    </button>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
