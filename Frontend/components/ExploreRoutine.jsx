@@ -4,7 +4,7 @@ import { Link } from "expo-router";
 import { styled } from "nativewind";
 import { HomeIcon } from "../components/Icons";
 
-export function CreateRoutine() {
+export function ExploreRoutine() {
   const StyledPresable = styled(Pressable);
 
   return (
@@ -25,7 +25,7 @@ export function CreateRoutine() {
             className="text-xl text-white"
             style={{ fontFamily: "Inter-Bold" }}
           >
-            Pantalla para crear rutinas
+            Pantalla rutinas predefinidas
           </Text>
         </View>
       </View>

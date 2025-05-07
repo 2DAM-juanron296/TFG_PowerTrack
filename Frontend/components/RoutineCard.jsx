@@ -20,7 +20,7 @@ export function RoutineCard() {
             Rutina
           </Text>
           <StyledPresable className="bg-[#25AEA6] rounded-md p-2">
-            <Text className="text-black font-bold" style={{ fontSize: 15 }}>
+            <Text className="text-black" style={{ fontFamily: "Inter-Bold" }}>
               Comienzo
             </Text>
           </StyledPresable>
