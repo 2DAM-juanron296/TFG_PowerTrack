@@ -32,7 +32,7 @@ export function Login({ onSuccess }) {
         text2: "Debe completar ambos campos",
         text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
         text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
-        position: "bottom",
+        position: "top",
         animation: true,
         visibilityTime: 5000,
       });
@@ -51,7 +51,7 @@ export function Login({ onSuccess }) {
           text2: data.message,
           text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
           text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
-          position: "bottom",
+          position: "top",
           animation: true,
           visibilityTime: 5000,
         });
@@ -64,7 +64,7 @@ export function Login({ onSuccess }) {
         text2: data.message,
         text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
         text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
-        position: "bottom",
+        position: "top",
         animation: true,
         visibilityTime: 5000,
       });
@@ -85,7 +85,7 @@ export function Login({ onSuccess }) {
         text2: error,
         text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
         text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
-        position: "bottom",
+        position: "top",
         animation: true,
         visibilityTime: 5000,
       });

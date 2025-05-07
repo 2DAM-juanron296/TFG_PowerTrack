@@ -26,7 +26,7 @@ export function Register({ onSuccess }) {
         text2: "Complete todos los campos",
         text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
         text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
-        position: "bottom",
+        position: "top",
         animation: true,
         visibilityTime: 5000,
       });
@@ -43,7 +43,7 @@ export function Register({ onSuccess }) {
           text2: data.message,
           text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
           text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
-          position: "bottom",
+          position: "top",
           animation: true,
           visibilityTime: 5000,
         });
@@ -64,7 +64,7 @@ export function Register({ onSuccess }) {
         text2: error,
         text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
         text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
-        position: "bottom",
+        position: "top",
         animation: true,
         visibilityTime: 5000,
       });
