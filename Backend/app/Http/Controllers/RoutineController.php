@@ -38,7 +38,31 @@ class RoutineController extends Controller
                 'message' => 'Error: '.$e->getMessage()
             ], 500);
         }
-        
+
+    }
+
+    public function indexUser($idUser) {
+        try
+        {
+            $routines = Routine::where('user_id', $idUser)->get();
+
+            if ($routines->isEmpty()) {
+                return response()->json([
+                    'message' => 'No hay rutinas actualmente',
+                    'routines' =>  []
+                ], 200);
+            }
+
+            return response()->json([
+                'message' => 'Rutinas recogidas',
+                'routines' =>  $routines
+            ], 200);
+
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Error: '.$e->getMessage()
+            ], 500);
+        }
     }
 
     public function store(Request $request) {

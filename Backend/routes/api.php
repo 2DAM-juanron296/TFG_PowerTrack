@@ -50,6 +50,7 @@ Route::middleware('auth:sanctum')->group(function() {
     // Routines
     Route::controller(RoutineController::class)->group(function() {
         Route::get('/routines', 'index');
+        Route::get('/routines/{idUser}', 'indexUser');
     
         Route::post('/createRoutine', 'store');
         Route::delete('/deleteRoutine/{id}', 'delete');
