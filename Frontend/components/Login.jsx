@@ -1,5 +1,5 @@
 import { View, Text, TextInput, Pressable, Image } from "react-native";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Screen } from "./Screen";
 import { styled } from "nativewind";
 import { useAuth } from "../context/AuthContext";
@@ -17,6 +17,14 @@ export function Login({ onSuccess }) {
   const [password, setPassword] = useState("");
 
   const handleLogin = async () => {
+    try {
+      const value = await AsyncStorage.getItem("userToken");
+      const user = await AsyncStorage.getItem("username");
+      console.log("Token:", value, " Username: ", user);
+    } catch (error) {
+      console.error("Error al obtener datos de AsyncStorage", error);
+    }
+
     if (!username || !password) {
       Toast.show({
         type: "error",
@@ -66,6 +74,7 @@ export function Login({ onSuccess }) {
       console.log("User:", data.user);
 
       await AsyncStorage.setItem("userToken", data.token);
+      await AsyncStorage.setItem("username", data.user.username);
 
       login(data.token);
       onSuccess();
@@ -92,14 +101,14 @@ export function Login({ onSuccess }) {
         />
         <View className="border-2 border-[#25AEA6] rounded-xl bg-[#0F0F0F] w-80 full py-14 justify-center items-center">
           <TextInput
-            className="bg-[#54807D] rounded-md w-60 p-4 text-left"
+            className="bg-[#54807D] rounded-md w-60 p-4 text-left text-black"
             placeholder="Username"
             placeholderTextColor={"#222"}
             style={{ fontFamily: "Inter-SemiBold" }}
             onChangeText={setUsername}
           />
           <TextInput
-            className="bg-[#54807D] rounded-md mt-6 w-60 p-4 text-left"
+            className="bg-[#54807D] rounded-md mt-6 w-60 p-4 text-left text-black"
             placeholder="Password"
             placeholderTextColor={"#222"}
             style={{ fontFamily: "Inter-SemiBold" }}

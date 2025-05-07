@@ -2,11 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { API_BASE } from "../../config";
 
 const getToken = async () => await AsyncStorage.getItem("userToken");
-const token = getToken();
-
-export function seeTokenIP() {
-  console.log("Token: ", token, " IP: ", API_BASE);
-}
+//const getUser = async () => await AsyncStorage.getItem("username");
 
 export async function loginUser(username, password) {
   try {
@@ -37,7 +33,7 @@ export async function loginUser(username, password) {
 
 export async function logoutUser() {
   try {
-    const token = getToken();
+    const token = await getToken();
     let res = false;
     let info = [];
 
@@ -49,6 +45,10 @@ export async function logoutUser() {
         Authorization: `Bearer ${token}`,
       },
     });
+
+    //const datat = await response.text();
+    //console.log("Text: ", datat);
+    //return;
 
     const data = await response.json();
 
@@ -62,7 +62,8 @@ export async function logoutUser() {
 
     return info;
   } catch (error) {
-    return [{ data: error }, true];
+    console.error("Error during logout request:", error);
+    return [{ data: error.message || error }, true];
   }
 }
 

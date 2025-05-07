@@ -22,14 +22,12 @@ export function AuthProvider({ children }) {
   const login = async (token) => {
     setIsLoggedIn(true);
     setUserToken(token);
-    await AsyncStorage.setItem("userToken", token);
     console.log("Token guardado");
   };
 
   const logout = async () => {
     setIsLoggedIn(false);
     setUserToken(null);
-    await AsyncStorage.clear();
   };
 
   return (

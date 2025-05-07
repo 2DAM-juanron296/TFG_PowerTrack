@@ -4,22 +4,29 @@ import { UserDefaultIcon } from "./Icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
 import { TrainingCard } from "../components/TrainingCard";
-import { Link, useRouter } from "expo-router";
-import { seeTokenIP } from "../context/api/auth";
+import { Link } from "expo-router";
 
 export function Main() {
   const [trainings, setTrainings] = useState(["buenas"]);
   const [username, setUsername] = useState("");
-  const router = useRouter();
 
   useEffect(() => {
-    const getUsername = async () => {
-      const user = await AsyncStorage.getItem("username");
-      setUsername(user);
+    const getData = async () => {
+      try {
+        const value = await AsyncStorage.getItem("userToken");
+        const user = await AsyncStorage.getItem("username");
+
+        if (user !== null) {
+          const user = await AsyncStorage.getItem("username");
+          setUsername(user);
+        }
+        console.log("Token:", value, " Username: ", user);
+      } catch (error) {
+        console.error("Error al obtener datos de AsyncStorage", error);
+      }
     };
 
-    getUsername();
-    seeTokenIP();
+    getData();
   }, []);
 
   return (
