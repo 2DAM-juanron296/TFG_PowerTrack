@@ -191,11 +191,21 @@ export function Routines() {
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan="4" className="text-center py-6">
-                  <div className="flex justify-center items-center gap-4 py-5">
+                <td colSpan="4" className="text-center py-4">
+                  <div className="flex justify-center items-center gap-4 py-4">
                     <ClipLoader color="#25AEA6" size={35} />
                     <span className="text-white text-lg">
                       Cargando rutinas...
+                    </span>
+                  </div>
+                </td>
+              </tr>
+            ) : routines.length === 0 ? (
+              <tr>
+                <td colSpan="4" className="text-center py-4">
+                  <div className="flex justify-center items-center py-4">
+                    <span className="text-white font-bold text-lg">
+                      No hay rutinas actualmente
                     </span>
                   </div>
                 </td>
