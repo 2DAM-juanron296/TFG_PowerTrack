@@ -10,7 +10,7 @@ import { Screen } from "../../../components/Screen";
 import { styled } from "nativewind";
 import { useState } from "react";
 import { RoutineCard } from "../../../components/RoutineCard";
-import { Link, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 
 export default function Index() {
   const StyledPresable = styled(Pressable);
