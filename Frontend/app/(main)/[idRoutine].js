@@ -1,13 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocalSearchParams } from "expo-router";
-import {
-  Text,
-  View,
-  Animated,
-  Pressable,
-  FlatList,
-  experimental_LayoutConformance,
-} from "react-native";
+import { Text, View, Pressable, FlatList, Image } from "react-native";
 import { styled } from "nativewind";
 import { fetchRoutineExercises } from "../../context/api/exercises";
 import Toast from "react-native-toast-message";
@@ -19,6 +12,17 @@ export default function DetailRoutine() {
   const { idRoutine } = useLocalSearchParams();
 
   const [exercises, setExercises] = useState([]);
+
+  const exerciseImages = {
+    1: require("../../assets/images/exercises/1.webp"),
+  };
+
+  const getExerciseImage = (id) => {
+    return (
+      exerciseImages[id] ||
+      require("../../assets/images/exercises/default.webp")
+    );
+  };
 
   useEffect(() => {
     if (idRoutine) {
@@ -109,31 +113,45 @@ export default function DetailRoutine() {
           keyExtractor={(exercise) => exercise.id}
           renderItem={({ item }) => (
             <View className="mb-5 border border-[#222] bg-[#0f0f0f] rounded-lg p-4">
-              <Text
-                className="text-white text-xl pb-3"
-                style={{ fontFamily: "Inter-SemiBold" }}
-              >
-                {item.order}. {item.exercise.name}
-              </Text>
+              <View className="flex-row items-start">
+                <Image
+                  source={getExerciseImage(item.exercise.id)}
+                  style={{
+                    width: 85,
+                    height: 85,
+                    borderRadius: 8,
+                    marginRight: 15,
+                  }}
+                />
 
-              {item.sets && item.sets.length > 0 ? (
-                item.sets.map((set) => (
+                <View className="flex-1">
                   <Text
-                    key={set.id}
-                    className="text-white pb-1"
-                    style={{ fontFamily: "Inter-Regular", fontSize: 14 }}
+                    className="text-white text-xl pb-3"
+                    style={{ fontFamily: "Inter-SemiBold" }}
                   >
-                    Serie {set.order}: {set.reps} reps - {set.weight} kg
+                    {item.order}. {item.exercise.name}
                   </Text>
-                ))
-              ) : (
-                <Text
-                  className="text-white pb-1"
-                  style={{ fontFamily: "Inter-Regular", fontSize: 14 }}
-                >
-                  No hay series registradas
-                </Text>
-              )}
+
+                  {item.sets && item.sets.length > 0 ? (
+                    item.sets.map((set) => (
+                      <Text
+                        key={set.id}
+                        className="text-white pb-1"
+                        style={{ fontFamily: "Inter-Regular", fontSize: 14 }}
+                      >
+                        Serie {set.order}: {set.reps} reps - {set.weight} kg
+                      </Text>
+                    ))
+                  ) : (
+                    <Text
+                      className="text-white pb-1"
+                      style={{ fontFamily: "Inter-Regular", fontSize: 14 }}
+                    >
+                      No hay series registradas
+                    </Text>
+                  )}
+                </View>
+              </View>
             </View>
           )}
         />
