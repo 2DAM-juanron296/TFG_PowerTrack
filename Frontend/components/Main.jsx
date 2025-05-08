@@ -1,4 +1,4 @@
-import { View, Text, FlatList, ScrollView, Pressable } from "react-native";
+import { View, Text, FlatList, Pressable } from "react-native";
 import { Screen } from "./Screen";
 import { UserDefaultIcon } from "./Icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -66,24 +66,22 @@ export function Main() {
             keyExtractor={(train) => train}
             renderItem={() => (
               <View className="items-center">
-                <ScrollView>
-                  <TrainingCard />
-                  <TrainingCard />
-                  <TrainingCard />
-                  <TrainingCard />
-                  <View className="justify-center items-center mt-5">
-                    <Link asChild href="../trainHistory">
-                      <Pressable>
-                        <Text
-                          className="text-white"
-                          style={{ fontFamily: "Inter-SemiBold" }}
-                        >
-                          Ver más...
-                        </Text>
-                      </Pressable>
-                    </Link>
-                  </View>
-                </ScrollView>
+                <TrainingCard />
+                <TrainingCard />
+                <TrainingCard />
+                <TrainingCard />
+                <View className="justify-center items-center mt-5">
+                  <Link asChild href="../trainHistory">
+                    <Pressable>
+                      <Text
+                        className="text-white"
+                        style={{ fontFamily: "Inter-SemiBold" }}
+                      >
+                        Ver más...
+                      </Text>
+                    </Pressable>
+                  </Link>
+                </View>
               </View>
             )}
           />

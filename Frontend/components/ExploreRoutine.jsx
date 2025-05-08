@@ -1,4 +1,4 @@
-import { Text, View, Pressable, FlatList, ScrollView } from "react-native";
+import { Text, View, Pressable, FlatList } from "react-native";
 import { Screen } from "./Screen";
 import { Link } from "expo-router";
 import { styled } from "nativewind";

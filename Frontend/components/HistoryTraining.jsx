@@ -1,4 +1,3 @@
-import { useEffect, useRef } from "react";
 import { Text, View, Pressable } from "react-native";
 import { Screen } from "./Screen";
 import { Link } from "expo-router";
