@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Frontend",
-    "slug": "Frontend",
+    "name": "PowerTrack",
+    "slug": "PowerTrackApp",
     "version": "1.0.0",
     "sdkVersion": "53.0.0",
     "orientation": "portrait",
@@ -34,8 +34,9 @@
     "extra": {
       "router": {},
       "eas": {
-        "projectId": "bf79d7ba-59e8-4e77-bfc6-c517e35b3b2b"
+        "projectId": "9c142b0d-db6f-477e-94f4-23a594560943"
       }
-    }
+    },
+    "owner": "devron"
   }
 }
