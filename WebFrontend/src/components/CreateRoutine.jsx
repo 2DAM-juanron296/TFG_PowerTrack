@@ -62,6 +62,18 @@ export function CreateRoutine() {
         return;
       }
 
+      if (selectedExercises.length === 0) {
+        toast.error("Debes añadir al menos un ejercicio a la rutina", {
+          style: {
+            background: "#333",
+            color: "#fff",
+            fontFamily: "Inter",
+            fontWeight: 400,
+          },
+        });
+        return;
+      }
+
       const request = { name, description };
 
       const [data, res] = await createRoutine(request);
@@ -90,18 +102,6 @@ export function CreateRoutine() {
       //console.log("Data", data);
 
       const routineId = data.routine.id;
-
-      if (selectedExercises.length === 0) {
-        toast.error("Debes añadir al menos un ejercicio a la rutina", {
-          style: {
-            background: "#333",
-            color: "#fff",
-            fontFamily: "Inter",
-            fontWeight: 400,
-          },
-        });
-        return;
-      }
 
       const requestExercise = selectedExercises.map((exercise) => ({
         order: exercise.order,
