@@ -15,6 +15,25 @@ export default function DetailRoutine() {
 
   const exerciseImages = {
     1: require("../../assets/images/exercises/1.webp"),
+    2: require("../../assets/images/exercises/2.webp"),
+    3: require("../../assets/images/exercises/3.webp"),
+    4: require("../../assets/images/exercises/4.webp"),
+    5: require("../../assets/images/exercises/5.webp"),
+    6: require("../../assets/images/exercises/6.webp"),
+    7: require("../../assets/images/exercises/7.webp"),
+    8: require("../../assets/images/exercises/8.webp"),
+    9: require("../../assets/images/exercises/9.webp"),
+    10: require("../../assets/images/exercises/10.webp"),
+    11: require("../../assets/images/exercises/11.webp"),
+    12: require("../../assets/images/exercises/12.webp"),
+    13: require("../../assets/images/exercises/13.webp"),
+    14: require("../../assets/images/exercises/14.webp"),
+    15: require("../../assets/images/exercises/15.webp"),
+    16: require("../../assets/images/exercises/16.webp"),
+    17: require("../../assets/images/exercises/17.webp"),
+    18: require("../../assets/images/exercises/18.webp"),
+    19: require("../../assets/images/exercises/19.webp"),
+    20: require("../../assets/images/exercises/20.webp"),
   };
 
   const getExerciseImage = (id) => {
@@ -113,15 +132,10 @@ export default function DetailRoutine() {
           keyExtractor={(exercise) => exercise.id}
           renderItem={({ item }) => (
             <View className="mb-5 border border-[#222] bg-[#0f0f0f] rounded-lg p-4">
-              <View className="flex-row items-start">
+              <View className="flex-row items-center">
                 <Image
                   source={getExerciseImage(item.exercise.id)}
-                  style={{
-                    width: 85,
-                    height: 85,
-                    borderRadius: 8,
-                    marginRight: 15,
-                  }}
+                  className="w-24 h-24 rounded-lg mr-[15px]"
                 />
 
                 <View className="flex-1">
