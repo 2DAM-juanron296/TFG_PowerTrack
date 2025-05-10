@@ -20,21 +20,28 @@ export function Users() {
   const getUsers = async () => {
     setLoading(true);
     try {
-      const [data, res] = await fetchUsers();
+      const storedUsers = localStorage.getItem("users");
 
-      if (res) {
-        toast.error(data.message, {
-          style: {
-            background: "#333",
-            color: "#fff",
-            fontFamily: "Inter",
-            fontWeight: 400,
-          },
-        });
-        return;
+      if (storedUsers && storedUsers.length !== 0) {
+        setUsers(JSON.parse(storedUsers));
+      } else {
+        const [data, res] = await fetchUsers();
+
+        if (res) {
+          toast.error(data.message, {
+            style: {
+              background: "#333",
+              color: "#fff",
+              fontFamily: "Inter",
+              fontWeight: 400,
+            },
+          });
+          return;
+        }
+
+        setUsers(data.users);
+        localStorage.setItem("users", JSON.stringify(data.users));
       }
-
-      setUsers(data.users);
     } catch (error) {
       console.error("Error al obtener los usuarios", error);
       toast.error("Error al obtener los usuarios", {
@@ -89,6 +96,7 @@ export function Users() {
         },
       });
 
+      localStorage.removeItem("users");
       await getUsers();
     } catch (error) {
       console.error("Error al eliminar el usuario", error);

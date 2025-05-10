@@ -52,6 +52,8 @@ export function CreateUser() {
         },
       });
 
+      localStorage.removeItem("users");
+
       navigate("home");
     } catch (error) {
       console.error("Error al crear el usuario", error);

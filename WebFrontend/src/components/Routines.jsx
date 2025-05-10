@@ -22,21 +22,28 @@ export function Routines() {
   const getRoutines = async () => {
     setLoading(true);
     try {
-      const [data, res] = await fetchRoutines();
+      const storedRoutines = localStorage.getItem("routines");
 
-      if (res) {
-        toast.error(data.message, {
-          style: {
-            background: "#333",
-            color: "#fff",
-            fontFamily: "Inter",
-            fontWeight: 400,
-          },
-        });
-        return;
+      if (storedRoutines && storedRoutines.length !== 0) {
+        setRoutines(JSON.parse(storedRoutines));
+      } else {
+        const [data, res] = await fetchRoutines();
+
+        if (res) {
+          toast.error(data.message, {
+            style: {
+              background: "#333",
+              color: "#fff",
+              fontFamily: "Inter",
+              fontWeight: 400,
+            },
+          });
+          return;
+        }
+
+        setRoutines(data.routines);
+        localStorage.setItem("routines", JSON.stringify(data.routines));
       }
-
-      setRoutines(data.routines);
     } catch (error) {
       console.error("Error al obtener las rutinas", error);
       toast.error("Error al obtener las rutinas", {
@@ -77,6 +84,7 @@ export function Routines() {
         },
       });
 
+      localStorage.removeItem("routines");
       await getRoutines();
     } catch (error) {
       console.error("Error al eliminar la rutina", error);

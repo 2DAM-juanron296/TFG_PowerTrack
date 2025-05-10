@@ -180,6 +180,8 @@ export function CreateRoutine() {
 
       console.log("Ejercicios Laravel: ", dataEx.exercises);
 
+      localStorage.removeItem("routines");
+
       navigate("home/routines");
     } catch (error) {
       console.error("Error al crear la rutina", error);
