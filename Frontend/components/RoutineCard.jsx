@@ -1,6 +1,5 @@
-import { useEffect, useRef } from "react";
-import { Link, useRouter } from "expo-router";
-import { Text, View, Animated, Pressable } from "react-native";
+import { useRouter } from "expo-router";
+import { Text, View, Pressable } from "react-native";
 import { styled } from "nativewind";
 
 export function RoutineCard({ name, description, id }) {
@@ -10,8 +9,13 @@ export function RoutineCard({ name, description, id }) {
   return (
     <View className="w-full">
       <StyledPresable
-        onPress={() => router.push(`/(main)/${id}`)}
-        className="mb-3 bg-[#0f0f0f] rounded-lg p-4"
+        onPress={() =>
+          router.push({
+            pathname: `/(main)/${id}`,
+            params: { from: "training" },
+          })
+        }
+        className="border border-[#222] mb-3 bg-[#0f0f0f] rounded-lg p-3"
         style={{ minWidth: "100%" }}
       >
         <View className="flex-row justify-between items-center">
