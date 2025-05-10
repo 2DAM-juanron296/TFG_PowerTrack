@@ -59,7 +59,7 @@ export function ExploreRoutine() {
         </StyledPresable>
 
         <Text
-          className="text-[#25AEA6] text-2xl mt-10"
+          className="text-[#25AEA6] text-2xl mt-6"
           style={{ fontFamily: "Inter-Bold" }}
         >
           Rutinas Predefinidas
