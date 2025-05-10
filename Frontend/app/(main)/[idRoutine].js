@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
-import { Link, useLocalSearchParams } from "expo-router";
+import { Link, useLocalSearchParams, useRouter } from "expo-router";
 import { Text, View, Pressable, FlatList, Image } from "react-native";
 import { styled } from "nativewind";
 import { fetchRoutineExercises } from "../../context/api/exercises";
 import Toast from "react-native-toast-message";
-import { HomeIcon } from "../../components/Icons";
+import { BackIcon } from "../../components/Icons";
 import { fetchExerciseSets } from "../../context/api/sets";
 
 export default function DetailRoutine() {
   const StyledPresable = styled(Pressable);
   const { idRoutine } = useLocalSearchParams();
+
+  const router = useRouter();
 
   const [exercises, setExercises] = useState([]);
 
@@ -110,13 +112,12 @@ export default function DetailRoutine() {
 
   return (
     <View className="mx-7 mt-5">
-      <Link asChild href="/">
-        <StyledPresable
-          style={({ pressed }) => [{ opacity: pressed ? 0.6 : 1 }]}
-        >
-          <HomeIcon />
-        </StyledPresable>
-      </Link>
+      <StyledPresable
+        onPress={() => router.back()}
+        style={({ pressed }) => [{ opacity: pressed ? 0.6 : 1 }]}
+      >
+        <BackIcon />
+      </StyledPresable>
 
       <View className="mt-10">
         <View className="justify-start items-start mb-5">
