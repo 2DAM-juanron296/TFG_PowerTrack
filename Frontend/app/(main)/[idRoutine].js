@@ -9,7 +9,7 @@ import { fetchExerciseSets } from "../../context/api/sets";
 
 export default function DetailRoutine() {
   const StyledPresable = styled(Pressable);
-  const { idRoutine } = useLocalSearchParams();
+  const { idRoutine, from } = useLocalSearchParams();
 
   const router = useRouter();
 
@@ -110,10 +110,18 @@ export default function DetailRoutine() {
     }
   }, [idRoutine]);
 
+  const handleBack = () => {
+    if (from === "training") {
+      router.push("/(main)/(tabs)/training");
+    } else {
+      router.push("/(main)/exploreRoutine");
+    }
+  };
+
   return (
     <View className="mx-7 mt-5">
       <StyledPresable
-        onPress={() => router.push("/(main)/exploreRoutine")}
+        onPress={handleBack}
         style={({ pressed }) => [{ opacity: pressed ? 0.6 : 1 }]}
       >
         <BackIcon />
