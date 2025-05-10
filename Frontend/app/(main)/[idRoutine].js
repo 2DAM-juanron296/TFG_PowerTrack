@@ -6,7 +6,7 @@ import { fetchRoutineExercises } from "../../context/api/exercises";
 import Toast from "react-native-toast-message";
 import { BackIcon } from "../../components/Icons";
 import { fetchExerciseSets } from "../../context/api/sets";
-import { ExerciseImages } from "../../components/ExerciseImages";
+import { ExerciseImages } from "../../utils/ExerciseImages";
 
 export default function DetailRoutine() {
   const StyledPresable = styled(Pressable);
