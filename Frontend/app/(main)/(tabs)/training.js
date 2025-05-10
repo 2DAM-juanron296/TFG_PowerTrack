@@ -4,8 +4,7 @@ import { styled } from "nativewind";
 import { useEffect, useState } from "react";
 import { RoutineCard } from "../../../components/RoutineCard";
 import { useRouter } from "expo-router";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { fetchUserRoutines } from "../../../context/api/routines";
+import { fetchUserRoutines } from "../../../context/api/user";
 import Toast from "react-native-toast-message";
 
 export default function Index() {
@@ -16,9 +15,7 @@ export default function Index() {
 
   useEffect(() => {
     const getRoutines = async () => {
-      const id_user = await AsyncStorage.getItem("id_user");
-
-      const [data, res] = await fetchUserRoutines(id_user);
+      const [data, res] = await fetchUserRoutines();
 
       if (res) {
         Toast.show({
