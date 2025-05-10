@@ -20,7 +20,8 @@ export function Login({ onSuccess }) {
     try {
       const value = await AsyncStorage.getItem("userToken");
       const user = await AsyncStorage.getItem("username");
-      console.log("Token:", value, " Username: ", user);
+      const id_user = await AsyncStorage.getItem("id_user");
+      console.log("Token:", value, " Username: ", user, " ID: ", id_user);
     } catch (error) {
       console.error("Error al obtener datos de AsyncStorage", error);
     }
@@ -34,7 +35,7 @@ export function Login({ onSuccess }) {
         text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
         position: "top",
         animation: true,
-        visibilityTime: 5000,
+        visibilityTime: 2000,
       });
       return;
     }
@@ -53,7 +54,7 @@ export function Login({ onSuccess }) {
           text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
           position: "top",
           animation: true,
-          visibilityTime: 5000,
+          visibilityTime: 2000,
         });
         return;
       }
@@ -66,7 +67,7 @@ export function Login({ onSuccess }) {
         text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
         position: "top",
         animation: true,
-        visibilityTime: 5000,
+        visibilityTime: 2000,
       });
 
       console.log("Login exitoso");
@@ -75,6 +76,7 @@ export function Login({ onSuccess }) {
 
       await AsyncStorage.setItem("userToken", data.token);
       await AsyncStorage.setItem("username", data.user.username);
+      await AsyncStorage.setItem("id_user", data.user.id.toString());
 
       login(data.token);
       onSuccess();
@@ -87,7 +89,7 @@ export function Login({ onSuccess }) {
         text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
         position: "top",
         animation: true,
-        visibilityTime: 5000,
+        visibilityTime: 2000,
       });
     }
   };
