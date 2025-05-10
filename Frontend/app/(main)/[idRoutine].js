@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useLocalSearchParams, useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { Text, View, Pressable, FlatList, Image } from "react-native";
 import { styled } from "nativewind";
 import { fetchRoutineExercises } from "../../context/api/exercises";

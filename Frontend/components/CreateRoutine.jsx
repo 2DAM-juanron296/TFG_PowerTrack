@@ -1,23 +1,23 @@
 import { Text, View, Pressable } from "react-native";
 import { Screen } from "./Screen";
-import { Link } from "expo-router";
+import { useRouter } from "expo-router";
 import { styled } from "nativewind";
 import { HomeIcon } from "../components/Icons";
 
 export function CreateRoutine() {
   const StyledPresable = styled(Pressable);
+  const router = useRouter();
 
   return (
     <Screen>
       <View className="flex-row">
         <View className="items-start absolute" style={{ marginLeft: 30 }}>
-          <Link asChild href="/">
-            <StyledPresable
-              style={({ pressed }) => [{ opacity: pressed ? 0.6 : 1 }]}
-            >
-              <HomeIcon />
-            </StyledPresable>
-          </Link>
+          <StyledPresable
+            onPress={() => router.push("/(main)/(tabs)/training")}
+            style={({ pressed }) => [{ opacity: pressed ? 0.6 : 1 }]}
+          >
+            <HomeIcon />
+          </StyledPresable>
         </View>
 
         <View className="flex-1 items-center">

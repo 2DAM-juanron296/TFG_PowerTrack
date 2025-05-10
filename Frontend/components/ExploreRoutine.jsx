@@ -1,6 +1,6 @@
 import { Text, View, Pressable, FlatList } from "react-native";
 import { Screen } from "./Screen";
-import { Link, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import { styled } from "nativewind";
 import { BackIcon } from "../components/Icons";
 import { useEffect, useState } from "react";

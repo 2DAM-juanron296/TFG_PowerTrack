@@ -3,7 +3,7 @@ import { Screen } from "../../../components/Screen";
 import { styled } from "nativewind";
 import { useState } from "react";
 import { RoutineCard } from "../../../components/RoutineCard";
-import { Link, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 
 export default function Index() {
   const StyledPresable = styled(Pressable);
@@ -23,16 +23,17 @@ export default function Index() {
       </View>
 
       <View className="flex flex-row justify-center items-center w-full">
-        <Link asChild href="/createRoutine">
-          <StyledPresable className="flex-1 justify-center items-center border bg-[#0f0f0f] rounded-lg p-4 ml-10">
-            <Text
-              className="text-white text-lg"
-              style={{ fontFamily: "Inter-SemiBold" }}
-            >
-              Nueva Rutina
-            </Text>
-          </StyledPresable>
-        </Link>
+        <StyledPresable
+          onPress={() => router.push("/(main)/createRoutine")}
+          className="flex-1 justify-center items-center border bg-[#0f0f0f] rounded-lg p-4 ml-10"
+        >
+          <Text
+            className="text-white text-lg"
+            style={{ fontFamily: "Inter-SemiBold" }}
+          >
+            Nueva Rutina
+          </Text>
+        </StyledPresable>
 
         <StyledPresable
           onPress={() => router.push("/(main)/exploreRoutine")}
