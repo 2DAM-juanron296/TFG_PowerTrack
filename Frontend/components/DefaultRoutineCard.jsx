@@ -2,9 +2,44 @@ import { useEffect, useRef } from "react";
 import { Link } from "expo-router";
 import { Text, View, Animated, Pressable } from "react-native";
 import { styled } from "nativewind";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { saveDefaultRoutinetoUser } from "../context/api/routines";
+import Toast from "react-native-toast-message";
 
 export function DefaultRoutineCard({ name, description, id }) {
   const StyledPresable = styled(Pressable);
+
+  const handleSaveRoutine = async (id) => {
+    const id_user = await AsyncStorage.getItem("id_user");
+    const request = { id_user: id_user, id_routine: id };
+
+    const [data, res] = await saveDefaultRoutinetoUser(request);
+
+    if (res) {
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: data.message,
+        text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
+        text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
+        position: "top",
+        animation: true,
+        visibilityTime: 2000,
+      });
+      return;
+    }
+
+    Toast.show({
+      type: "success",
+      text1: "Éxito",
+      text2: data.message,
+      text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
+      text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
+      position: "top",
+      animation: true,
+      visibilityTime: 2000,
+    });
+  };
 
   return (
     <View className="w-full">
@@ -29,7 +64,10 @@ export function DefaultRoutineCard({ name, description, id }) {
                 {description}
               </Text>
             </View>
-            <StyledPresable className="bg-[#25AEA6] rounded-md p-2">
+            <StyledPresable
+              onPress={() => handleSaveRoutine(id)}
+              className="bg-[#25AEA6] rounded-md p-2"
+            >
               <Text className="text-black" style={{ fontFamily: "Inter-Bold" }}>
                 Guardar
               </Text>
