@@ -41,7 +41,7 @@ Route::middleware('auth:sanctum')->group(function() {
     // Users
     Route::controller(UserController::class)->group(function() {
         Route::get('/users', 'index');
-        Route::get('/users/routines', 'getRoutines');
+        Route::get('/user/{id_user}/routines', 'getRoutines');
     
         Route::post('/createUser', 'store');
 
@@ -51,7 +51,6 @@ Route::middleware('auth:sanctum')->group(function() {
     // Routines
     Route::controller(RoutineController::class)->group(function() {
         Route::get('/routines', 'index');
-        Route::get('/routines/{idUser}', 'indexUser');
     
         Route::post('/createRoutine', 'store');
         Route::post('/saveRoutine', 'saveRoutine');

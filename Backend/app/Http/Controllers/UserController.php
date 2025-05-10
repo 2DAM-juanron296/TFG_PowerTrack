@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    // Obtener todos los usuarios que no sean admin - Web
     public function index()
     {
         $users = User::where('is_admin', false)->get();
@@ -19,6 +20,7 @@ class UserController extends Controller
         ], 200);
     }
 
+    // Crear nuevo usuario - Web
     public function store(Request $request)
     {
         try
@@ -52,6 +54,7 @@ class UserController extends Controller
         }
     }
 
+    // Eliminar un usuario - Web
     public function delete($id_user) {
 
         try
@@ -74,35 +77,29 @@ class UserController extends Controller
         }
     }
 
+    // Obtener rutinas de un usuario - App
     public function getRoutines($id_user) {
 
         try
         {
-            $user = User::find($id_user);
-            if (!$user) {
-                return response()->json([
-                    'message' => 'Usuario no encontrado'
-                ], 404); 
-            }
+            $routines = Routine::where('user_id', $id_user)->get();
 
-            $routines = $user->routines;
-    
             if ($routines->isEmpty()) {
                 return response()->json([
-                    'message' => 'El usuario no tiene rutinas',
-                    'routines' => [] 
-                ], 200); 
+                    'message' => 'No hay rutinas actualmente',
+                    'routines' =>  []
+                ], 200);
             }
-    
+
             return response()->json([
-                'message' => 'Rutinas recogidas correctamente',
-                'routines' => $routines
+                'message' => 'Rutinas recogidas',
+                'routines' =>  $routines
             ], 200);
 
         } catch (Exception $e) {
             return response()->json([
-                'message' => "Error: ".$e->getMessage()
+                'message' => 'Error: '.$e->getMessage()
             ], 500);
-        }        
+        }
     }
 }

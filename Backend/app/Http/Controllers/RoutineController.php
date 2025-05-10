@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 
 class RoutineController extends Controller
 {
+    // Obtener todas las rutinas - Web
     public function index() {
 
         try
@@ -41,30 +42,7 @@ class RoutineController extends Controller
 
     }
 
-    public function indexUser($idUser) {
-        try
-        {
-            $routines = Routine::where('user_id', $idUser)->get();
-
-            if ($routines->isEmpty()) {
-                return response()->json([
-                    'message' => 'No hay rutinas actualmente',
-                    'routines' =>  []
-                ], 200);
-            }
-
-            return response()->json([
-                'message' => 'Rutinas recogidas',
-                'routines' =>  $routines
-            ], 200);
-
-        } catch (Exception $e) {
-            return response()->json([
-                'message' => 'Error: '.$e->getMessage()
-            ], 500);
-        }
-    }
-
+    // Crear nueva rutina - Web/App
     public function store(Request $request) {
         try
         {
@@ -93,6 +71,7 @@ class RoutineController extends Controller
         }
     }
 
+    // Eliminar una rutina - Web/App
     public function delete($id) {
 
         try
@@ -115,6 +94,7 @@ class RoutineController extends Controller
         }
     }
 
+    // Asignar una rutina default a un usuario - App
     public function saveRoutine(Request $request) {
         try 
         {
