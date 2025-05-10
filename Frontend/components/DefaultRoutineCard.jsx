@@ -1,6 +1,5 @@
-import { useEffect, useRef } from "react";
 import { Link } from "expo-router";
-import { Text, View, Animated, Pressable } from "react-native";
+import { Text, View, Pressable } from "react-native";
 import { styled } from "nativewind";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { saveDefaultRoutinetoUser } from "../context/api/routines";
@@ -45,7 +44,7 @@ export function DefaultRoutineCard({ name, description, id }) {
     <View className="w-full">
       <Link href={`/(main)/${id}`} asChild>
         <StyledPresable
-          className="mb-3 bg-[#0f0f0f] rounded-lg p-4"
+          className="border border-[#222] mb-3 bg-[#0f0f0f] rounded-lg p-3"
           style={{ minWidth: "100%" }}
         >
           <View className="flex-row justify-between items-center">
