@@ -44,6 +44,7 @@ Route::middleware('auth:sanctum')->group(function() {
         Route::get('/users/routines', 'getRoutines');
     
         Route::post('/createUser', 'store');
+
         Route::delete('/deleteUser/{id}', 'delete');
     });
 
@@ -53,6 +54,8 @@ Route::middleware('auth:sanctum')->group(function() {
         Route::get('/routines/{idUser}', 'indexUser');
     
         Route::post('/createRoutine', 'store');
+        Route::post('/saveRoutine', 'saveRoutine');
+
         Route::delete('/deleteRoutine/{id}', 'delete');
     });
 

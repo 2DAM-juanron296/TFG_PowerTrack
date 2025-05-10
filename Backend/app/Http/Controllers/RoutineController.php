@@ -114,4 +114,58 @@ class RoutineController extends Controller
             ], 500);
         }
     }
+
+    public function saveRoutine(Request $request) {
+        try 
+        {
+            $request->validate([
+                'id_user' => 'required|exists:users,id',
+                'id_routine' => 'required|exists:routines,id'
+            ]);
+
+            $user = User::find($request->id_user);
+            $routine = Routine::find($request->id_routine);
+
+            if (!$user) {
+                return response()->json([
+                    'message' => 'No se pudo encontrar al Usuario por ID'
+                ], status: 404);
+            }
+
+            if (!$routine) {
+                return response()->json([
+                    'message' => 'No se pudo encontrar la Rutina por ID'
+                ], status: 404);
+            }
+
+            $newRoutine = $routine->replicate();
+            $newRoutine->user_id = $request->id_user;
+            $newRoutine->save();
+
+            $exercises = $routine->routine_exercises;
+
+            foreach ($exercises as $ex) {
+                $newExercise = $ex->replicate();
+                $newExercise->routine_id = $newRoutine->id;
+                $newExercise->save();
+
+                $sets = $ex->sets;
+
+                foreach ($sets as $set) {
+                    $newSet = $set->replicate();
+                    $newSet->routine_exercise_id = $newExercise->id;
+                    $newSet->save();
+                }
+            }
+            
+            return response()->json([
+                'message' => 'Rutina asignada'
+            ], status: 200);
+
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Error: '.$e->getMessage()
+            ], 500);
+        }
+    }
 }
