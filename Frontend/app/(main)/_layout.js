@@ -31,7 +31,7 @@ export default function MainLayout() {
             </View>
           ),
           headerLeft: () => (
-            <Link asChild href="/home">
+            <Link asChild href="/(tabs)/home">
               <Pressable>
                 <Image
                   source={require("../../assets/images/PowerTrackIcon.png")}
@@ -43,6 +43,20 @@ export default function MainLayout() {
         }}
       >
         <Stack.Screen name="(tabs)" options={{ headerShown: true }} />
+
+        <Stack.Screen
+          name="createRoutine"
+          options={{ title: "Nueva Rutina" }}
+        />
+        <Stack.Screen
+          name="exploreRoutine"
+          options={{ title: "Explorar Rutinas" }}
+        />
+        <Stack.Screen name="trainHistory" options={{ title: "Historial" }} />
+        <Stack.Screen
+          name="[idRoutine]"
+          options={{ title: "Detalle de Rutina" }}
+        />
       </Stack>
     </SafeAreaProvider>
   );
