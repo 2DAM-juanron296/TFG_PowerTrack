@@ -1,8 +1,8 @@
 import { Text, View, Pressable, FlatList } from "react-native";
 import { Screen } from "./Screen";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import { styled } from "nativewind";
-import { HomeIcon } from "../components/Icons";
+import { BackIcon } from "../components/Icons";
 import { useEffect, useState } from "react";
 import { fetchDefaultRoutines } from "../context/api/routines";
 import Toast from "react-native-toast-message";
@@ -11,6 +11,7 @@ import { DefaultRoutineCard } from "./DefaultRoutineCard";
 export function ExploreRoutine() {
   const [routines, setRoutines] = useState([]);
   const StyledPresable = styled(Pressable);
+  const router = useRouter();
 
   useEffect(() => {
     const getDefaultRoutines = async () => {
@@ -50,13 +51,12 @@ export function ExploreRoutine() {
   return (
     <Screen>
       <View className="items-start mx-10">
-        <Link asChild href="/">
-          <StyledPresable
-            style={({ pressed }) => [{ opacity: pressed ? 0.6 : 1 }]}
-          >
-            <HomeIcon />
-          </StyledPresable>
-        </Link>
+        <StyledPresable
+          onPress={() => router.push("/(main)/(tabs)/training")}
+          style={({ pressed }) => [{ opacity: pressed ? 0.6 : 1 }]}
+        >
+          <BackIcon />
+        </StyledPresable>
 
         <Text
           className="text-[#25AEA6] text-2xl mt-10"
