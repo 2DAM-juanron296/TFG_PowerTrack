@@ -57,9 +57,9 @@ export function CreateRoutine() {
             Descripción
           </Text>
           <TextInput
-            className="rounded-md p-4 text-left text-black bg-white"
+            className="rounded-md p-2 text-left text-black bg-white"
             style={{ fontFamily: "Inter-SemiBold" }}
-            secureTextEntry={true}
+            numberOfLines={3}
             onChangeText={setDescription}
           />
         </View>
