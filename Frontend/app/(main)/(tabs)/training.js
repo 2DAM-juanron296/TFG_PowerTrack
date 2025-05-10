@@ -1,15 +1,55 @@
-import { View, Text, Pressable, ScrollView, FlatList } from "react-native";
+import { View, Text, Pressable, FlatList } from "react-native";
 import { Screen } from "../../../components/Screen";
 import { styled } from "nativewind";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { RoutineCard } from "../../../components/RoutineCard";
 import { useRouter } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { fetchUserRoutines } from "../../../context/api/routines";
+import Toast from "react-native-toast-message";
 
 export default function Index() {
   const StyledPresable = styled(Pressable);
   const router = useRouter();
 
   const [routines, setRoutines] = useState(["buenas"]);
+
+  useEffect(() => {
+    const getRoutines = async () => {
+      const id_user = await AsyncStorage.getItem("id_user");
+
+      const [data, res] = await fetchUserRoutines(id_user);
+
+      if (res) {
+        Toast.show({
+          type: "error",
+          text1: "Error",
+          text2: data.message,
+          text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
+          text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
+          position: "top",
+          animation: true,
+          visibilityTime: 2000,
+        });
+        return;
+      }
+
+      Toast.show({
+        type: "success",
+        text1: "Éxito",
+        text2: data.message,
+        text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
+        text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
+        position: "top",
+        animation: true,
+        visibilityTime: 2000,
+      });
+
+      setRoutines(data.routines);
+    };
+
+    getRoutines();
+  }, []);
 
   return (
     <Screen>
@@ -68,13 +108,14 @@ export default function Index() {
         ) : (
           <FlatList
             data={routines}
-            keyExtractor={(r) => r}
-            renderItem={() => (
+            keyExtractor={(routine) => routine}
+            renderItem={({ item }) => (
               <View className="items-center">
-                <ScrollView>
-                  <RoutineCard />
-                  <RoutineCard />
-                </ScrollView>
+                <RoutineCard
+                  name={item.name}
+                  description={item.description}
+                  id={item.id}
+                />
               </View>
             )}
           />
