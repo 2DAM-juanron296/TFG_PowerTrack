@@ -1,7 +1,7 @@
 import { Link, Stack, useRouter } from "expo-router";
 import { Pressable, View, Image } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { Logout } from "../../components/Logout";
+import { Logout } from "../../components/auth/Logout";
 
 export default function MainLayout() {
   const router = useRouter();

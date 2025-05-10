@@ -1,8 +1,8 @@
 import { Text, View, Pressable } from "react-native";
-import { Screen } from "./Screen";
+import { Screen } from "../Screen";
 import { useRouter } from "expo-router";
 import { styled } from "nativewind";
-import { BackIcon } from "../components/Icons";
+import { BackIcon } from "../Icons";
 
 export function HistoryTraining() {
   const StyledPresable = styled(Pressable);

@@ -1,4 +1,4 @@
-import { Login } from "../components/Login";
+import { Login } from "../components/auth/Login";
 import { useRouter } from "expo-router";
 import { Screen } from "../components/Screen";
 import { Stack } from "expo-router";

@@ -2,7 +2,7 @@ import { View, Text, Pressable, FlatList } from "react-native";
 import { Screen } from "../../../components/Screen";
 import { styled } from "nativewind";
 import { useEffect, useState } from "react";
-import { RoutineCard } from "../../../components/RoutineCard";
+import { RoutineCard } from "../../../components/routines/RoutineCard";
 import { useRouter } from "expo-router";
 import { fetchUserRoutines } from "../../../context/api/user";
 import Toast from "react-native-toast-message";

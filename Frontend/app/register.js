@@ -1,4 +1,4 @@
-import { Register } from "../components/Register";
+import { Register } from "../components/auth/Register";
 import { Redirect, useRouter } from "expo-router";
 import { Screen } from "../components/Screen";
 import { Stack } from "expo-router";

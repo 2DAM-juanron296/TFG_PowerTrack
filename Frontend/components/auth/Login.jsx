@@ -1,39 +1,44 @@
 import { View, Text, TextInput, Pressable, Image } from "react-native";
 import { useState } from "react";
+import { Screen } from "../Screen";
 import { styled } from "nativewind";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import { Link } from "expo-router";
-import { registerUser } from "../context/api/auth";
 import Toast from "react-native-toast-message";
+import { loginUser } from "../../context/api/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export function Register({ onSuccess }) {
+export function Login({ onSuccess }) {
   const StyledPressable = styled(Pressable);
+  const [isDisabled, setIsDisabled] = useState(false);
   const { login } = useAuth();
 
   // Variables para el Login
-  const [name, setName] = useState("");
   const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleRegister = async () => {
-    if (!username || !password || !email || !name) {
+  const handleLogin = async () => {
+    setIsDisabled(true);
+
+    if (!username || !password) {
       Toast.show({
         type: "error",
         text1: "Error",
-        text2: "Complete todos los campos",
+        text2: "Debe completar ambos campos",
         text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
         text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
         position: "top",
         animation: true,
         visibilityTime: 2000,
       });
+      setIsDisabled(false);
       return;
     }
+    console.log("Username: ", username);
+    console.log("Password: ", password);
 
     try {
-      const [data, res] = await registerUser(username, password, email, name);
+      const [data, res] = await loginUser(username, password);
 
       if (res) {
         Toast.show({
@@ -46,13 +51,28 @@ export function Register({ onSuccess }) {
           animation: true,
           visibilityTime: 2000,
         });
+        setIsDisabled(false);
         return;
       }
 
-      console.log("Registro exitoso");
+      Toast.show({
+        type: "success",
+        text1: "Éxito",
+        text2: data.message,
+        text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
+        text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
+        position: "top",
+        animation: true,
+        visibilityTime: 2000,
+      });
+
+      console.log("Login exitoso");
+      console.log("Token:", data.token);
+      console.log("User:", data.user);
 
       await AsyncStorage.setItem("userToken", data.token);
-      await AsyncStorage.setItem("username", username);
+      await AsyncStorage.setItem("username", data.user.username);
+      await AsyncStorage.setItem("id_user", data.user.id.toString());
 
       login(data.token);
       onSuccess();
@@ -67,12 +87,13 @@ export function Register({ onSuccess }) {
         animation: true,
         visibilityTime: 2000,
       });
+      setIsDisabled(false);
     }
   };
 
   return (
-    <View className="flex-1">
-      <View className="flex-1 justify-center items-center mb-10">
+    <Screen style={{ color: "#010410" }}>
+      <View className="flex-1 justify-center items-center mb-14">
         <Image
           source={require("../assets/images/PowerTrackIcon.png")}
           className="w-20 h-20 mb-5"
@@ -80,24 +101,10 @@ export function Register({ onSuccess }) {
         <View className="border-2 border-[#25AEA6] rounded-xl bg-[#0F0F0F] w-80 full py-14 justify-center items-center">
           <TextInput
             className="bg-[#54807D] rounded-md w-60 p-4 text-left text-black"
-            placeholder="Nombre"
-            placeholderTextColor={"#222"}
-            style={{ fontFamily: "Inter-SemiBold" }}
-            onChangeText={setName}
-          />
-          <TextInput
-            className="bg-[#54807D] rounded-md mt-6 w-60 p-4 text-left text-black"
             placeholder="Username"
             placeholderTextColor={"#222"}
             style={{ fontFamily: "Inter-SemiBold" }}
             onChangeText={setUsername}
-          />
-          <TextInput
-            className="bg-[#54807D] rounded-md mt-6 w-60 p-4 text-left text-black"
-            placeholder="Email"
-            placeholderTextColor={"#222"}
-            style={{ fontFamily: "Inter-SemiBold" }}
-            onChangeText={setEmail}
           />
           <TextInput
             className="bg-[#54807D] rounded-md mt-6 w-60 p-4 text-left text-black"
@@ -109,11 +116,15 @@ export function Register({ onSuccess }) {
           />
 
           <StyledPressable
-            className="bg-[#25AEA6] rounded-md mt-8 w-64 px-2 py-3 justify-center items-center"
-            onPress={handleRegister}
+            className={`bg-[#25AEA6] rounded-md mt-8 w-64 px-2 py-3 justify-center items-center transition-opacity ${isDisabled ? "opacity-75" : ""}`}
+            onPress={handleLogin}
+            style={{
+              transition: "opacity 0.5s ease",
+            }}
+            disabled={isDisabled}
           >
             <Text className="text-lg" style={{ fontFamily: "Inter-Bold" }}>
-              REGISTER
+              {isDisabled ? "Iniciando Sesión..." : "LOGIN"}
             </Text>
           </StyledPressable>
         </View>
@@ -123,19 +134,19 @@ export function Register({ onSuccess }) {
           className="text-white mb-1"
           style={{ fontFamily: "Inter-Regular" }}
         >
-          ¿Ya tienes una cuenta?
+          ¿No tienes una cuenta?
         </Text>
-        <Link asChild href="/login">
+        <Link asChild href="/register">
           <Pressable>
             <Text
               className="text-white"
               style={{ fontFamily: "Inter-SemiBold" }}
             >
-              Inicia Sesión
+              Regístrate
             </Text>
           </Pressable>
         </Link>
       </View>
-    </View>
+    </Screen>
   );
 }

@@ -2,7 +2,7 @@ import { Link } from "expo-router";
 import { Text, View, Pressable } from "react-native";
 import { styled } from "nativewind";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { saveDefaultRoutinetoUser } from "../context/api/routines";
+import { saveDefaultRoutinetoUser } from "../../context/api/routines";
 import Toast from "react-native-toast-message";
 
 export function DefaultRoutineCard({ name, description, id }) {

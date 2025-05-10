@@ -3,7 +3,7 @@ import { Screen } from "./Screen";
 import { UserDefaultIcon } from "./Icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
-import { TrainingCard } from "../components/TrainingCard";
+import { TrainingCard } from "../components/training/TrainingCard";
 import { Link } from "expo-router";
 
 export function Main() {

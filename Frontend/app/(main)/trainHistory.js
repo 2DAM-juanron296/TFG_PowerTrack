@@ -1,4 +1,4 @@
-import { HistoryTraining } from "../../components/HistoryTraining";
+import { HistoryTraining } from "../../components/training/HistoryTraining";
 
 export default function Index() {
   return <HistoryTraining />;
