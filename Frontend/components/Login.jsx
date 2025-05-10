@@ -10,6 +10,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export function Login({ onSuccess }) {
   const StyledPressable = styled(Pressable);
+  const [isDisabled, setIsDisabled] = useState(false);
   const { login } = useAuth();
 
   // Variables para el Login
@@ -17,14 +18,7 @@ export function Login({ onSuccess }) {
   const [password, setPassword] = useState("");
 
   const handleLogin = async () => {
-    try {
-      const value = await AsyncStorage.getItem("userToken");
-      const user = await AsyncStorage.getItem("username");
-      const id_user = await AsyncStorage.getItem("id_user");
-      console.log("Token:", value, " Username: ", user, " ID: ", id_user);
-    } catch (error) {
-      console.error("Error al obtener datos de AsyncStorage", error);
-    }
+    setIsDisabled(true);
 
     if (!username || !password) {
       Toast.show({
@@ -37,6 +31,7 @@ export function Login({ onSuccess }) {
         animation: true,
         visibilityTime: 2000,
       });
+      setIsDisabled(false);
       return;
     }
     console.log("Username: ", username);
@@ -56,6 +51,7 @@ export function Login({ onSuccess }) {
           animation: true,
           visibilityTime: 2000,
         });
+        setIsDisabled(false);
         return;
       }
 
@@ -91,6 +87,7 @@ export function Login({ onSuccess }) {
         animation: true,
         visibilityTime: 2000,
       });
+      setIsDisabled(false);
     }
   };
 
@@ -119,11 +116,15 @@ export function Login({ onSuccess }) {
           />
 
           <StyledPressable
-            className="bg-[#25AEA6] rounded-md mt-8 w-64 px-2 py-3 justify-center items-center"
+            className={`bg-[#25AEA6] rounded-md mt-8 w-64 px-2 py-3 justify-center items-center transition-opacity ${isDisabled ? "opacity-75" : ""}`}
             onPress={handleLogin}
+            style={{
+              transition: "opacity 0.5s ease",
+            }}
+            disabled={isDisabled}
           >
             <Text className="text-lg" style={{ fontFamily: "Inter-Bold" }}>
-              LOGIN
+              {isDisabled ? "Iniciando Sesión..." : "LOGIN"}
             </Text>
           </StyledPressable>
         </View>
