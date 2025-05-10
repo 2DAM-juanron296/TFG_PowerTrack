@@ -25,7 +25,7 @@ export function Logout({ onSuccess }) {
           text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
           position: "top",
           animation: true,
-          visibilityTime: 5000,
+          visibilityTime: 2000,
         });
         return;
       }
@@ -46,7 +46,7 @@ export function Logout({ onSuccess }) {
         text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
         position: "top",
         animation: true,
-        visibilityTime: 5000,
+        visibilityTime: 2000,
       });
     }
   };

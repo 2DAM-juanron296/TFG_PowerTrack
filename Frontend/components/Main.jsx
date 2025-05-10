@@ -15,12 +15,12 @@ export function Main() {
       try {
         const value = await AsyncStorage.getItem("userToken");
         const user = await AsyncStorage.getItem("username");
+        const id_user = await AsyncStorage.getItem("id_user");
 
         if (user !== null) {
-          const user = await AsyncStorage.getItem("username");
           setUsername(user);
         }
-        console.log("Token:", value, " Username: ", user);
+        console.log("Token:", value, " Username: ", user, " ID: ", id_user);
       } catch (error) {
         console.error("Error al obtener datos de AsyncStorage", error);
       }

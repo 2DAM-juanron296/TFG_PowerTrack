@@ -59,7 +59,7 @@ export default function DetailRoutine() {
             text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
             position: "top",
             animation: true,
-            visibilityTime: 5000,
+            visibilityTime: 2000,
           });
           return;
         }
@@ -72,7 +72,7 @@ export default function DetailRoutine() {
           text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
           position: "top",
           animation: true,
-          visibilityTime: 5000,
+          visibilityTime: 2000,
         });
 
         const setsResponse = await Promise.all(
@@ -88,7 +88,7 @@ export default function DetailRoutine() {
                 text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
                 position: "top",
                 animation: true,
-                visibilityTime: 5000,
+                visibilityTime: 2000,
               });
               return [];
             }
@@ -113,7 +113,7 @@ export default function DetailRoutine() {
   return (
     <View className="mx-7 mt-5">
       <StyledPresable
-        onPress={() => router.back()}
+        onPress={() => router.push("/(main)/exploreRoutine")}
         style={({ pressed }) => [{ opacity: pressed ? 0.6 : 1 }]}
       >
         <BackIcon />
