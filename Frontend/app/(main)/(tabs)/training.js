@@ -11,7 +11,7 @@ export default function Index() {
   const StyledPresable = styled(Pressable);
   const router = useRouter();
 
-  const [routines, setRoutines] = useState(["buenas"]);
+  const [routines, setRoutines] = useState([]);
 
   useEffect(() => {
     const getRoutines = async () => {
