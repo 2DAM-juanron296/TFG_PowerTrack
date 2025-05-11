@@ -74,7 +74,7 @@ export function Register({ onSuccess }) {
     <View className="flex-1">
       <View className="flex-1 justify-center items-center mb-10">
         <Image
-          source={require("../assets/images/PowerTrackIcon.png")}
+          source={require("../../assets/images/PowerTrackIcon.png")}
           className="w-20 h-20 mb-5"
         />
         <View className="border-2 border-[#25AEA6] rounded-xl bg-[#0F0F0F] w-80 full py-14 justify-center items-center">
