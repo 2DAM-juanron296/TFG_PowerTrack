@@ -16,7 +16,6 @@ export function Routines() {
 
   useEffect(() => {
     getRoutines();
-    return () => {};
   }, []);
 
   const getRoutines = async () => {

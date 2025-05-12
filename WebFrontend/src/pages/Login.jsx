@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useAuth } from "../context/useAuth";
 import { loginUser } from "../api/auth";
@@ -44,10 +43,12 @@ export function Login() {
           },
         });
         setIsDisabled(false);
+        console.log("Error:. ", data.message);
         return;
       }
 
       console.log("Login exitoso");
+      console.log("Data: ", data);
       console.log("Token:", data.token);
       console.log("User:", data.user);
 
