@@ -2,7 +2,7 @@ import { Text, View, Pressable, TextInput } from "react-native";
 import { Screen } from "../Screen";
 import { useRouter } from "expo-router";
 import { styled } from "nativewind";
-import { BackIcon } from "../Icons";
+import { BackIcon } from "../../utils/Icons";
 import { useState } from "react";
 
 export function CreateRoutine() {

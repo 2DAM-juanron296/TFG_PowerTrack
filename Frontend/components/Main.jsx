@@ -1,6 +1,6 @@
 import { View, Text, FlatList, Pressable } from "react-native";
 import { Screen } from "./Screen";
-import { UserDefaultIcon } from "./Icons";
+import { UserDefaultIcon } from "../utils/Icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
 import { TrainingCard } from "../components/training/TrainingCard";

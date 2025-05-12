@@ -4,7 +4,7 @@ import { Text, View, Pressable, FlatList, Image } from "react-native";
 import { styled } from "nativewind";
 import { fetchRoutineExercises } from "../../context/api/exercises";
 import Toast from "react-native-toast-message";
-import { BackIcon } from "../../components/Icons";
+import { BackIcon } from "../../utils/Icons";
 import { fetchExerciseSets } from "../../context/api/sets";
 import { ExerciseImages } from "../../utils/ExerciseImages";
 

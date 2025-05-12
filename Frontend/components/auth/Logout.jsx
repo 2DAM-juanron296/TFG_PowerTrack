@@ -1,7 +1,7 @@
 import { Pressable } from "react-native";
 import { styled } from "nativewind";
 import { useAuth } from "../../context/AuthContext";
-import { LogoutIcon } from "../Icons";
+import { LogoutIcon } from "../../utils/Icons";
 import { logoutUser } from "../../context/api/auth";
 import Toast from "react-native-toast-message";
 import AsyncStorage from "@react-native-async-storage/async-storage";

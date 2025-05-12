@@ -1,7 +1,7 @@
 import { Tabs } from "expo-router";
-import { ChatIcon, HomeIcon } from "../../../components/Icons";
-import { TrainingIcon } from "../../../components/Icons";
-import { ProfileIcon } from "../../../components/Icons";
+import { ChatIcon, HomeIcon } from "../../../utils/Icons";
+import { TrainingIcon } from "../../../utils/Icons";
+import { ProfileIcon } from "../../../utils/Icons";
 import { useState } from "react";
 
 export default function TabsLayout() {

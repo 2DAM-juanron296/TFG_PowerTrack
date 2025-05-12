@@ -2,7 +2,7 @@ import { Text, View, Pressable, FlatList } from "react-native";
 import { Screen } from "../Screen";
 import { useRouter } from "expo-router";
 import { styled } from "nativewind";
-import { BackIcon } from "../Icons";
+import { BackIcon } from "../../utils/Icons";
 import { useEffect, useState } from "react";
 import { fetchDefaultRoutines } from "../../context/api/routines";
 import Toast from "react-native-toast-message";
