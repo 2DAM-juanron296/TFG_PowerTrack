@@ -83,7 +83,7 @@ export default function TrainingSession() {
     <Screen>
       <View className="mx-7 mt-5">
         <StyledPresable
-          onPress={() => router.back()}
+          onPress={() => router.push("/(main)/(tabs)/training")}
           style={({ pressed }) => [{ opacity: pressed ? 0.6 : 1 }]}
         >
           <BackIcon />
