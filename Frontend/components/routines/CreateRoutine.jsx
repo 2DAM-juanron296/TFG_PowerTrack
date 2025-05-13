@@ -1,27 +1,76 @@
-import { Text, View, Pressable, TextInput } from "react-native";
+import { Text, View, Pressable, TextInput, ScrollView } from "react-native";
 import { Screen } from "../Screen";
-import { useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { styled } from "nativewind";
 import { BackIcon } from "../../utils/Icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Toast from "react-native-toast-message";
+import { fetchExercises } from "../../context/api/exercises";
+import ExerciseList from "../../app/(main)/exerciseList";
 
 export function CreateRoutine() {
-  const StyledPresable = styled(Pressable);
-  const router = useRouter();
-
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
 
   const [exercises, setExercises] = useState([]);
   const [sets, setSets] = useState([]);
 
+  const StyledPresable = styled(Pressable);
+  const router = useRouter();
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedExercises, setSelectedExercises] = useState([]);
+
+  useEffect(() => {
+    const getExercises = async () => {
+      const [data, res] = await fetchExercises();
+
+      if (res) {
+        Toast.show({
+          type: "error",
+          text1: "Error",
+          text2: data.message,
+          text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
+          text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
+          position: "top",
+          animation: true,
+          visibilityTime: 2000,
+        });
+        return;
+      }
+
+      setExercises(data.exercises);
+    };
+
+    getExercises();
+  }, []);
+
+  const handleSelectedExercise = (id) => {
+    const exercise = exercises.find((ex) => ex.id === id);
+    if (!exercise) return;
+
+    if (!selectedExercises.some((ex) => ex.id === id)) {
+      setSelectedExercises((prev) => [...prev, exercise]);
+    } else {
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "No puede elegir el mismo ejercicio 2 veces",
+        text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
+        text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
+        position: "top",
+        animation: true,
+        visibilityTime: 2000,
+      });
+      return;
+    }
+
+    console.log("Ejercicios: ", selectedExercises);
+  };
+
   return (
     <Screen>
       <View className="items-start mx-10">
-        <StyledPresable
-          onPress={() => router.push("/(main)/(tabs)/training")}
-          style={({ pressed }) => [{ opacity: pressed ? 0.6 : 1 }]}
-        >
+        <StyledPresable onPress={() => router.push("/(main)/(tabs)/training")}>
           <BackIcon />
         </StyledPresable>
 
@@ -65,7 +114,7 @@ export function CreateRoutine() {
         </View>
       </View>
 
-      {/* Contenedor para elegir los ejercicios */}
+      {/* Contenedor para los ejercicios y la rutina */}
       <View className="w-full">
         <View className="justify-center items-start mt-8 mx-10">
           <Text
@@ -75,52 +124,62 @@ export function CreateRoutine() {
             Ejercicios
           </Text>
 
-          <StyledPresable className="bg-[#25AEA6] rounded-md p-2 mt-3">
+          <StyledPresable
+            className="bg-[#25AEA6] rounded-md p-2 mt-3 pressed:opacity-60"
+            onPress={() => setIsModalVisible(true)}
+          >
             <Text className="text-black" style={{ fontFamily: "Inter-Bold" }}>
               Añadir Ejercicio
             </Text>
           </StyledPresable>
-        </View>
-      </View>
 
-      {/* Contenedor para visualizar los ejercicios de la rutina */}
-      <View className="w-full">
-        <View className="justify-center items-start mx-10 mt-5 bg-[#0f0f0f] rounded-lg p-3 border border-[#222]">
-          <Text
-            className="w-full text-white text-lg border-[#25AEA6] border-b"
-            style={{ fontFamily: "Inter-Bold" }}
-          >
-            1. Press banca
-          </Text>
-          <View className="w-full flex-row mt-2">
-            {["Sets", "Peso", "Reps"].map((col, i) => (
+          {/* Modal con la lista de ejercicios para elegir */}
+          <ExerciseList
+            visible={isModalVisible}
+            onClose={() => setIsModalVisible(false)}
+            exercises={exercises}
+            onSelect={handleSelectedExercise}
+          />
+        </View>
+
+        <ScrollView className="flex-1 mt-5 pb-80">
+          {selectedExercises.map((ex, index) => (
+            <View
+              key={ex.id}
+              className="justify-center items-start mx-10 mb-3 bg-[#0f0f0f] rounded-lg p-3 border border-[#222]"
+            >
               <Text
-                key={i}
-                className="flex-1 text-white text-md text-center"
-                style={{
-                  fontFamily: "Inter-Bold",
-                }}
+                className="w-full text-white text-lg border-[#25AEA6] border-b"
+                style={{ fontFamily: "Inter-Bold" }}
               >
-                {col}
+                {index + 1}. {ex.name}
               </Text>
-            ))}
-          </View>
-
-          <View className="w-full flex-row mt-2">
-            {[0, 1, 2].map((i) => (
-              <TextInput
-                key={i}
-                className="flex-1 mx-1 text-white text-center bg-[#1c1c1c] rounded-md px-2 py-1"
-                placeholder="0"
-                placeholderTextColor="#777"
-                keyboardType="numeric"
-                style={{
-                  fontFamily: "Inter-Regular",
-                }}
-              />
-            ))}
-          </View>
-        </View>
+              <View className="w-full flex-row mt-2">
+                {["Sets", "Peso", "Reps"].map((col, i) => (
+                  <Text
+                    key={i}
+                    className="flex-1 text-white text-md text-center"
+                    style={{ fontFamily: "Inter-Bold" }}
+                  >
+                    {col}
+                  </Text>
+                ))}
+              </View>
+              <View className="w-full flex-row mt-2">
+                {[0, 1, 2].map((i) => (
+                  <TextInput
+                    key={i}
+                    className="flex-1 mx-1 text-white text-center bg-[#1c1c1c] rounded-md px-2 py-1"
+                    placeholder="0"
+                    placeholderTextColor="#777"
+                    keyboardType="numeric"
+                    style={{ fontFamily: "Inter-Regular" }}
+                  />
+                ))}
+              </View>
+            </View>
+          ))}
+        </ScrollView>
       </View>
     </Screen>
   );
