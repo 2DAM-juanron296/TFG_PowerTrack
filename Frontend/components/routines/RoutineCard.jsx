@@ -39,7 +39,10 @@ export function RoutineCard({ name, description, id }) {
           <StyledPresable
             onPress={(e) => {
               e.stopPropagation();
-              router.push("/(main)/trainingSession");
+              router.push({
+                pathname: "/(main)/trainingSession",
+                params: { routine_id: id },
+              });
             }}
             className="bg-[#25AEA6] rounded-md p-2"
           >
