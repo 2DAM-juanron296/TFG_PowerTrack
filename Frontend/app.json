@@ -5,12 +5,12 @@
     "version": "1.0.0",
     "sdkVersion": "53.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/PowerTrackIcon.png",
+    "icon": "./assets/images/PowerTrackIcon_2.png",
     "userInterfaceStyle": "light",
     "scheme": "powertrack",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/images/PowerTrackIcon.png",
+      "image": "./assets/images/PowerTrackIcon_2.png",
       "resizeMode": "contain",
       "backgroundColor": "#000"
     },
