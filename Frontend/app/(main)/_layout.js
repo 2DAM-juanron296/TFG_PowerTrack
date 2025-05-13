@@ -1,4 +1,4 @@
-import { Link, Stack, useRouter } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import { Pressable, View, Image } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Logout } from "../../components/auth/Logout";
@@ -31,14 +31,16 @@ export default function MainLayout() {
             </View>
           ),
           headerLeft: () => (
-            <Link asChild href="/(tabs)/home">
-              <Pressable>
-                <Image
-                  source={require("../../assets/images/PowerTrackIcon.png")}
-                  className="w-10 h-10 m-1"
-                />
-              </Pressable>
-            </Link>
+            <Pressable
+              onPress={() => {
+                router.push("/(tabs)/home");
+              }}
+            >
+              <Image
+                source={require("../../assets/images/PowerTrackIcon.png")}
+                className="w-10 h-10 m-1"
+              />
+            </Pressable>
           ),
         }}
       >
