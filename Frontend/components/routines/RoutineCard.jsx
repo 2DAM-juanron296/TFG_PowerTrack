@@ -8,6 +8,7 @@ export function RoutineCard({ name, description, id }) {
 
   return (
     <View className="w-full">
+      {/* Card que redirige al detalle del ejercicio */}
       <StyledPresable
         onPress={() =>
           router.push({
@@ -34,7 +35,14 @@ export function RoutineCard({ name, description, id }) {
               {description}
             </Text>
           </View>
-          <StyledPresable className="bg-[#25AEA6] rounded-md p-2">
+
+          <StyledPresable
+            onPress={(e) => {
+              e.stopPropagation();
+              router.push("/(main)/trainingSession");
+            }}
+            className="bg-[#25AEA6] rounded-md p-2"
+          >
             <Text className="text-black" style={{ fontFamily: "Inter-Bold" }}>
               Comienzo
             </Text>
