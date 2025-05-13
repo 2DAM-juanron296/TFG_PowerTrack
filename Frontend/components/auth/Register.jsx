@@ -53,6 +53,7 @@ export function Register({ onSuccess }) {
 
       await AsyncStorage.setItem("userToken", data.token);
       await AsyncStorage.setItem("username", username);
+      await AsyncStorage.setItem("id_user", data.user.id.toString());
 
       login(data.token);
       onSuccess();
