@@ -5,8 +5,13 @@ import { styled } from "nativewind";
 import { BackIcon } from "../../utils/Icons";
 import { useEffect, useState } from "react";
 import Toast from "react-native-toast-message";
-import { fetchExercises } from "../../context/api/exercises";
+import {
+  createExercisesRoutine,
+  fetchExercises,
+} from "../../context/api/exercises";
 import ExerciseList from "../../app/(main)/exerciseList";
+import { createUserRoutine } from "../../context/api/routines";
+import { createExerciseSets } from "../../context/api/sets";
 
 export function CreateRoutine() {
   const [name, setName] = useState("");
@@ -43,8 +48,8 @@ export function CreateRoutine() {
 
         setExercises(data.exercises);
       } catch (error) {
-        console.error("Error al crear la rutina", error);
-        Toast.error("Error al crear la rutina", {
+        console.error("Error al cargar los ejercicios", error);
+        Toast.error("Error al cargar los ejercicios", {
           style: {
             background: "#333",
             color: "#fff",
@@ -127,19 +132,174 @@ export function CreateRoutine() {
   };
 
   const handleSetChange = (idExercise, order, field, value) => {
-    const parsedValue =
-      field === "weight" ? parseFloat(value) : parseInt(value);
-
     setSets((prevSets) =>
       prevSets.map((set) => {
         if (set.routine_exercise_id === idExercise && set.order === order) {
           return {
             ...set,
-            [field]: isNaN(parsedValue) ? 0 : parsedValue,
+            [field]: value,
           };
         }
+        return set;
       }),
     );
+  };
+
+  const handleSubmit = async () => {
+    try {
+      if (!name) {
+        Toast.show({
+          type: "error",
+          text1: "Error",
+          text2: "La Rutina debe tener un nombre",
+          text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
+          text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
+          position: "top",
+          animation: true,
+          visibilityTime: 2000,
+        });
+        return;
+      }
+
+      if (selectedExercises.length === 0) {
+        Toast.show({
+          type: "error",
+          text1: "Error",
+          text2: "Debes añadir al menos un ejercicio a la rutina",
+          text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
+          text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
+          position: "top",
+          animation: true,
+          visibilityTime: 2000,
+        });
+        return;
+      }
+
+      const requestData = { name, description };
+
+      const [data, res] = await createUserRoutine(requestData);
+
+      if (res) {
+        Toast.show({
+          type: "error",
+          text1: "Error",
+          text2: data.message,
+          text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
+          text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
+          position: "top",
+          animation: true,
+          visibilityTime: 2000,
+        });
+        return;
+      }
+
+      Toast.show({
+        type: "success",
+        text1: "Éxito",
+        text2: data.message,
+        text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
+        text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
+        position: "top",
+        animation: true,
+        visibilityTime: 2000,
+      });
+
+      const routineId = data.routine.id;
+
+      const requestExercise = selectedExercises.map((exercise) => ({
+        order: exercise.order,
+        routine_id: routineId,
+        exercise_id: exercise.id,
+      }));
+
+      const [dataEx, resEx] = await createExercisesRoutine({
+        exercises: requestExercise,
+      });
+
+      if (resEx) {
+        Toast.show({
+          type: "error",
+          text1: "Error",
+          text2: dataEx.message,
+          text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
+          text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
+          position: "top",
+          animation: true,
+          visibilityTime: 2000,
+        });
+        return;
+      }
+
+      Toast.show({
+        type: "success",
+        text1: "Éxito",
+        text2: dataEx.message,
+        text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
+        text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
+        position: "top",
+        animation: true,
+        visibilityTime: 2000,
+      });
+
+      const updatedSets = sets.map((set) => {
+        const matching = dataEx.exercises.find(
+          (ex) => ex.exercise_id === set.routine_exercise_id,
+        );
+
+        if (!matching) {
+          console.warn("No se encontró routine_exercise_id para el set", set);
+          return set;
+        }
+
+        return {
+          ...set,
+          routine_exercise_id: matching.id,
+          reps: parseInt(set.reps) || 0,
+          weight: parseFloat(set.weight) || 0,
+        };
+      });
+
+      const [dataSet, resSet] = await createExerciseSets({
+        sets: updatedSets,
+      });
+
+      if (resSet) {
+        Toast.show({
+          type: "error",
+          text1: "Error",
+          text2: dataSet.message,
+          text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
+          text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
+          position: "top",
+          animation: true,
+          visibilityTime: 2000,
+        });
+        return;
+      }
+
+      Toast.show({
+        type: "success",
+        text1: "Éxito",
+        text2: dataSet.message,
+        text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
+        text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
+        position: "top",
+        animation: true,
+        visibilityTime: 2000,
+      });
+
+      router.push("/(main)/(tabs)/training");
+    } catch (error) {
+      console.error("Error al crear la rutina", error);
+      Toast.error("Error al crear la rutina", {
+        style: {
+          background: "#333",
+          color: "#fff",
+          fontFamily: "Inter",
+          fontWeight: 400,
+        },
+      });
+    }
   };
 
   return (
@@ -158,7 +318,7 @@ export function CreateRoutine() {
       </View>
 
       {/* Contenedor para el nombre y la descripción */}
-      <View className="justify-center items-center mt-7 mx-10">
+      <View className="justify-center items-center mt-3 mx-10">
         <View className="w-full">
           <Text
             className="text-white mb-1"
@@ -191,7 +351,7 @@ export function CreateRoutine() {
 
       {/* Contenedor para los ejercicios y la rutina */}
       <View className="w-full">
-        <View className="justify-center items-start mt-8 mx-10">
+        <View className="justify-center items-start mt-10 mx-10">
           <Text
             className="text-[#25AEA6] text-xl"
             style={{ fontFamily: "Inter-Bold" }}
@@ -218,7 +378,7 @@ export function CreateRoutine() {
           />
         </View>
 
-        <ScrollView className="flex-1 mt-5 pb-80">
+        <ScrollView className="flex-1 mt-4 pb-72">
           {selectedExercises.map((ex) => {
             const exerciseSets = sets.filter(
               (set) => set.routine_exercise_id === ex.id,
@@ -227,7 +387,7 @@ export function CreateRoutine() {
             return (
               <View
                 key={ex.id}
-                className="mx-4 mb-6 bg-[#0f0f0f] rounded-lg p-4 border border-[#222]"
+                className="mx-4 mb-4 bg-[#0f0f0f] rounded-lg p-4 border border-[#222]"
               >
                 <View className="flex-row justify-between items-center mb-4 pb-2 border-b border-[#25AEA6]">
                   <Text
@@ -330,6 +490,20 @@ export function CreateRoutine() {
             );
           })}
         </ScrollView>
+
+        <View className="justify-center items-center">
+          <Pressable
+            className="bg-[#25AEA6] rounded-md px-4 py-2 items-center"
+            onPress={handleSubmit}
+          >
+            <Text
+              className="text-black text-lg"
+              style={{ fontFamily: "Inter-Bold" }}
+            >
+              Crear Rutina
+            </Text>
+          </Pressable>
+        </View>
       </View>
     </Screen>
   );
