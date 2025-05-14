@@ -1,4 +1,10 @@
-import { View, Text, Pressable, FlatList } from "react-native";
+import {
+  View,
+  Text,
+  Pressable,
+  FlatList,
+  ActivityIndicator,
+} from "react-native";
 import { Screen } from "../../../components/Screen";
 import { styled } from "nativewind";
 import { useEffect, useState } from "react";
@@ -12,15 +18,31 @@ export default function Index() {
   const router = useRouter();
 
   const [routines, setRoutines] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const getRoutines = async () => {
-      const [data, res] = await fetchUserRoutines();
+      try {
+        setLoading(true);
+        const [data, res] = await fetchUserRoutines();
 
-      if (res) {
+        if (res) {
+          Toast.show({
+            type: "error",
+            text1: "Error",
+            text2: data.message,
+            text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
+            text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
+            position: "top",
+            animation: true,
+            visibilityTime: 2000,
+          });
+          return;
+        }
+
         Toast.show({
-          type: "error",
-          text1: "Error",
+          type: "success",
+          text1: "Éxito",
           text2: data.message,
           text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
           text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
@@ -28,21 +50,21 @@ export default function Index() {
           animation: true,
           visibilityTime: 2000,
         });
-        return;
+
+        setRoutines(data.routines);
+      } catch (error) {
+        console.error("Error al crear la rutina", error);
+        Toast.error("Error al crear la rutina", {
+          style: {
+            background: "#333",
+            color: "#fff",
+            fontFamily: "Inter",
+            fontWeight: 400,
+          },
+        });
+      } finally {
+        setLoading(false);
       }
-
-      Toast.show({
-        type: "success",
-        text1: "Éxito",
-        text2: data.message,
-        text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
-        text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
-        position: "top",
-        animation: true,
-        visibilityTime: 2000,
-      });
-
-      setRoutines(data.routines);
     };
 
     getRoutines();
@@ -93,7 +115,17 @@ export default function Index() {
           Mis Rutinas
         </Text>
 
-        {routines.length === 0 ? (
+        {loading ? (
+          <View className="w-full justify-center items-center mt-20">
+            <ActivityIndicator size="large" color="#25AEA6" />
+            <Text
+              className="text-white text-md text-center pl-2 mt-1"
+              style={{ fontFamily: "Inter-SemiBold" }}
+            >
+              Cargando...
+            </Text>
+          </View>
+        ) : routines.length === 0 ? (
           <View className="flex-row justify-center items-center w-full mt-5">
             <Text
               className="text-white text-md"
