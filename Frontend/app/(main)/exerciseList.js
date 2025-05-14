@@ -1,4 +1,12 @@
-import { FlatList, Image, Modal, Pressable, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  FlatList,
+  Image,
+  Modal,
+  Pressable,
+  Text,
+  View,
+} from "react-native";
 import { ExerciseImages } from "../../utils/ExerciseImages";
 
 export default function ExerciseList({
@@ -6,6 +14,7 @@ export default function ExerciseList({
   onClose,
   exercises,
   onSelect,
+  loading,
 }) {
   return (
     <Modal visible={visible} animationType="slide">
@@ -17,49 +26,63 @@ export default function ExerciseList({
           Elige un Ejercicio
         </Text>
 
-        <FlatList
-          data={exercises}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => (
-            <Pressable
-              onPress={() => {
-                onSelect(item.id);
-                onClose();
-              }}
-              className="mb-4 bg-[#1a1a1a] p-3 rounded-lg border border-[#333]"
+        {loading ? (
+          <View className="w-full justify-center items-center mt-72">
+            <ActivityIndicator size="large" color="#25AEA6" />
+            <Text
+              className="text-white text-md text-center pl-2 mt-1"
+              style={{ fontFamily: "Inter-SemiBold" }}
             >
-              <View className="flex-row items-center">
-                <Image
-                  source={
-                    ExerciseImages[item.id] ||
-                    require("../../assets/images/exercises/default.webp")
-                  }
-                  className="w-20 h-20 rounded-lg mr-4"
-                />
-                <View className="flex-1">
-                  <Text className="text-white text-xl font-semibold">
-                    {item.name}
-                  </Text>
-                  <Text className="text-gray-400 text-sm">
-                    {item.description}
-                  </Text>
-                </View>
-              </View>
-            </Pressable>
-          )}
-        />
+              Cargando...
+            </Text>
+          </View>
+        ) : (
+          <>
+            <FlatList
+              data={exercises}
+              keyExtractor={(item) => item.id.toString()}
+              renderItem={({ item }) => (
+                <Pressable
+                  onPress={() => {
+                    onSelect(item.id);
+                    onClose();
+                  }}
+                  className="mb-4 bg-[#1a1a1a] p-3 rounded-lg border border-[#333]"
+                >
+                  <View className="flex-row items-center">
+                    <Image
+                      source={
+                        ExerciseImages[item.id] ||
+                        require("../../assets/images/exercises/default.webp")
+                      }
+                      className="w-20 h-20 rounded-lg mr-4"
+                    />
+                    <View className="flex-1">
+                      <Text className="text-white text-xl font-semibold">
+                        {item.name}
+                      </Text>
+                      <Text className="text-gray-400 text-sm">
+                        {item.description}
+                      </Text>
+                    </View>
+                  </View>
+                </Pressable>
+              )}
+            />
 
-        <Pressable
-          onPress={onClose}
-          className="bg-[#25AEA6] rounded-md py-3 mt-6"
-        >
-          <Text
-            className="text-black text-center text-base"
-            style={{ fontFamily: "Inter-Bold" }}
-          >
-            Cerrar
-          </Text>
-        </Pressable>
+            <Pressable
+              onPress={onClose}
+              className="bg-[#25AEA6] rounded-md py-3 mt-6"
+            >
+              <Text
+                className="text-black text-center text-base"
+                style={{ fontFamily: "Inter-Bold" }}
+              >
+                Cerrar
+              </Text>
+            </Pressable>
+          </>
+        )}
       </View>
     </Modal>
   );
