@@ -16,7 +16,7 @@ export function RoutineCard({ name, description, id }) {
             params: { from: "training" },
           })
         }
-        className="border border-[#222] mb-3 bg-[#0f0f0f] rounded-lg p-3"
+        className="border border-[#222] mb-4 bg-[#0f0f0f] rounded-lg p-3"
         style={{ minWidth: "100%" }}
       >
         <View className="flex-row justify-between items-center">
