@@ -107,26 +107,26 @@ export default function Index() {
         </StyledPresable>
       </View>
 
-      <View className="justify-start items-start mx-10 mt-20">
+      <View className="flex-1 bg-black mx-10">
         <Text
-          className="text-2xl mb-8 text-[#25AEA6]"
+          className="text-2xl text-[#25AEA6] mt-14 mb-5"
           style={{ fontFamily: "Inter-SemiBold" }}
         >
           Mis Rutinas
         </Text>
 
         {loading ? (
-          <View className="w-full justify-center items-center mt-20">
+          <View className="flex-1 justify-center items-center mb-20">
             <ActivityIndicator size="large" color="#25AEA6" />
             <Text
-              className="text-white text-md text-center pl-2 mt-1"
+              className="text-white text-md text-center mt-2"
               style={{ fontFamily: "Inter-SemiBold" }}
             >
               Cargando...
             </Text>
           </View>
         ) : routines.length === 0 ? (
-          <View className="flex-row justify-center items-center w-full mt-5">
+          <View className="justify-center items-center">
             <Text
               className="text-white text-md"
               style={{ fontFamily: "Inter-Bold" }}
@@ -137,15 +137,13 @@ export default function Index() {
         ) : (
           <FlatList
             data={routines}
-            keyExtractor={(routine) => routine}
+            keyExtractor={(routine) => routine.id.toString()}
             renderItem={({ item }) => (
-              <View className="items-center">
-                <RoutineCard
-                  name={item.name}
-                  description={item.description}
-                  id={item.id}
-                />
-              </View>
+              <RoutineCard
+                name={item.name}
+                description={item.description}
+                id={item.id}
+              />
             )}
           />
         )}
