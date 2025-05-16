@@ -1,4 +1,11 @@
-import { Text, View, Pressable, TextInput, ScrollView } from "react-native";
+import {
+  Text,
+  View,
+  Pressable,
+  TextInput,
+  ScrollView,
+  ActivityIndicator,
+} from "react-native";
 import { Screen } from "../Screen";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { styled } from "nativewind";
@@ -25,6 +32,7 @@ export function CreateRoutine() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedExercises, setSelectedExercises] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
 
   useEffect(() => {
     const getExercises = async () => {
@@ -147,6 +155,8 @@ export function CreateRoutine() {
 
   const handleSubmit = async () => {
     try {
+      setIsCreating(true);
+
       if (!name) {
         Toast.show({
           type: "error",
@@ -158,6 +168,7 @@ export function CreateRoutine() {
           animation: true,
           visibilityTime: 2000,
         });
+        setIsCreating(false);
         return;
       }
 
@@ -172,6 +183,7 @@ export function CreateRoutine() {
           animation: true,
           visibilityTime: 2000,
         });
+        setIsCreating(false);
         return;
       }
 
@@ -190,6 +202,7 @@ export function CreateRoutine() {
           animation: true,
           visibilityTime: 2000,
         });
+        setIsCreating(false);
         return;
       }
 
@@ -227,6 +240,7 @@ export function CreateRoutine() {
           animation: true,
           visibilityTime: 2000,
         });
+        setIsCreating(false);
         return;
       }
 
@@ -248,6 +262,7 @@ export function CreateRoutine() {
 
         if (!matching) {
           console.warn("No se encontró routine_exercise_id para el set", set);
+          setIsCreating(false);
           return set;
         }
 
@@ -274,6 +289,7 @@ export function CreateRoutine() {
           animation: true,
           visibilityTime: 2000,
         });
+        setIsCreating(false);
         return;
       }
 
@@ -299,212 +315,232 @@ export function CreateRoutine() {
           fontWeight: 400,
         },
       });
+      setIsCreating(false);
     }
   };
 
   return (
     <Screen>
-      <View className="items-start mx-10">
-        <StyledPresable onPress={() => router.push("/(main)/(tabs)/training")}>
-          <BackIcon />
-        </StyledPresable>
-
-        <Text
-          className="text-[#25AEA6] text-2xl mt-6"
-          style={{ fontFamily: "Inter-Bold" }}
-        >
-          Nueva Rutina
-        </Text>
-      </View>
-
-      {/* Contenedor para el nombre y la descripción */}
-      <View className="justify-center items-center mt-3 mx-10">
-        <View className="w-full">
+      {isCreating ? (
+        <View className="flex-1 justify-center items-center mb-20">
+          <ActivityIndicator size="large" color="#25AEA6" />
           <Text
-            className="text-white mb-1"
-            style={{ fontFamily: "Inter-Bold" }}
-          >
-            Nombre
-          </Text>
-          <TextInput
-            className="rounded-md p-2 text-left text-black bg-white"
+            className="text-white text-md text-center mt-1"
             style={{ fontFamily: "Inter-SemiBold" }}
-            onChangeText={setName}
-          />
-        </View>
-
-        <View className="w-full mt-5">
-          <Text
-            className="text-white mb-1"
-            style={{ fontFamily: "Inter-Bold" }}
           >
-            Descripción
+            Creando Rutina...
           </Text>
-          <TextInput
-            className="rounded-md p-2 text-left text-black bg-white"
-            style={{ fontFamily: "Inter-SemiBold" }}
-            numberOfLines={3}
-            onChangeText={setDescription}
-          />
         </View>
-      </View>
+      ) : (
+        <>
+          <View className="items-start mx-10">
+            <StyledPresable
+              onPress={() => router.push("/(main)/(tabs)/training")}
+            >
+              <BackIcon />
+            </StyledPresable>
 
-      {/* Contenedor para los ejercicios y la rutina */}
-      <View className="w-full">
-        <View className="justify-center items-start mt-10 mx-10">
-          <Text
-            className="text-[#25AEA6] text-xl"
-            style={{ fontFamily: "Inter-Bold" }}
-          >
-            Ejercicios
-          </Text>
-
-          <StyledPresable
-            className="bg-[#25AEA6] rounded-md p-2 mt-3 pressed:opacity-60"
-            onPress={() => setIsModalVisible(true)}
-          >
-            <Text className="text-black" style={{ fontFamily: "Inter-Bold" }}>
-              Añadir Ejercicio
-            </Text>
-          </StyledPresable>
-
-          {/* Modal con la lista de ejercicios para elegir */}
-          <ExerciseList
-            visible={isModalVisible}
-            onClose={() => setIsModalVisible(false)}
-            exercises={exercises}
-            onSelect={handleSelectedExercise}
-            loading={loading}
-          />
-        </View>
-
-        <ScrollView className="flex-1 mt-4 pb-72">
-          {selectedExercises.map((ex) => {
-            const exerciseSets = sets.filter(
-              (set) => set.routine_exercise_id === ex.id,
-            );
-
-            return (
-              <View
-                key={ex.id}
-                className="mx-4 mb-4 bg-[#0f0f0f] rounded-lg p-4 border border-[#222]"
-              >
-                <View className="flex-row justify-between items-center mb-4 pb-2 border-b border-[#25AEA6]">
-                  <Text
-                    className="text-white text-lg"
-                    style={{ fontFamily: "Inter-Bold" }}
-                  >
-                    {ex.order}. {ex.name}
-                  </Text>
-
-                  <View className="flex-row gap-x-2">
-                    <Pressable
-                      onPress={() => addSet(ex.id)}
-                      className="bg-green-500 justify-center items-center px-3 py-1 rounded-md"
-                    >
-                      <Text
-                        className="text-black text-sm"
-                        style={{ fontFamily: "Inter-Bold" }}
-                      >
-                        + Set
-                      </Text>
-                    </Pressable>
-
-                    <Pressable
-                      onPress={() => handleDeleteExercise(ex.id)}
-                      className="bg-red-500 justify-center items-center px-3 py-1 rounded-md"
-                    >
-                      <Text
-                        className="text-black text-sm"
-                        style={{ fontFamily: "Inter-Bold" }}
-                      >
-                        Eliminar
-                      </Text>
-                    </Pressable>
-                  </View>
-                </View>
-
-                <View className="w-full flex-row mb-1 justify-center">
-                  {["Set", "Reps", "Peso", "Acc"].map((col, i) => (
-                    <Text
-                      key={i}
-                      style={{ fontFamily: "Inter-SemiBold" }}
-                      className="flex-1 text-white text-xs text-center"
-                    >
-                      {col}
-                    </Text>
-                  ))}
-                </View>
-
-                {exerciseSets.map((set) => (
-                  <View
-                    key={`${ex.id}-${set.order}`}
-                    className="flex-row w-full pt-1 items-center"
-                  >
-                    <Text
-                      className="w-20 text-white text-center"
-                      style={{ fontFamily: "Inter-SemiBold" }}
-                    >
-                      {set.order}
-                    </Text>
-
-                    <TextInput
-                      className="flex-1 mx-2 bg-[#1c1c1c] text-white rounded text-center px-2 py-1"
-                      style={{ fontFamily: "Inter-SemiBold" }}
-                      placeholder="0"
-                      keyboardType="numeric"
-                      defaultValue={set.reps.toString()}
-                      onChangeText={(value) =>
-                        handleSetChange(ex.id, set.order, "reps", value)
-                      }
-                    />
-
-                    <TextInput
-                      className="flex-1 mx-2 bg-[#1c1c1c] text-white rounded text-center px-2 py-1"
-                      style={{ fontFamily: "Inter-SemiBold" }}
-                      placeholder="0"
-                      keyboardType="numeric"
-                      defaultValue={set.weight.toString()}
-                      onChangeText={(value) =>
-                        handleSetChange(ex.id, set.order, "weight", value)
-                      }
-                    />
-
-                    <Pressable
-                      onPress={() => deleteSet(ex.id, set.order)}
-                      className="bg-red-500 rounded px-2 py-1 mx-1 items-center justify-center"
-                      style={{
-                        width: 75,
-                      }}
-                    >
-                      <Text
-                        className="text-black text-sm"
-                        style={{ fontFamily: "Inter-Bold" }}
-                      >
-                        X
-                      </Text>
-                    </Pressable>
-                  </View>
-                ))}
-              </View>
-            );
-          })}
-        </ScrollView>
-
-        <View className="justify-center items-center">
-          <Pressable
-            className="bg-[#25AEA6] rounded-md px-4 py-2 items-center"
-            onPress={handleSubmit}
-          >
             <Text
-              className="text-black text-lg"
+              className="text-[#25AEA6] text-2xl mt-6"
               style={{ fontFamily: "Inter-Bold" }}
             >
-              Crear Rutina
+              Nueva Rutina
             </Text>
-          </Pressable>
-        </View>
-      </View>
+          </View>
+
+          {/* Contenedor para el nombre y la descripción */}
+          <View className="justify-center items-center mt-3 mx-10">
+            <View className="w-full">
+              <Text
+                className="text-white mb-1"
+                style={{ fontFamily: "Inter-Bold" }}
+              >
+                Nombre
+              </Text>
+              <TextInput
+                className="rounded-md p-2 text-left text-black bg-white"
+                style={{ fontFamily: "Inter-SemiBold" }}
+                onChangeText={setName}
+              />
+            </View>
+
+            <View className="w-full mt-5">
+              <Text
+                className="text-white mb-1"
+                style={{ fontFamily: "Inter-Bold" }}
+              >
+                Descripción
+              </Text>
+              <TextInput
+                className="rounded-md p-2 text-left text-black bg-white"
+                style={{ fontFamily: "Inter-SemiBold" }}
+                numberOfLines={3}
+                onChangeText={setDescription}
+              />
+            </View>
+          </View>
+
+          {/* Contenedor para los ejercicios y la rutina */}
+          <View className="w-full">
+            <View className="justify-center items-start mt-10 mx-10">
+              <Text
+                className="text-[#25AEA6] text-xl"
+                style={{ fontFamily: "Inter-Bold" }}
+              >
+                Ejercicios
+              </Text>
+
+              <StyledPresable
+                className="bg-[#25AEA6] rounded-md p-2 mt-3 pressed:opacity-60"
+                onPress={() => setIsModalVisible(true)}
+              >
+                <Text
+                  className="text-black"
+                  style={{ fontFamily: "Inter-Bold" }}
+                >
+                  Añadir Ejercicio
+                </Text>
+              </StyledPresable>
+
+              {/* Modal con la lista de ejercicios para elegir */}
+              <ExerciseList
+                visible={isModalVisible}
+                onClose={() => setIsModalVisible(false)}
+                exercises={exercises}
+                onSelect={handleSelectedExercise}
+                loading={loading}
+              />
+            </View>
+
+            <ScrollView className="flex-1 mt-4 pb-72">
+              {selectedExercises.map((ex) => {
+                const exerciseSets = sets.filter(
+                  (set) => set.routine_exercise_id === ex.id,
+                );
+
+                return (
+                  <View
+                    key={ex.id}
+                    className="mx-4 mb-4 bg-[#0f0f0f] rounded-lg p-4 border border-[#222]"
+                  >
+                    <View className="flex-row justify-between items-center mb-4 pb-2 border-b border-[#25AEA6]">
+                      <Text
+                        className="text-white text-lg"
+                        style={{ fontFamily: "Inter-Bold" }}
+                      >
+                        {ex.order}. {ex.name}
+                      </Text>
+
+                      <View className="flex-row gap-x-2">
+                        <Pressable
+                          onPress={() => addSet(ex.id)}
+                          className="bg-green-500 justify-center items-center px-3 py-1 rounded-md"
+                        >
+                          <Text
+                            className="text-black text-sm"
+                            style={{ fontFamily: "Inter-Bold" }}
+                          >
+                            + Set
+                          </Text>
+                        </Pressable>
+
+                        <Pressable
+                          onPress={() => handleDeleteExercise(ex.id)}
+                          className="bg-red-500 justify-center items-center px-3 py-1 rounded-md"
+                        >
+                          <Text
+                            className="text-black text-sm"
+                            style={{ fontFamily: "Inter-Bold" }}
+                          >
+                            Eliminar
+                          </Text>
+                        </Pressable>
+                      </View>
+                    </View>
+
+                    <View className="w-full flex-row mb-1 justify-center">
+                      {["Set", "Reps", "Peso", "Acc"].map((col, i) => (
+                        <Text
+                          key={i}
+                          style={{ fontFamily: "Inter-SemiBold" }}
+                          className="flex-1 text-white text-xs text-center"
+                        >
+                          {col}
+                        </Text>
+                      ))}
+                    </View>
+
+                    {exerciseSets.map((set) => (
+                      <View
+                        key={`${ex.id}-${set.order}`}
+                        className="flex-row w-full pt-1 items-center"
+                      >
+                        <Text
+                          className="w-20 text-white text-center"
+                          style={{ fontFamily: "Inter-SemiBold" }}
+                        >
+                          {set.order}
+                        </Text>
+
+                        <TextInput
+                          className="flex-1 mx-2 bg-[#1c1c1c] text-white rounded text-center px-2 py-1"
+                          style={{ fontFamily: "Inter-SemiBold" }}
+                          placeholder="0"
+                          keyboardType="numeric"
+                          defaultValue={set.reps.toString()}
+                          onChangeText={(value) =>
+                            handleSetChange(ex.id, set.order, "reps", value)
+                          }
+                        />
+
+                        <TextInput
+                          className="flex-1 mx-2 bg-[#1c1c1c] text-white rounded text-center px-2 py-1"
+                          style={{ fontFamily: "Inter-SemiBold" }}
+                          placeholder="0"
+                          keyboardType="numeric"
+                          defaultValue={set.weight.toString()}
+                          onChangeText={(value) =>
+                            handleSetChange(ex.id, set.order, "weight", value)
+                          }
+                        />
+
+                        <Pressable
+                          onPress={() => deleteSet(ex.id, set.order)}
+                          className="bg-red-500 rounded px-2 py-1 mx-1 items-center justify-center"
+                          style={{
+                            width: 75,
+                          }}
+                        >
+                          <Text
+                            className="text-black text-sm"
+                            style={{ fontFamily: "Inter-Bold" }}
+                          >
+                            X
+                          </Text>
+                        </Pressable>
+                      </View>
+                    ))}
+                  </View>
+                );
+              })}
+            </ScrollView>
+
+            <View className="justify-center items-center">
+              <Pressable
+                className="bg-[#25AEA6] rounded-md px-4 py-2 items-center"
+                onPress={handleSubmit}
+              >
+                <Text
+                  className="text-black text-lg"
+                  style={{ fontFamily: "Inter-Bold" }}
+                >
+                  Crear Rutina
+                </Text>
+              </Pressable>
+            </View>
+          </View>
+        </>
+      )}
     </Screen>
   );
 }
