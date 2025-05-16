@@ -44,7 +44,6 @@ export function ExercisesTable({
       { ...exer, order: prev.length + 1 },
     ]);
 
-    // Inicializar con 1 serie por defecto
     setSets((prev) => [
       ...prev,
       {

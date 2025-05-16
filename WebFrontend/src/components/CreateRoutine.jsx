@@ -218,7 +218,6 @@ export function CreateRoutine() {
       </button>
 
       <div className="grid-rows-2 gap-10 max-w-5xl mx-auto">
-        {/* Columna izquierda: Nombre y Descripción */}
         <form
           onSubmit={(e) => {
             e.preventDefault();
