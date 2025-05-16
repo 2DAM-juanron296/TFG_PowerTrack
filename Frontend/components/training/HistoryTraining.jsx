@@ -12,10 +12,7 @@ export function HistoryTraining() {
     <Screen>
       <View className="flex-row">
         <View className="items-start absolute" style={{ marginLeft: 30 }}>
-          <StyledPresable
-            onPress={() => router.push("/(main)/(tabs)/home")}
-            style={({ pressed }) => [{ opacity: pressed ? 0.6 : 1 }]}
-          >
+          <StyledPresable onPress={() => router.push("/(main)/(tabs)/home")}>
             <BackIcon />
           </StyledPresable>
         </View>

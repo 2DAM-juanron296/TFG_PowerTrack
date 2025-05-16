@@ -8,7 +8,6 @@ export function RoutineCard({ name, description, id }) {
 
   return (
     <View className="w-full">
-      {/* Card que redirige al detalle del ejercicio */}
       <StyledPresable
         onPress={() =>
           router.push({
