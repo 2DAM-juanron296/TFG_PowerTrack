@@ -237,14 +237,14 @@ export function Routines() {
                       Editar
                     </button>
                     <button
-                      className="bg-[#FF9811] text-black p-2 rounded-md ml-5 cursor-pointer"
+                      className="bg-red-600 text-black p-2 rounded-md ml-5 cursor-pointer"
                       style={{ fontWeight: 600 }}
                       onClick={handleDelete(routine.id)}
                     >
                       Eliminar
                     </button>
                     <button
-                      className="bg-[#FF9811] text-black p-2 rounded-md ml-5 cursor-pointer"
+                      className="bg-[#1a8783] text-black p-2 rounded-md ml-5 cursor-pointer"
                       style={{ fontWeight: 600 }}
                       onClick={handleSeeExercises(routine.id)}
                     >

@@ -193,7 +193,7 @@ export function Users() {
                       Editar
                     </button>
                     <button
-                      className="bg-[#FF9811] text-black p-2 rounded-md ml-10 cursor-pointer"
+                      className="bg-red-600 text-black p-2 rounded-md ml-10 cursor-pointer"
                       style={{ fontWeight: 600 }}
                       onClick={handleDelete(user.id)}
                     >
