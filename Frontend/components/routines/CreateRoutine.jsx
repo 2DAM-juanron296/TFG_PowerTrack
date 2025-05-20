@@ -525,7 +525,7 @@ export function CreateRoutine() {
               })}
             </ScrollView>
 
-            <View className="justify-center items-center">
+            <View className="justify-center items-center pt-2">
               <Pressable
                 className="bg-[#25AEA6] rounded-md px-4 py-2 items-center"
                 onPress={handleSubmit}
