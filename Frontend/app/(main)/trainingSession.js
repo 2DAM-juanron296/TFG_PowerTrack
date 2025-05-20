@@ -1,18 +1,49 @@
-import { FlatList, Pressable, Text, View } from "react-native";
+import {
+  FlatList,
+  Image,
+  Pressable,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import { Screen } from "../../components/Screen";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { fetchExerciseSets } from "../../context/api/sets";
 import Toast from "react-native-toast-message";
 import { fetchRoutineExercises } from "../../context/api/exercises";
-import { BackIcon } from "../../utils/Icons";
+import { PauseIcon, PlayIcon, RestartIcon } from "../../utils/Icons";
 import { styled } from "nativewind";
+import { ExerciseImages } from "../../utils/ExerciseImages";
 
 export default function TrainingSession() {
   const { routine_id } = useLocalSearchParams();
   const router = useRouter();
-  const [exercises, setExercises] = useState([]);
   const StyledPresable = styled(Pressable);
+
+  const [exercises, setExercises] = useState([]);
+  const [sets, setSets] = useState([]);
+
+  const [seconds, setSeconds] = useState(0);
+  const [running, setRunning] = useState(true);
+
+  useEffect(() => {
+    if (!running) return;
+
+    const timer = global.setTimeout(() => {
+      setSeconds((prev) => prev + 1);
+    }, 1000);
+
+    return () => global.clearTimeout(timer);
+  }, [seconds, running]);
+
+  const formatTime = (secs) => {
+    const min = Math.floor(secs / 60)
+      .toString()
+      .padStart(2, "0");
+    const sec = (secs % 60).toString().padStart(2, "0");
+    return `${min}:${sec}`;
+  };
 
   useEffect(() => {
     if (routine_id) {
@@ -65,6 +96,8 @@ export default function TrainingSession() {
           }),
         );
 
+        setSets(setsResponse);
+
         const enrichedExercises = data.exercises.map((ex, index) => {
           return { ...ex, sets: setsResponse[index] };
         });
@@ -79,59 +112,146 @@ export default function TrainingSession() {
     }
   }, [routine_id]);
 
+  const getExerciseImage = (id) => {
+    return (
+      ExerciseImages[id] ||
+      require("../../assets/images/exercises/default.webp")
+    );
+  };
+
+  const handleSetChange = (exerciseId, setOrder, field, value) => {};
+
+  const handleSubmit = async () => {};
+
   return (
     <Screen>
-      <View className="mx-7 mt-5">
-        <StyledPresable onPress={() => router.push("/(main)/(tabs)/training")}>
-          <BackIcon />
-        </StyledPresable>
-
-        <View className="mt-5">
-          <View className="justify-center items-center mb-5">
+      <View className="flex-1 mx-7 mt-3">
+        <View className="justify-center items-center mb-5">
+          <View className="flex-row w-40 justify-center items-center bg-[#222] rounded-md py-3">
             <Text
-              className="text-2xl text-[#25AEA6]"
+              className="text-lg text-white"
               style={{ fontFamily: "Inter-Bold" }}
             >
-              Entrenamiento
+              {formatTime(seconds)}
             </Text>
+
+            <Pressable
+              className="ml-5"
+              onPress={() => setRunning((prev) => !prev)}
+            >
+              {running ? <PauseIcon /> : <PlayIcon />}
+            </Pressable>
+
+            <Pressable className="ml-5" onPress={() => setSeconds(0)}>
+              <RestartIcon />
+            </Pressable>
           </View>
+        </View>
+
+        <View className="flex-1">
           <FlatList
             data={exercises}
-            keyExtractor={(exercise) => exercise.id}
+            keyExtractor={(exercise) => exercise.id.toString()}
             renderItem={({ item }) => (
-              <View className="mb-5 border border-[#222] bg-[#0f0f0f] rounded-lg p-4">
-                <View className="flex-row items-center">
-                  <View className="flex-1">
-                    <Text
-                      className="text-white text-xl pb-3"
-                      style={{ fontFamily: "Inter-SemiBold" }}
-                    >
-                      {item.order}. {item.exercise.name}
-                    </Text>
-
-                    {item.sets && item.sets.length > 0 ? (
-                      item.sets.map((set) => (
-                        <Text
-                          key={set.id}
-                          className="text-white pb-1"
-                          style={{ fontFamily: "Inter-Regular", fontSize: 14 }}
-                        >
-                          Serie {set.order}: {set.reps} reps - {set.weight} kg
-                        </Text>
-                      ))
-                    ) : (
-                      <Text
-                        className="text-white pb-1"
-                        style={{ fontFamily: "Inter-Regular", fontSize: 14 }}
-                      >
-                        No hay series registradas
-                      </Text>
-                    )}
-                  </View>
+              <View className="mb-3 bg-[#0f0f0f] rounded-lg p-4 border border-[#222]">
+                <View className="flex-row items-center mb-4 pb-2 border-b border-[#25AEA6]">
+                  <Image
+                    source={getExerciseImage(item.exercise.id)}
+                    className="w-12 h-12 rounded-lg mr-3"
+                  />
+                  <Text
+                    className="text-white text-lg flex-1"
+                    style={{ fontFamily: "Inter-Bold" }}
+                  >
+                    {item.order}. {item.exercise.name}
+                  </Text>
                 </View>
+
+                <View className="w-full flex-row mb-1 justify-center items-center">
+                  {["Set", "Reps", "Peso"].map((col, i) => (
+                    <Text
+                      key={i}
+                      style={{ fontFamily: "Inter-SemiBold" }}
+                      className="flex-1 text-white text-md text-center"
+                    >
+                      {col}
+                    </Text>
+                  ))}
+                </View>
+
+                {item.sets && item.sets.length > 0 ? (
+                  item.sets.map((set) => (
+                    <View
+                      key={set.id}
+                      className="flex-row w-full justify-center items-center pt-1"
+                    >
+                      <Text
+                        className="w-24 text-white text-center"
+                        style={{ fontFamily: "Inter-SemiBold" }}
+                      >
+                        {set.order}
+                      </Text>
+
+                      <TextInput
+                        className="flex-1 mx-4 text-white text-center bg-[#1c1c1c] rounded px-2 py-1"
+                        style={{ fontFamily: "Inter-Regular", fontSize: 13 }}
+                        placeholderTextColor="#888"
+                        placeholder={set.reps?.toString() || "0"}
+                        keyboardType="numeric"
+                        onChangeText={(value) =>
+                          handleSetChange(item.id, set.order, "reps", value)
+                        }
+                      />
+
+                      <TextInput
+                        className="flex-1 mx-4 text-white text-center bg-[#1c1c1c] rounded px-2 py-1"
+                        style={{ fontFamily: "Inter-Regular", fontSize: 13 }}
+                        placeholderTextColor="#888"
+                        placeholder={set.weight?.toString() || "0"}
+                        keyboardType="numeric"
+                        onChangeText={(value) =>
+                          handleSetChange(item.id, set.order, "weight", value)
+                        }
+                      />
+                    </View>
+                  ))
+                ) : (
+                  <Text
+                    className="text-white text-center mt-2"
+                    style={{ fontFamily: "Inter-Regular" }}
+                  >
+                    No hay series registradas
+                  </Text>
+                )}
               </View>
             )}
           />
+        </View>
+
+        <View className="flex-row justify-center items-center py-3 gap-3">
+          <Pressable
+            className="bg-[#25AEA6] rounded-md px-4 py-2 items-center"
+            onPress={handleSubmit}
+          >
+            <Text
+              className="text-black text-lg"
+              style={{ fontFamily: "Inter-Bold" }}
+            >
+              Terminar
+            </Text>
+          </Pressable>
+
+          <Pressable
+            className="bg-red-500 rounded-md px-4 py-2 items-center"
+            onPress={() => router.push("/(main)/(tabs)/training")}
+          >
+            <Text
+              className="text-black text-lg"
+              style={{ fontFamily: "Inter-Bold" }}
+            >
+              Cancelar
+            </Text>
+          </Pressable>
         </View>
       </View>
     </Screen>
