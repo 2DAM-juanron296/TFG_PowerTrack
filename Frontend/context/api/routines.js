@@ -11,7 +11,7 @@ export async function fetchDefaultRoutines() {
     let res = false;
     let info = [];
 
-    const response = await fetch(`${API_BASE}/user/${2}/routines`, {
+    const response = await fetch(`${API_BASE}/user/${1}/routines`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
