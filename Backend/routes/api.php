@@ -10,6 +10,7 @@ use App\Http\Controllers\RoutineController;
 use App\Http\Controllers\RoutineExerciseController;
 use App\Http\Controllers\RoutineExerciseSetController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WorkoutController;
 
 /*
 |--------------------------------------------------------------------------
@@ -70,6 +71,13 @@ Route::middleware('auth:sanctum')->group(function() {
         Route::get('/routineExerciseSets/{idRoutineExercise}', 'index');
 
         Route::post('/createRoutineExerciseSet', 'store');
+    });
+
+    // Workouts
+    Route::controller(WorkoutController::class)->group(function() {
+        Route::get('/workouts', 'index');
+
+        Route::post('/createWorkout', 'store');
     });
 
     // Muscle Groups
