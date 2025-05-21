@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('workouts', function (Blueprint $table) {
             $table->id();
             $table->date('date');
+            $table->string('name', 50)->nullable();
             $table->string('duration');
             $table->double('volume_training');
 
