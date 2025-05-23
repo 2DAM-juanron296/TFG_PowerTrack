@@ -72,11 +72,11 @@ export function Main() {
     <Screen>
       <View className="flex-1 justify-between">
         <View className="flex-1">
-          <View className="justify-center items-center text-center pb-14 mt-16">
+          <View className="justify-center items-center text-center pb-12 mt-16">
             <UserDefaultIcon />
             <View>
               <Text
-                className="text-white text-md pt-2"
+                className="text-white text-lg pt-2"
                 style={{ fontFamily: "Inter-SemiBold" }}
               >
                 {username ? `Bienvenido, ${username}` : "Bienvenido, User"}
