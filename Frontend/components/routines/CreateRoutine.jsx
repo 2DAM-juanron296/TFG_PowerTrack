@@ -7,7 +7,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { Screen } from "../Screen";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import { styled } from "nativewind";
 import { BackIcon } from "../../utils/Icons";
 import { useEffect, useState } from "react";
