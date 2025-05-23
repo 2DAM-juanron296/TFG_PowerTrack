@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 class WorkoutExerciseController extends Controller
 {
+    // Método para crear ejercicios de un entreno - App
     public function store(Request $request)
     {
         $exercises = [];

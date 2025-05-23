@@ -36,6 +36,7 @@ class WorkoutController extends Controller
         }
     }
 
+    // Método para crear un nuevo entreno - App
     public function store(Request $request)
     {
         try

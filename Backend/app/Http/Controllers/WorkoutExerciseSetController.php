@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 class WorkoutExerciseSetController extends Controller
 {
+    // Método para crear sets de un ejercicio/entreno - App
     public function store(Request $request)
     {
         $sets = [];
