@@ -1,8 +1,30 @@
 import { Text, View, Pressable } from "react-native";
 import { styled } from "nativewind";
+import { useEffect, useState } from "react";
+import { fetchRoutineName } from "../../context/api/routines";
 
 export function TrainingCard({ workout }) {
   const StyledPresable = styled(Pressable);
+
+  const [name, setName] = useState(null);
+
+  useEffect(() => {
+    async function getRoutineName() {
+      const [data, res] = await fetchRoutineName(workout.routine_id);
+
+      console.log("Nombre de la rutina: ", data.name);
+
+      if (res) {
+        console.log("Error obteniendo el nombre de la rutina");
+        return;
+      }
+
+      setName(data.name);
+      console.log("Nombre de la rutina: ", data.name);
+    }
+
+    getRoutineName();
+  }, [workout.routine_id]);
 
   return (
     <View className="w-full">
@@ -16,13 +38,13 @@ export function TrainingCard({ workout }) {
               className="text-white text-lg"
               style={{ fontFamily: "Inter-SemiBold" }}
             >
-              Pecho
+              {workout.name ?? "Entreno..."}
             </Text>
             <Text
               className="text-white text-xs pt-1"
               style={{ fontFamily: "Inter-SemiBold" }}
             >
-              {workout.name}
+              {name || "Rutina..."}
             </Text>
           </View>
 
