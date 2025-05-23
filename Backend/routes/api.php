@@ -54,6 +54,7 @@ Route::middleware('auth:sanctum')->group(function() {
     // Routines
     Route::controller(RoutineController::class)->group(function() {
         Route::get('/routines', 'index');
+        Route::get('/routine/{id}', 'getName');
     
         Route::post('/createRoutine', 'store');
         Route::post('/saveRoutine', 'saveRoutine');
