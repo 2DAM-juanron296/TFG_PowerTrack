@@ -9,6 +9,8 @@ class Workout_Exercise_Set extends Model
 {
     use HasFactory;
 
+    protected $table = 'workout_exercise_sets';
+
     protected $fillable = [
         'order',
         'reps',
