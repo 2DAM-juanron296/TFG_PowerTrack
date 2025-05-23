@@ -10,9 +10,15 @@ import {
 import { Screen } from "../../components/Screen";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
-import { fetchExerciseSets } from "../../context/api/sets";
+import {
+  createWorkoutExerciseSets,
+  fetchExerciseSets,
+} from "../../context/api/sets";
 import Toast from "react-native-toast-message";
-import { fetchRoutineExercises } from "../../context/api/exercises";
+import {
+  createExercisesWorkout,
+  fetchRoutineExercises,
+} from "../../context/api/exercises";
 import { PauseIcon, PlayIcon, RestartIcon } from "../../utils/Icons";
 import { ExerciseImages } from "../../utils/ExerciseImages";
 import { createWorkout } from "../../context/api/trainings";
@@ -32,6 +38,14 @@ export default function TrainingSession() {
   const [loading, setLoading] = useState(false);
   const [finished, setFinished] = useState(false);
 
+  const formatTime = (secs) => {
+    const min = Math.floor(secs / 60)
+      .toString()
+      .padStart(2, "0");
+    const sec = (secs % 60).toString().padStart(2, "0");
+    return `${min}:${sec}`;
+  };
+
   useEffect(() => {
     if (!running) return;
 
@@ -41,14 +55,6 @@ export default function TrainingSession() {
 
     return () => global.clearTimeout(timer);
   }, [seconds, running]);
-
-  const formatTime = (secs) => {
-    const min = Math.floor(secs / 60)
-      .toString()
-      .padStart(2, "0");
-    const sec = (secs % 60).toString().padStart(2, "0");
-    return `${min}:${sec}`;
-  };
 
   useEffect(() => {
     if (routine_id) {
@@ -125,17 +131,32 @@ export default function TrainingSession() {
   };
 
   const handleSetChange = (idExercise, orderSet, field, value) => {
-    setSets((prevSets) => {
-      prevSets.map((set) => {
-        if (set.routine_exercise_id === idExercise && set.order === orderSet) {
-          return {
-            ...set,
-            [field]: value,
-          };
-        }
-        return set;
-      });
-    });
+    setSets((prevSets) =>
+      prevSets.map((setArray) =>
+        setArray.map((set) => {
+          if (
+            set.routine_exercise_id === idExercise &&
+            set.order === orderSet
+          ) {
+            return {
+              ...set,
+              [field]: value,
+            };
+          }
+          return set;
+        }),
+      ),
+    );
+  };
+
+  const getTotalVolume = () => {
+    return sets
+      .map((setArray) =>
+        setArray
+          .map((set) => (Number(set.weight) || 0) * (Number(set.reps) || 0))
+          .reduce((acc, val) => acc + val, 0),
+      )
+      .reduce((acc, val) => acc + val, 0);
   };
 
   const handleSubmit = async () => {
@@ -146,7 +167,7 @@ export default function TrainingSession() {
         name: name,
         duration: seconds.toString(),
         routine_id: routine_id,
-        volume_training: 1000,
+        volume_training: getTotalVolume(),
       };
 
       const [data, res] = await createWorkout(request);
@@ -176,6 +197,99 @@ export default function TrainingSession() {
         animation: true,
         visibilityTime: 2000,
       });
+
+      const updatedExercises = exercises.map((ex) => ({
+        order: ex.order,
+        workout_id: data.workout.id,
+        exercise_id: ex.id,
+      }));
+
+      console.log("Ejercicios a crear: ", updatedExercises);
+
+      const [dataEx, resEx] = await createExercisesWorkout({
+        exercises: updatedExercises,
+      });
+
+      if (resEx) {
+        Toast.show({
+          type: "error",
+          text1: "Error",
+          text2: dataEx.message,
+          text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
+          text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
+          position: "top",
+          animation: true,
+          visibilityTime: 2000,
+        });
+        setLoading(false);
+        return;
+      }
+
+      Toast.show({
+        type: "success",
+        text1: "Éxito",
+        text2: dataEx.message,
+        text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
+        text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
+        position: "top",
+        animation: true,
+        visibilityTime: 2000,
+      });
+
+      console.log("Ejercicios response: ", dataEx.exercises);
+
+      const updatedSets = [];
+
+      exercises.forEach((ex, index) => {
+        const workoutExerciseId = dataEx.exercises[index]?.id;
+        if (!workoutExerciseId) {
+          console.warn(`No workoutExerciseId for exercise at index ${index}`);
+          return;
+        }
+
+        sets[index].forEach((set) => {
+          updatedSets.push({
+            order: set.order,
+            reps: set.reps,
+            weight: set.weight,
+            workout_exercise_id: workoutExerciseId,
+          });
+        });
+      });
+
+      console.log("updatedSets:", updatedSets);
+
+      const [dataSet, resSet] = await createWorkoutExerciseSets({
+        sets: updatedSets,
+      });
+
+      if (resSet) {
+        Toast.show({
+          type: "error",
+          text1: "Error",
+          text2: dataSet.message,
+          text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
+          text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
+          position: "top",
+          animation: true,
+          visibilityTime: 2000,
+        });
+        setLoading(false);
+        return;
+      }
+
+      Toast.show({
+        type: "success",
+        text1: "Éxito",
+        text2: dataSet.message,
+        text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
+        text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
+        position: "top",
+        animation: true,
+        visibilityTime: 2000,
+      });
+
+      console.log("Series response: ", dataSet.sets);
 
       router.push("/(main)/(tabs)/training");
     } catch (error) {
@@ -210,6 +324,7 @@ export default function TrainingSession() {
       ) : finished ? (
         <CreateWorkout
           setName={setName}
+          volume={getTotalVolume()}
           seconds={seconds}
           routine_id={routine_id}
           formatTime={formatTime}
