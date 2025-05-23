@@ -70,8 +70,8 @@ export function Main() {
 
   return (
     <Screen>
-      <View className="flex-1 justify-between pb-10">
-        <View>
+      <View className="flex-1 justify-between">
+        <View className="flex-1">
           <View className="justify-center items-center text-center pb-14 mt-16">
             <UserDefaultIcon />
             <View>
@@ -83,7 +83,7 @@ export function Main() {
               </Text>
             </View>
           </View>
-          <View className="justify-start items-start mx-10 mb-6">
+          <View className="justify-start items-start mx-10 mb-4">
             <Text
               className="text-2xl text-[#25AEA6]"
               style={{ fontFamily: "Inter-Bold" }}
@@ -93,10 +93,10 @@ export function Main() {
           </View>
 
           {loading ? (
-            <View className="flex-1 justify-center items-center mb-20">
+            <View className="justify-center items-center mt-10">
               <ActivityIndicator size="large" color="#25AEA6" />
               <Text
-                className="text-white text-md text-center mt-2"
+                className="text-white text-md text-center mt-2 ml-2"
                 style={{ fontFamily: "Inter-SemiBold" }}
               >
                 Cargando...
@@ -112,22 +112,21 @@ export function Main() {
               </Text>
             </View>
           ) : (
-            <View className="mx-10" style={{ maxHeight: "70%" }}>
+            <View className="flex-1 mx-10">
               <FlatList
                 data={trainings}
-                keyExtractor={(item, index) => `${index}`}
+                keyExtractor={(item) => `${item.id}`}
                 renderItem={({ item }) => (
-                  <View className="items-center mb-4">
+                  <View className="items-center">
                     <TrainingCard workout={item} />
                   </View>
                 )}
-                showsVerticalScrollIndicator={false}
               />
             </View>
           )}
         </View>
 
-        <View className="items-center">
+        <View className="justify-center items-center my-3">
           <Link asChild href="../trainHistory">
             <Pressable>
               <Text
