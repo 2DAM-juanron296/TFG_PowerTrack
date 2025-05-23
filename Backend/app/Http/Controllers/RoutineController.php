@@ -42,6 +42,31 @@ class RoutineController extends Controller
 
     }
 
+    // Método para obtener nombre de rutina por ID - App
+    public function getName($id)
+    {
+        try
+        {
+            $routine = Routine::find($id);
+
+            if (!$routine) {
+                return response()->json([
+                    'message' => 'No se encontró la rutina'
+                ], 400);
+            }
+
+            return response()->json([
+                'message' => 'Rutina encontrada',
+                'name' => $routine->name
+            ], 200);
+
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Error: '.$e->getMessage()
+            ], 500);
+        }
+    }
+
     // Crear nueva rutina - Web/App
     public function store(Request $request) {
         try
