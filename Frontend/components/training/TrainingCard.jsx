@@ -7,7 +7,7 @@ export function TrainingCard({ workout }) {
   return (
     <View className="w-full">
       <StyledPresable
-        className="border border-[#222] mb-3 bg-[#0f0f0f] rounded-lg p-4"
+        className="border border-[#222] mb-2 bg-[#0f0f0f] rounded-lg p-4"
         style={{ minWidth: "100%" }}
       >
         <View className="flex-row justify-between items-center">
