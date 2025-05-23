@@ -1,6 +1,13 @@
-import { Text, TextInput, View } from "react-native";
+import { Text, TextInput, View, Pressable } from "react-native";
 
-export function CreateWorkout({ setName, seconds, routine_id, formatTime }) {
+export function CreateWorkout({
+  setName,
+  volume,
+  seconds,
+  routine_id,
+  formatTime,
+  handleSubmit,
+}) {
   return (
     <View className="justify-center items-center mt-3 mx-10">
       <View className="w-full">
@@ -31,6 +38,12 @@ export function CreateWorkout({ setName, seconds, routine_id, formatTime }) {
           className="text-white mb-1 text-start"
           style={{ fontFamily: "Inter-Bold" }}
         >
+          Volumen de entrenamiento: {volume} kg
+        </Text>
+        <Text
+          className="text-white mb-1 text-start"
+          style={{ fontFamily: "Inter-Bold" }}
+        >
           Fecha: {new Date().toISOString().split("T")[0]}
         </Text>
         <Text
@@ -40,6 +53,19 @@ export function CreateWorkout({ setName, seconds, routine_id, formatTime }) {
           Rutina id: {routine_id}
         </Text>
       </View>
+
+      {/* Botón Finalizar */}
+      <Pressable
+        className="mt-10 bg-[#25AEA6] px-5 py-3 rounded-md"
+        onPress={handleSubmit}
+      >
+        <Text
+          className="text-black text-lg"
+          style={{ fontFamily: "Inter-Bold" }}
+        >
+          Finalizar
+        </Text>
+      </Pressable>
     </View>
   );
 }
