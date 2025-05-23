@@ -14,15 +14,14 @@ import { fetchExerciseSets } from "../../context/api/sets";
 import Toast from "react-native-toast-message";
 import { fetchRoutineExercises } from "../../context/api/exercises";
 import { PauseIcon, PlayIcon, RestartIcon } from "../../utils/Icons";
-import { styled } from "nativewind";
 import { ExerciseImages } from "../../utils/ExerciseImages";
 import { createWorkout } from "../../context/api/trainings";
 
 export default function TrainingSession() {
   const { routine_id } = useLocalSearchParams();
   const router = useRouter();
-  const StyledPresable = styled(Pressable);
 
+  const [name, setName] = useState("");
   const [exercises, setExercises] = useState([]);
   const [sets, setSets] = useState([]);
 
@@ -30,6 +29,7 @@ export default function TrainingSession() {
   const [running, setRunning] = useState(true);
 
   const [loading, setLoading] = useState(false);
+  const [finished, setFinished] = useState(false);
 
   useEffect(() => {
     if (!running) return;
@@ -123,14 +123,26 @@ export default function TrainingSession() {
     );
   };
 
-  const handleSetChange = (exerciseId, setOrder, field, value) => {};
+  const handleSetChange = (idExercise, orderSet, field, value) => {
+    setSets((prevSets) => {
+      prevSets.map((set) => {
+        if (set.routine_exercise_id === idExercise && set.order === orderSet) {
+          return {
+            ...set,
+            [field]: value,
+          };
+        }
+        return set;
+      });
+    });
+  };
 
   const handleSubmit = async () => {
     try {
       setLoading(true);
       const request = {
         date: new Date().toISOString().split("T")[0],
-        name: "Prueba",
+        name: name,
         duration: seconds.toString(),
         routine_id: routine_id,
         volume_training: 1000,
@@ -193,6 +205,49 @@ export default function TrainingSession() {
           >
             Terminando el entrenamiento...
           </Text>
+        </View>
+      ) : finished ? (
+        <View className="justify-center items-center mt-3 mx-10">
+          <View className="w-full">
+            <Text
+              className="text-white mb-1"
+              style={{ fontFamily: "Inter-Bold" }}
+            >
+              Nombre
+            </Text>
+            <TextInput
+              className="rounded-md p-2 text-left text-black bg-white"
+              style={{ fontFamily: "Inter-SemiBold" }}
+              onChangeText={setName}
+            />
+          </View>
+
+          <View className="w-full mt-10">
+            <Text
+              className="text-white mb-4 text-start text-lg"
+              style={{ fontFamily: "Inter-Bold" }}
+            >
+              Resumen del entrenamiento
+            </Text>
+            <Text
+              className="text-white mb-1 text-start"
+              style={{ fontFamily: "Inter-Bold" }}
+            >
+              Duración: {formatTime(seconds)}
+            </Text>
+            <Text
+              className="text-white mb-1 text-start"
+              style={{ fontFamily: "Inter-Bold" }}
+            >
+              Fecha: {new Date().toISOString().split("T")[0]}
+            </Text>
+            <Text
+              className="text-white mb-1 text-start"
+              style={{ fontFamily: "Inter-Bold" }}
+            >
+              Rutina id: {routine_id}
+            </Text>
+          </View>
         </View>
       ) : (
         <View className="flex-1 mx-7 mt-3">
@@ -301,7 +356,10 @@ export default function TrainingSession() {
           <View className="flex-row justify-center items-center py-3 gap-3">
             <Pressable
               className="bg-[#25AEA6] rounded-md px-4 py-2 items-center"
-              onPress={handleSubmit}
+              onPress={() => {
+                setFinished(true);
+                setRunning(false);
+              }}
             >
               <Text
                 className="text-black text-lg"
