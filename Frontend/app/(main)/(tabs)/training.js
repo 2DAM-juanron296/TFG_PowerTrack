@@ -12,6 +12,7 @@ import { RoutineCard } from "../../../components/routines/RoutineCard";
 import { useRouter } from "expo-router";
 import { fetchUserRoutines } from "../../../context/api/user";
 import Toast from "react-native-toast-message";
+import { NotIcon } from "../../../utils/Icons";
 
 export default function Index() {
   const StyledPresable = styled(Pressable);
@@ -126,12 +127,13 @@ export default function Index() {
             </Text>
           </View>
         ) : routines.length === 0 ? (
-          <View className="justify-center items-center">
+          <View className="flex-1 justify-center items-center mb-32">
+            <NotIcon />
             <Text
-              className="text-white text-md"
+              className="text-[#505050] text-md text-center"
               style={{ fontFamily: "Inter-Bold" }}
             >
-              NO HAY RUTINAS ACTUALMENTE
+              Sin rutinas
             </Text>
           </View>
         ) : (

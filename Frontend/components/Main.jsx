@@ -6,7 +6,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { Screen } from "./Screen";
-import { UserDefaultIcon } from "../utils/Icons";
+import { NotIcon, UserDefaultIcon } from "../utils/Icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
 import { TrainingCard } from "../components/training/TrainingCard";
@@ -103,12 +103,13 @@ export function Main() {
               </Text>
             </View>
           ) : trainings.length === 0 ? (
-            <View className="justify-center items-center mt-5">
+            <View className="flex-1 justify-center items-center mb-32">
+              <NotIcon />
               <Text
-                className="text-white text-md"
+                className="text-[#505050] text-md text-center"
                 style={{ fontFamily: "Inter-Bold" }}
               >
-                NO HAY ENTRENAMIENTOS ACTUALMENTE
+                Sin entrenos
               </Text>
             </View>
           ) : (
@@ -126,18 +127,22 @@ export function Main() {
           )}
         </View>
 
-        <View className="justify-center items-center my-3">
-          <Link asChild href="../trainHistory">
-            <Pressable>
-              <Text
-                className="text-white"
-                style={{ fontFamily: "Inter-SemiBold" }}
-              >
-                Ver más...
-              </Text>
-            </Pressable>
-          </Link>
-        </View>
+        {trainings.length !== 0 ? (
+          <View className="justify-center items-center my-3">
+            <Link asChild href="../trainHistory">
+              <Pressable>
+                <Text
+                  className="text-white"
+                  style={{ fontFamily: "Inter-SemiBold" }}
+                >
+                  Ver más...
+                </Text>
+              </Pressable>
+            </Link>
+          </View>
+        ) : (
+          ""
+        )}
       </View>
     </Screen>
   );
