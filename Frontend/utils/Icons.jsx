@@ -27,3 +27,6 @@ export const PlayIcon = () => (
 export const RestartIcon = () => (
   <AntDesign name="reload1" size={24} color="#25AEA6" />
 );
+export const NotIcon = () => (
+  <AntDesign name="exclamationcircleo" size={26} color="#505050" />
+);
