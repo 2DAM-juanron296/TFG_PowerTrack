@@ -173,6 +173,7 @@ export default function TrainingSession() {
       const [data, res] = await createWorkout(request);
 
       if (res) {
+        console.error("Error al crear el workout", data.message);
         Toast.show({
           type: "error",
           text1: "Error",
@@ -198,10 +199,12 @@ export default function TrainingSession() {
         visibilityTime: 2000,
       });
 
+      console.log("Ejercicios antes de map:", exercises);
+
       const updatedExercises = exercises.map((ex) => ({
         order: ex.order,
         workout_id: data.workout.id,
-        exercise_id: ex.id,
+        exercise_id: ex.exercise_id,
       }));
 
       console.log("Ejercicios a crear: ", updatedExercises);
@@ -211,6 +214,7 @@ export default function TrainingSession() {
       });
 
       if (resEx) {
+        console.error("Error al crear el workout_exercise", dataEx.message);
         Toast.show({
           type: "error",
           text1: "Error",
@@ -264,6 +268,10 @@ export default function TrainingSession() {
       });
 
       if (resSet) {
+        console.error(
+          "Error al crear el workout_exercise_set",
+          dataSet.message,
+        );
         Toast.show({
           type: "error",
           text1: "Error",
