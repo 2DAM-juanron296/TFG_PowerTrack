@@ -7,11 +7,12 @@ import Toast from "react-native-toast-message";
 import { BackIcon } from "../../utils/Icons";
 import { fetchExerciseSets } from "../../context/api/sets";
 import { ExerciseImages } from "../../utils/ExerciseImages";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function DetailRoutine() {
   const StyledPresable = styled(Pressable);
   const { idRoutine, from } = useLocalSearchParams();
-
+  const insets = useSafeAreaInsets();
   const router = useRouter();
 
   const [exercises, setExercises] = useState([]);
@@ -97,7 +98,7 @@ export default function DetailRoutine() {
   };
 
   return (
-    <View className="mx-7 mt-5">
+    <View className="flex-1 mx-7 mt-5">
       <StyledPresable
         onPress={handleBack}
         style={({ pressed }) => [{ opacity: pressed ? 0.6 : 1 }]}
@@ -105,58 +106,54 @@ export default function DetailRoutine() {
         <BackIcon />
       </StyledPresable>
 
-      <View className="mt-10">
-        <View className="justify-start items-start mb-5">
-          <Text
-            className="text-2xl text-[#25AEA6]"
-            style={{ fontFamily: "Inter-Bold" }}
-          >
-            Ejercicios
-          </Text>
-        </View>
-        <FlatList
-          data={exercises}
-          keyExtractor={(exercise) => exercise.id}
-          renderItem={({ item }) => (
-            <View className="mb-5 border border-[#222] bg-[#0f0f0f] rounded-lg p-4">
-              <View className="flex-row items-center">
-                <Image
-                  source={getExerciseImage(item.exercise.id)}
-                  className="w-24 h-24 rounded-lg mr-[15px]"
-                />
+      <Text
+        className="text-2xl text-[#25AEA6] mt-10 mb-5"
+        style={{ fontFamily: "Inter-Bold" }}
+      >
+        Ejercicios
+      </Text>
 
-                <View className="flex-1">
-                  <Text
-                    className="text-white text-xl pb-3"
-                    style={{ fontFamily: "Inter-SemiBold" }}
-                  >
-                    {item.order}. {item.exercise.name}
-                  </Text>
-
-                  {item.sets && item.sets.length > 0 ? (
-                    item.sets.map((set) => (
-                      <Text
-                        key={set.id}
-                        className="text-white pb-1"
-                        style={{ fontFamily: "Inter-Regular", fontSize: 14 }}
-                      >
-                        Serie {set.order}: {set.reps} reps - {set.weight} kg
-                      </Text>
-                    ))
-                  ) : (
+      <FlatList
+        data={exercises}
+        keyExtractor={(exercise) => exercise.id.toString()}
+        contentContainerStyle={{ paddingBottom: insets.bottom }}
+        renderItem={({ item }) => (
+          <View className="mb-5 border border-[#222] bg-[#0f0f0f] rounded-lg p-4">
+            <View className="flex-row items-center">
+              <Image
+                source={getExerciseImage(item.exercise.id)}
+                className="w-24 h-24 rounded-lg mr-[15px]"
+              />
+              <View className="flex-1">
+                <Text
+                  className="text-white text-xl pb-3"
+                  style={{ fontFamily: "Inter-SemiBold" }}
+                >
+                  {item.order}. {item.exercise.name}
+                </Text>
+                {item.sets?.length > 0 ? (
+                  item.sets.map((set) => (
                     <Text
+                      key={set.id}
                       className="text-white pb-1"
                       style={{ fontFamily: "Inter-Regular", fontSize: 14 }}
                     >
-                      No hay series registradas
+                      Serie {set.order}: {set.reps} reps - {set.weight} kg
                     </Text>
-                  )}
-                </View>
+                  ))
+                ) : (
+                  <Text
+                    className="text-white pb-1"
+                    style={{ fontFamily: "Inter-Regular", fontSize: 14 }}
+                  >
+                    No hay series registradas
+                  </Text>
+                )}
               </View>
             </View>
-          )}
-        />
-      </View>
+          </View>
+        )}
+      />
     </View>
   );
 }
