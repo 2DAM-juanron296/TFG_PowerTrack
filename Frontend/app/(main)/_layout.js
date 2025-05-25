@@ -56,8 +56,8 @@ export default function MainLayout() {
         />
         <Stack.Screen name="trainHistory" options={{ title: "Historial" }} />
         <Stack.Screen
-          name="[idRoutine]"
-          options={{ title: "Detalle de Rutina" }}
+          name="[idWork]"
+          options={{ title: "Detalle de rutinas o entrenos" }}
         />
       </Stack>
     </SafeAreaProvider>
