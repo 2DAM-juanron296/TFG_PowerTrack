@@ -11,6 +11,17 @@ use Illuminate\Http\Request;
 
 class WorkoutExerciseSetController extends Controller
 {
+    public function index($idWorkoutExercise) {
+        $sets = Workout_Exercise_Set::where('workout_exercise_id', $idWorkoutExercise)
+                                     ->orderBy('order')
+                                     ->get();
+
+        return response()->json([
+            'message' => 'Sets recogidos',
+            'workout_exercise_sets' => $sets
+        ], 200);
+    }
+
     // Método para crear sets de un ejercicio/entreno - App
     public function store(Request $request)
     {

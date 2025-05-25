@@ -8,6 +8,19 @@ use Illuminate\Http\Request;
 
 class WorkoutExerciseController extends Controller
 {
+    public function index($idWorkout) 
+    {
+        $exercises = Workout_Exercise::with('exercise:id,name')
+                                     ->where('workout_id', $idWorkout)
+                                     ->orderBy('order')
+                                     ->get();
+
+        return response()->json([
+            'message' => 'Ejercicios de entreno recogidos',
+            'exercises' => $exercises
+        ], 200);
+    }
+
     // Método para crear ejercicios de un entreno - App
     public function store(Request $request)
     {
