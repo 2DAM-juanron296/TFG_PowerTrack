@@ -2,9 +2,11 @@ import { Text, View, Pressable } from "react-native";
 import { styled } from "nativewind";
 import { useEffect, useState } from "react";
 import { fetchRoutineName } from "../../context/api/routines";
+import { useRouter } from "expo-router";
 
 export function TrainingCard({ workout }) {
   const StyledPresable = styled(Pressable);
+  const router = useRouter();
 
   const [name, setName] = useState(null);
 
@@ -29,6 +31,17 @@ export function TrainingCard({ workout }) {
   return (
     <View className="w-full">
       <StyledPresable
+        onPress={() =>
+          router.push({
+            pathname: `/(main)/${workout.id}`,
+            params: {
+              work: "workout",
+              date: workout.date,
+              type: name,
+              workoutName: workout.name,
+            },
+          })
+        }
         className="border border-[#222] mb-2 bg-[#0f0f0f] rounded-lg p-4"
         style={{ minWidth: "100%" }}
       >
