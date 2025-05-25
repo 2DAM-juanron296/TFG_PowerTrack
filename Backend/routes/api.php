@@ -85,12 +85,14 @@ Route::middleware('auth:sanctum')->group(function() {
 
     // Workout Exercises
     Route::controller(WorkoutExerciseController::class)->group(function() {
+        Route::get('/workoutExercises/{idWorkout}', 'index');
 
         Route::post('/createWorkoutExercise', 'store');
     });
 
     // Workout Exercise Sets
     Route::controller(WorkoutExerciseSetController::class)->group(function() {
+        Route::get('/workoutExerciseSets/{idWorkoutExercise}', 'index');
 
         Route::post('/createWorkoutExerciseSet', 'store');
     });
