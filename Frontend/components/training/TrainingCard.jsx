@@ -14,15 +14,12 @@ export function TrainingCard({ workout }) {
     async function getRoutineName() {
       const [data, res] = await fetchRoutineName(workout.routine_id);
 
-      console.log("Nombre de la rutina: ", data.name);
-
       if (res) {
         console.log("Error obteniendo el nombre de la rutina");
         return;
       }
 
       setName(data.name);
-      console.log("Nombre de la rutina: ", data.name);
     }
 
     getRoutineName();
@@ -36,6 +33,8 @@ export function TrainingCard({ workout }) {
             pathname: `/(main)/${workout.id}`,
             params: {
               work: "workout",
+              volume: workout.volume_training,
+              duration: workout.duration,
               date: workout.date,
               type: name,
               workoutName: workout.name,
