@@ -120,7 +120,7 @@ export default function Index() {
           <View className="flex-1 justify-center items-center mb-20">
             <ActivityIndicator size="large" color="#25AEA6" />
             <Text
-              className="text-white text-md text-center mt-2"
+              className="text-white text-md text-center mt-2 ml-2"
               style={{ fontFamily: "Inter-SemiBold" }}
             >
               Cargando...
