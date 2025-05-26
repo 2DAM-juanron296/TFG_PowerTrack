@@ -17,11 +17,12 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function Detail() {
   const StyledPresable = styled(Pressable);
-  const { idWork, from, work, date, type, workoutName } =
+  const { idWork, from, work, date, type, workoutName, volume, duration } =
     useLocalSearchParams();
   const insets = useSafeAreaInsets();
   const router = useRouter();
 
+  const [reps, setReps] = useState(0);
   const [exercises, setExercises] = useState([]);
 
   const getExerciseImage = (id) => {
@@ -87,10 +88,6 @@ export default function Detail() {
         });
 
         setExercises(enrichedExercises);
-
-        console.log("Rutina", data.exercises);
-        console.log("Ejercicios de la rutina", data.exercises[0].exercise.name);
-        console.log("Sets: ", setsResponse);
       };
       getRoutineExercises();
     } else if (work === "workout") {
@@ -132,19 +129,53 @@ export default function Detail() {
           }),
         );
 
+        const totalReps = setsResponse
+          .flat()
+          .reduce((sum, set) => sum + (set.reps || 0), 0);
+
+        setReps(totalReps);
+
         const enrichedExercises = data.exercises.map((ex, index) => {
           return { ...ex, sets: setsResponse[index] };
         });
 
         setExercises(enrichedExercises);
-
-        console.log("Entreno", data.exercises);
-        console.log("Ejercicios del entreno", data.exercises[0].exercise.name);
-        console.log("Sets: ", setsResponse);
       };
       getWorkoutExercises();
     }
   }, [idWork, work]);
+
+  const formatTime = (secs) => {
+    const min = Math.floor(secs / 60)
+      .toString()
+      .padStart(2, "0");
+    const sec = (secs % 60).toString().padStart(2, "0");
+    return `${min}:${sec}`;
+  };
+
+  const formatDate = (dateString) => {
+    const months = [
+      "enero",
+      "febrero",
+      "marzo",
+      "abril",
+      "mayo",
+      "junio",
+      "julio",
+      "agosto",
+      "septiempre",
+      "octubre",
+      "noviembre",
+      "diciembre",
+    ];
+
+    const date = new Date(dateString);
+    const day = date.getDate();
+    const month = months[date.getMonth()];
+    const year = date.getFullYear();
+
+    return `${day} de ${month} de ${year}`;
+  };
 
   const handleBack = () => {
     if (from === "training" && work !== "workout") {
@@ -168,22 +199,73 @@ export default function Detail() {
             className="text-2xl text-white mt-5"
             style={{ fontFamily: "Inter-Bold" }}
           >
-            {workoutName}
+            {type} - {workoutName}
           </Text>
           <Text
-            className="text-md text-white mt-2 mb-5"
+            className="text-md text-[#999] mt-2 mb-3"
             style={{ fontFamily: "Inter-SemiBold" }}
           >
-            {type} - {date}
+            {formatDate(date)}
           </Text>
         </View>
       ) : (
         <Text
-          className="text-2xl text-[#25AEA6] mt-10"
+          className="text-2xl text-[#25AEA6] mt-7 mb-5"
           style={{ fontFamily: "Inter-Bold" }}
         >
           Ejercicios
         </Text>
+      )}
+
+      {work === "workout" ? (
+        <View className="flex-row justify-between mt-1 mb-6 p-2 rounded-lg border border-[#222] bg-[#0f0f0f]">
+          <View>
+            <Text
+              className="text-md text-[#999]"
+              style={{ fontFamily: "Inter-SemiBold" }}
+            >
+              Volumen Total
+            </Text>
+            <Text
+              className="text-md text-white"
+              style={{ fontFamily: "Inter-SemiBold" }}
+            >
+              {volume} kg
+            </Text>
+          </View>
+
+          <View>
+            <Text
+              className="text-md text-[#999]"
+              style={{ fontFamily: "Inter-SemiBold" }}
+            >
+              Repeticiones
+            </Text>
+            <Text
+              className="text-md text-white"
+              style={{ fontFamily: "Inter-SemiBold" }}
+            >
+              {reps}
+            </Text>
+          </View>
+
+          <View>
+            <Text
+              className="text-md text-[#999]"
+              style={{ fontFamily: "Inter-SemiBold" }}
+            >
+              Duración
+            </Text>
+            <Text
+              className="text-md text-white"
+              style={{ fontFamily: "Inter-SemiBold" }}
+            >
+              {formatTime(duration)} min
+            </Text>
+          </View>
+        </View>
+      ) : (
+        ""
       )}
 
       <FlatList
