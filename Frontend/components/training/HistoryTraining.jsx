@@ -4,21 +4,20 @@ import {
   Pressable,
   FlatList,
   ActivityIndicator,
+  TextInput,
 } from "react-native";
 import { Screen } from "../Screen";
-import { Link, useRouter } from "expo-router";
-import { styled } from "nativewind";
 import { BackIcon, NotIcon } from "../../utils/Icons";
 import { fetchWorkouts } from "../../context/api/trainings";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState, useEffect } from "react";
 import Toast from "react-native-toast-message";
 import { TrainingCard } from "./TrainingCard";
+import { useRouter } from "expo-router";
 
 export function HistoryTraining() {
-  const StyledPresable = styled(Pressable);
   const router = useRouter();
 
+  const [searchText, setSearchText] = useState("");
   const [trainings, setTrainings] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -54,6 +53,7 @@ export function HistoryTraining() {
           visibilityTime: 2000,
         });
 
+        console.log("Entrenamientos obtenidos:", data.workouts);
         setTrainings(data.workouts);
       } catch (error) {
         console.error("Error al obtener datos de AsyncStorage", error);
@@ -65,15 +65,33 @@ export function HistoryTraining() {
     getData();
   }, []);
 
+  const filteredTrainings =
+    searchText.trim() === ""
+      ? trainings
+      : trainings.filter((item) =>
+          item.name.toLowerCase().includes(searchText.toLowerCase()),
+        );
+
   return (
     <Screen>
       <View className="flex-1 mt-3 mx-10">
-        <Pressable
-          className="mb-4"
-          onPress={() => router.push("/(main)/(tabs)/home")}
-        >
-          <BackIcon />
-        </Pressable>
+        <View className="flex-row items-center mb-4 space-x-3">
+          {/* Botón de retroceso */}
+          <Pressable onPress={() => router.push("/(main)/(tabs)/home")}>
+            <BackIcon />
+          </Pressable>
+
+          {/* Input de búsqueda */}
+          <TextInput
+            className="flex-1 bg-[#1E1E1E] text-white px-4 py-2 rounded-lg"
+            placeholderTextColor="#999"
+            placeholder="Buscar entrenos..."
+            style={{ fontFamily: "Inter-SemiBold" }}
+            value={searchText}
+            onChangeText={setSearchText}
+          />
+        </View>
+
         <View className="justify-start items-start mb-5">
           <Text
             className="text-2xl text-[#25AEA6]"
@@ -106,7 +124,7 @@ export function HistoryTraining() {
         ) : (
           <View className="flex-1 pb-5">
             <FlatList
-              data={trainings}
+              data={filteredTrainings}
               keyExtractor={(item) => `${item.id}`}
               renderItem={({ item }) => (
                 <View className="items-center">
