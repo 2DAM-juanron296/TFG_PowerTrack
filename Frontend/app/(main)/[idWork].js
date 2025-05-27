@@ -17,8 +17,17 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function Detail() {
   const StyledPresable = styled(Pressable);
-  const { idWork, from, work, date, type, workoutName, volume, duration } =
-    useLocalSearchParams();
+  const {
+    idWork,
+    from,
+    work,
+    date,
+    type,
+    workoutName,
+    volume,
+    duration,
+    history,
+  } = useLocalSearchParams();
   const insets = useSafeAreaInsets();
   const router = useRouter();
 
@@ -178,12 +187,14 @@ export default function Detail() {
   };
 
   const handleBack = () => {
-    if (from === "training" && work !== "workout") {
+    if (from === "training" && work !== "workout" && history === false) {
       router.push("/(main)/(tabs)/training");
-    } else if (work !== "workout") {
+    } else if (work !== "workout" && history === false) {
       router.push("/(main)/exploreRoutine");
-    } else {
+    } else if (!history) {
       router.push("/(main)/(tabs)/home");
+    } else {
+      router.push("/(main)/trainHistory");
     }
   };
 
