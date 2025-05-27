@@ -2,6 +2,7 @@ import Entypo from "@expo/vector-icons/Entypo";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import Feather from "@expo/vector-icons/Feather";
 
 export const HomeIcon = () => <Entypo name="home" size={24} color="#25AEA6" />;
 export const TrainingIcon = () => (
@@ -16,6 +17,9 @@ export const LogoutIcon = () => (
 export const UserDefaultIcon = () => (
   <FontAwesome name="user-circle" size={80} color="#25AEA6" />
 );
+export const UserIcon = () => (
+  <AntDesign name="user" size={50} color="#25AEA6" />
+);
 export const ChatIcon = () => <Entypo name="chat" size={24} color="#25AEA6" />;
 export const BackIcon = () => <Entypo name="back" size={24} color="#25AEA6" />;
 export const PauseIcon = () => (
@@ -29,4 +33,7 @@ export const RestartIcon = () => (
 );
 export const NotIcon = () => (
   <AntDesign name="exclamationcircleo" size={26} color="#505050" />
+);
+export const SettingsIcon = () => (
+  <Feather name="settings" size={32} color="#707070" />
 );
