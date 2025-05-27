@@ -79,6 +79,7 @@ Route::middleware('auth:sanctum')->group(function() {
     // Workouts
     Route::controller(WorkoutController::class)->group(function() {
         Route::get('/workouts', 'index');
+        Route::get('/workoutsLast', 'getLastWorkouts');
 
         Route::post('/createWorkout', 'store');
     });
