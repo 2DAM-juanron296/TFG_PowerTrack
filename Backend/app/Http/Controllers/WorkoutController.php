@@ -36,6 +36,36 @@ class WorkoutController extends Controller
         }
     }
 
+    public function getLastWorkouts(Request $request) 
+    {
+        try
+        {
+            $idUser = $request->user()->id;
+
+            $workouts = Workout::where('user_id', $idUser)
+                               ->orderBy('created_at', 'desc')
+                               ->take(4)
+                               ->get();
+
+            if ($workouts->isEmpty()) {
+                return response()->json([
+                    'message' => 'No hay entrenamientos actualmente',
+                    'workouts' => []
+                ], 200);
+            }
+
+            return response()->json([
+                'message' => 'Entrenamientos recogidos',
+                'workouts' => $workouts
+            ], 200);
+
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Error: '.$e->getMessage()
+            ], 500);
+        }
+    }
+
     // Método para crear un nuevo entreno - App
     public function store(Request $request)
     {
