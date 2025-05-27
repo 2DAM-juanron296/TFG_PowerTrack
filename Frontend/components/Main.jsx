@@ -11,7 +11,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
 import { TrainingCard } from "../components/training/TrainingCard";
 import { Link } from "expo-router";
-import { fetchWorkouts } from "../context/api/trainings";
+import { fetchLastWorkouts } from "../context/api/trainings";
 import Toast from "react-native-toast-message";
 
 export function Main() {
@@ -29,7 +29,7 @@ export function Main() {
           setUsername(user);
         }
 
-        const [data, res] = await fetchWorkouts();
+        const [data, res] = await fetchLastWorkouts();
 
         if (res) {
           console.log("Error al obtener los entrenamientos", data.message);
@@ -71,64 +71,62 @@ export function Main() {
   return (
     <Screen>
       <View className="flex-1 justify-between">
-        <View className="flex-1">
-          <View className="justify-center items-center text-center pb-12 mt-16">
-            <UserDefaultIcon />
-            <View>
-              <Text
-                className="text-white text-lg pt-2"
-                style={{ fontFamily: "Inter-SemiBold" }}
-              >
-                {username ? `Bienvenido, ${username}` : "Bienvenido, User"}
-              </Text>
-            </View>
-          </View>
-          <View className="justify-start items-start mx-10 mb-4">
+        <View className="justify-center items-center text-center pb-12 mt-10">
+          <UserDefaultIcon />
+          <View>
             <Text
-              className="text-2xl text-[#25AEA6]"
-              style={{ fontFamily: "Inter-Bold" }}
+              className="text-white text-lg pt-2"
+              style={{ fontFamily: "Inter-SemiBold" }}
             >
-              Entrenamientos
+              {username ? `Bienvenido, ${username}` : "Bienvenido, User"}
             </Text>
           </View>
-
-          {loading ? (
-            <View className="justify-center items-center mt-10">
-              <ActivityIndicator size="large" color="#25AEA6" />
-              <Text
-                className="text-white text-md text-center mt-2 ml-2"
-                style={{ fontFamily: "Inter-SemiBold" }}
-              >
-                Cargando...
-              </Text>
-            </View>
-          ) : trainings.length === 0 ? (
-            <View className="flex-1 justify-center items-center mb-32">
-              <NotIcon />
-              <Text
-                className="text-[#505050] text-md text-center"
-                style={{ fontFamily: "Inter-Bold" }}
-              >
-                Sin entrenos
-              </Text>
-            </View>
-          ) : (
-            <View className="flex-1 mx-10">
-              <FlatList
-                data={trainings}
-                keyExtractor={(item) => `${item.id}`}
-                renderItem={({ item }) => (
-                  <View className="items-center">
-                    <TrainingCard workout={item} />
-                  </View>
-                )}
-              />
-            </View>
-          )}
+        </View>
+        <View className="justify-start items-start mx-10 mb-4">
+          <Text
+            className="text-2xl text-[#25AEA6]"
+            style={{ fontFamily: "Inter-Bold" }}
+          >
+            Entrenamientos
+          </Text>
         </View>
 
+        {loading ? (
+          <View className="justify-center items-center mt-10">
+            <ActivityIndicator size="large" color="#25AEA6" />
+            <Text
+              className="text-white text-md text-center mt-2 ml-2"
+              style={{ fontFamily: "Inter-SemiBold" }}
+            >
+              Cargando...
+            </Text>
+          </View>
+        ) : trainings.length === 0 ? (
+          <View className="flex-1 justify-center items-center mb-32">
+            <NotIcon />
+            <Text
+              className="text-[#505050] text-md text-center"
+              style={{ fontFamily: "Inter-Bold" }}
+            >
+              Sin entrenos
+            </Text>
+          </View>
+        ) : (
+          <View className="flex-1 mx-10">
+            <FlatList
+              data={trainings}
+              keyExtractor={(item) => `${item.id}`}
+              renderItem={({ item }) => (
+                <View className="items-center">
+                  <TrainingCard workout={item} history={false} />
+                </View>
+              )}
+            />
+          </View>
+        )}
+
         {trainings.length !== 0 ? (
-          <View className="justify-center items-center my-3">
+          <View className="justify-center items-center mb-4">
             <Link asChild href="../trainHistory">
               <Pressable>
                 <Text
