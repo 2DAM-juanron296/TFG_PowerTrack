@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { fetchRoutineName } from "../../context/api/routines";
 import { useRouter } from "expo-router";
 
-export function TrainingCard({ workout }) {
+export function TrainingCard({ workout, history }) {
   const StyledPresable = styled(Pressable);
   const router = useRouter();
 
@@ -38,6 +38,7 @@ export function TrainingCard({ workout }) {
               date: workout.date,
               type: name,
               workoutName: workout.name,
+              history: history,
             },
           })
         }
