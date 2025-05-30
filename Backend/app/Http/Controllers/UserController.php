@@ -144,7 +144,7 @@ class UserController extends Controller
                                  ->whereBetween('date', [$startOfYear, $today])
                                  ->count();
 
-            //$top = $this->getUserTop($idUser);            
+            $top = $this->getUserTop($idUser);            
 
             return response()->json([
                 'message' => 'Datos recogidos',
@@ -154,7 +154,7 @@ class UserController extends Controller
                 'workoutsWeek' => $workoutsWeek,
                 'workoutsMonth' => $workoutsMonth,
                 'workoutsYear' => $workoutsYear,
-                //'top' => $top
+                'top' => $top
             ], 200);
 
         } catch (Exception $e) {
@@ -162,5 +162,40 @@ class UserController extends Controller
                 'message' => 'Error: '.$e->getMessage()
             ], 500);
         }
+    }
+
+    protected function getUserTop($userId)
+    {
+        $topSets = DB::table('workout_exercise_sets as wes')
+                     ->join('workout_exercises as we', 'wes.workout_exercise_id', '=', 'we.id')
+                     ->join('workouts as w', 'we.workout_id', '=', 'w.id')
+                     ->join('exercises as e', 'we.exercise_id', '=', 'e.id')
+                     ->select(
+                        'e.name as exercise_name',
+                        'wes.weight',
+                        'wes.reps',
+                        DB::raw('(wes.weight * wes.reps) as intensity') 
+                    )
+                    ->where('w.user_id', $userId)
+                    ->whereNotNull('wes.weight')
+                    ->whereNotNull('wes.reps')
+                    ->orderByDesc(DB::raw('(wes.weight * wes.reps)'))
+                    ->get()
+                    ->groupBy('exercise_name')
+                    ->map(function ($group) {
+                        return $group->first();
+                    })
+                    ->sortByDesc('intensity')
+                    ->take(3)
+                    ->map(function ($item) {
+                        return [
+                            'exercise_name' => $item->exercise_name,
+                            'weight' => $item->weight,
+                            'reps' => $item->reps,
+                        ];
+                    })
+                    ->values();
+
+        return $topSets;
     }
 }
