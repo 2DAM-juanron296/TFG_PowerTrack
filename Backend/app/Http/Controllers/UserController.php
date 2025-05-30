@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Routine;
 use App\Models\User;
+use App\Models\Workout;
+use App\Models\Workout_Exercise_Set;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -94,6 +98,63 @@ class UserController extends Controller
             return response()->json([
                 'message' => 'Rutinas recogidas',
                 'routines' =>  $routines
+            ], 200);
+
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Error: '.$e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function getData(Request $request)
+    {
+        try 
+        {
+            $idUser = $request->user()->id;
+            $today = Carbon::today();
+
+            $startOfWeek = $today->copy()->startOfWeek();
+            $startOfMonth = $today->copy()->startOfMonth(); 
+            $startOfYear = $today->copy()->startOfYear();
+
+            // Tiempo de Entreno Total 
+            $durationWeek = Workout::where('user_id', $idUser)
+                                   ->whereBetween('date', [$startOfWeek, $today])
+                                   ->sum('duration');                        
+            
+            $durationMonth = Workout::where('user_id', $idUser)
+                                    ->whereBetween('date', [$startOfMonth, $today])
+                                    ->sum('duration');
+
+            $durationYear = Workout::where('user_id', $idUser)
+                                   ->whereBetween('date', [$startOfYear, $today])
+                                   ->sum('duration');
+
+            // Volumen de Entrenamiento Total
+            $workoutsWeek = Workout::where('user_id', $idUser)
+                                 ->whereBetween('date', [$startOfWeek, $today])
+                                 ->count();
+
+            $workoutsMonth = Workout::where('user_id', $idUser)
+                                  ->whereBetween('date', [$startOfMonth, $today])
+                                  ->count();
+
+            $workoutsYear = Workout::where('user_id', $idUser)
+                                 ->whereBetween('date', [$startOfYear, $today])
+                                 ->count();
+
+            //$top = $this->getUserTop($idUser);            
+
+            return response()->json([
+                'message' => 'Datos recogidos',
+                'durationWeek' => $durationWeek,
+                'durationMonth' => $durationMonth,
+                'durationYear' => $durationYear,
+                'workoutsWeek' => $workoutsWeek,
+                'workoutsMonth' => $workoutsMonth,
+                'workoutsYear' => $workoutsYear,
+                //'top' => $top
             ], 200);
 
         } catch (Exception $e) {
