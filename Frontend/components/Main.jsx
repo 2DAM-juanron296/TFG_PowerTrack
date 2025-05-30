@@ -71,6 +71,7 @@ export function Main() {
   return (
     <Screen>
       <View className="flex-1 justify-between">
+        {/* Header usuario */}
         <View className="justify-center items-center text-center pb-12 mt-10">
           <UserDefaultIcon />
           <View>
@@ -82,6 +83,8 @@ export function Main() {
             </Text>
           </View>
         </View>
+
+        {/* Título */}
         <View className="justify-start items-start mx-10 mb-4">
           <Text
             className="text-2xl text-[#25AEA6]"
@@ -91,28 +94,29 @@ export function Main() {
           </Text>
         </View>
 
-        {loading ? (
-          <View className="justify-center items-center mt-10">
-            <ActivityIndicator size="large" color="#25AEA6" />
-            <Text
-              className="text-white text-md text-center mt-2 ml-2"
-              style={{ fontFamily: "Inter-SemiBold" }}
-            >
-              Cargando...
-            </Text>
-          </View>
-        ) : trainings.length === 0 ? (
-          <View className="flex-1 justify-center items-center mb-32">
-            <NotIcon />
-            <Text
-              className="text-[#505050] text-md text-center"
-              style={{ fontFamily: "Inter-Bold" }}
-            >
-              Sin entrenos
-            </Text>
-          </View>
-        ) : (
-          <View className="flex-1 mx-10">
+        {/* Aquí va la sección que cambia (loading, vacío o lista) */}
+        <View className="flex-1 mx-10">
+          {loading ? (
+            <View className="flex-1 justify-center items-center">
+              <ActivityIndicator size="large" color="#25AEA6" />
+              <Text
+                className="text-white text-md text-center mt-2"
+                style={{ fontFamily: "Inter-SemiBold" }}
+              >
+                Cargando...
+              </Text>
+            </View>
+          ) : trainings.length === 0 ? (
+            <View className="flex-1 justify-center items-center">
+              <NotIcon />
+              <Text
+                className="text-[#505050] text-md text-center"
+                style={{ fontFamily: "Inter-Bold" }}
+              >
+                Sin entrenos
+              </Text>
+            </View>
+          ) : (
             <FlatList
               data={trainings}
               keyExtractor={(item) => `${item.id}`}
@@ -122,10 +126,10 @@ export function Main() {
                 </View>
               )}
             />
-          </View>
-        )}
+          )}
+        </View>
 
-        {trainings.length !== 0 ? (
+        {trainings.length !== 0 && (
           <View className="justify-center items-center mb-4">
             <Link asChild href="../trainHistory">
               <Pressable>
@@ -138,8 +142,6 @@ export function Main() {
               </Pressable>
             </Link>
           </View>
-        ) : (
-          ""
         )}
       </View>
     </Screen>
