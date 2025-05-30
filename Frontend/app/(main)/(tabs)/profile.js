@@ -102,7 +102,7 @@ export default function Profile() {
           </View>
         </View>
 
-        <View className="justify-start items-start mb-2 mt-8">
+        <View className="justify-start items-start mb-2 mt-6">
           <Text
             className="text-2xl text-[#25AEA6]"
             style={{ fontFamily: "Inter-Bold" }}
@@ -236,13 +236,7 @@ export default function Profile() {
                   className="text-md text-white"
                   style={{ fontFamily: "Inter-Bold" }}
                 >
-                  {index + 1}.
-                </Text>
-                <Text
-                  className="text-md text-white"
-                  style={{ fontFamily: "Inter-Bold" }}
-                >
-                  {item.exercise_name}
+                  {index + 1}. {item.exercise_name}
                 </Text>
                 <Text
                   className="text-md text-white"
