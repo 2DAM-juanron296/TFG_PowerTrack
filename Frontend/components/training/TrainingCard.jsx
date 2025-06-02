@@ -4,13 +4,19 @@ import { useEffect, useState } from "react";
 import { fetchRoutineName } from "../../context/api/routines";
 import { useRouter } from "expo-router";
 
+const routineNameCache = {};
+
 export function TrainingCard({ workout, history }) {
   const StyledPresable = styled(Pressable);
   const router = useRouter();
 
-  const [name, setName] = useState(null);
+  const [name, setName] = useState(
+    routineNameCache[workout.routine_id] ?? null,
+  );
 
   useEffect(() => {
+    if (routineNameCache[workout.routine_id]) return;
+
     async function getRoutineName() {
       const [data, res] = await fetchRoutineName(workout.routine_id);
 
@@ -19,6 +25,7 @@ export function TrainingCard({ workout, history }) {
         return;
       }
 
+      routineNameCache[workout.routine_id] = data.name;
       setName(data.name);
     }
 
