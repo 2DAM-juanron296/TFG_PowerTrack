@@ -144,7 +144,11 @@ class UserController extends Controller
                                  ->whereBetween('date', [$startOfYear, $today])
                                  ->count();
 
+            // 3 ejercicios Top - PR
             $top = $this->getUserTop($idUser);            
+
+            // Entrenos Totales
+            $total = Workout::where('user_id', $idUser)->count();
 
             return response()->json([
                 'message' => 'Datos recogidos',
@@ -154,7 +158,8 @@ class UserController extends Controller
                 'workoutsWeek' => $workoutsWeek,
                 'workoutsMonth' => $workoutsMonth,
                 'workoutsYear' => $workoutsYear,
-                'top' => $top
+                'top' => $top,
+                'totalWorkouts' => $total
             ], 200);
 
         } catch (Exception $e) {
