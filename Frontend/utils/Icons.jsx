@@ -37,3 +37,6 @@ export const NotIcon = () => (
 export const SettingsIcon = () => (
   <Feather name="settings" size={32} color="#707070" />
 );
+export const DeleteIcon = () => (
+  <MaterialCommunityIcons name="delete" size={24} color="black" />
+);
