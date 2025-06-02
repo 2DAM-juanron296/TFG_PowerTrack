@@ -1,12 +1,14 @@
-import { View, Text } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import { Screen } from "../../../components/Screen";
 import { SettingsIcon, UserIcon } from "../../../utils/Icons";
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { fetchDataUser } from "../../../context/api/user";
 import Toast from "react-native-toast-message";
+import { useRouter } from "expo-router";
 
 export default function Profile() {
+  const router = useRouter();
   const [username, setUsername] = useState("Username");
 
   const [durationWeek, setDurationWeek] = useState(0);
@@ -102,7 +104,13 @@ export default function Profile() {
           </View>
 
           <View className="absolute right-5">
-            <SettingsIcon />
+            <Pressable
+              onPress={() => {
+                router.push("/(main)/settings");
+              }}
+            >
+              <SettingsIcon />
+            </Pressable>
           </View>
         </View>
 
