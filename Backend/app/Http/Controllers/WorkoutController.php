@@ -99,4 +99,43 @@ class WorkoutController extends Controller
             ], 500);
         }
     }
+
+    // Método para eliminar un entrenamiento - App
+    public function delete(Request $request, $idWorkout) 
+    {
+        try 
+        {
+            $idUser = $request->user()->id;
+            $workout = Workout::find($idWorkout);
+            
+            if (!$workout) {
+                return response()->json([
+                    'message' => 'No se ha encontrado el entrenamiento'
+                ], 404);
+            }
+
+            if ($workout->user_id !== $idUser) {
+                return response()->json([
+                    'message' => 'Usuario no autorizado'
+                ], 403);
+            }
+
+            $result = $workout->delete();
+
+            if (!$result) {
+                return response()->json([
+                    'message' => 'Error al eliminar el entrenamiento'
+                ], 500);
+            }
+
+            return response()->json([
+                'message' => 'Entrenamiento eliminado correctamente'
+            ], 200);
+
+        }  catch (Exception $e) {
+            return response()->json([
+                'message' => 'Error: '.$e->getMessage()
+            ], 500);
+        }
+    }
 }

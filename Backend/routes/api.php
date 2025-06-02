@@ -84,6 +84,7 @@ Route::middleware('auth:sanctum')->group(function() {
         Route::get('/workoutsLast', 'getLastWorkouts');
 
         Route::post('/createWorkout', 'store');
+        Route::delete('/deleteWorkout/{idWorkout}', 'delete');
     });
 
     // Workout Exercises
