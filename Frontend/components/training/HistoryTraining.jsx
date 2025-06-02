@@ -129,7 +129,11 @@ export function HistoryTraining() {
               keyExtractor={(item) => `${item.id}`}
               renderItem={({ item }) => (
                 <View className="items-center">
-                  <TrainingCard workout={item} history={true} />
+                  <TrainingCard
+                    workout={item}
+                    history={true}
+                    setTrainings={setTrainings}
+                  />
                 </View>
               )}
             />
