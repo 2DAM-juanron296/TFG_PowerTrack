@@ -34,6 +34,8 @@ export default function Detail() {
   const [reps, setReps] = useState(0);
   const [exercises, setExercises] = useState([]);
 
+  const parsedHistory = history === "true";
+
   const getExerciseImage = (id) => {
     return (
       ExerciseImages[id] ||
@@ -187,11 +189,11 @@ export default function Detail() {
   };
 
   const handleBack = () => {
-    if (from === "training" && work !== "workout" && history === false) {
+    if (from === "training" && work !== "workout" && parsedHistory === false) {
       router.push("/(main)/(tabs)/training");
-    } else if (work !== "workout" && history === false) {
+    } else if (work !== "workout" && parsedHistory === false) {
       router.push("/(main)/exploreRoutine");
-    } else if (!history) {
+    } else if (parsedHistory === false) {
       router.push("/(main)/(tabs)/home");
     } else {
       router.push("/(main)/trainHistory");
