@@ -12,9 +12,6 @@ export default function Settings() {
   const [weight, setWeight] = useState(0);
   const [height, setHeight] = useState(0);
 
-  const [notifications, setNotifications] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
-
   return (
     <Screen>
       <View className="mx-10">
