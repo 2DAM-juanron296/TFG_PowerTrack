@@ -17,6 +17,8 @@ export default function Profile() {
   const [workoutsMonth, setWorkoutsMonth] = useState(0);
   const [workoutsYear, setWorkoutsYear] = useState(0);
 
+  const [totalWorkouts, setTotalWorkouts] = useState(0);
+
   const [top, setTop] = useState([]);
 
   useEffect(() => {
@@ -50,6 +52,8 @@ export default function Profile() {
       setWorkoutsWeek(data.workoutsWeek || 0);
       setWorkoutsMonth(data.workoutsMonth || 0);
       setWorkoutsYear(data.workoutsYear || 0);
+
+      setTotalWorkouts(data.totalWorkouts || 0);
 
       setTop(data.top || []);
     };
@@ -93,7 +97,7 @@ export default function Profile() {
               className="text-md text-white"
               style={{ fontFamily: "Inter-SemiBold" }}
             >
-              0
+              {totalWorkouts}
             </Text>
           </View>
 
