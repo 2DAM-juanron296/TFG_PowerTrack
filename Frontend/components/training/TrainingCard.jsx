@@ -3,10 +3,13 @@ import { styled } from "nativewind";
 import { useEffect, useState } from "react";
 import { fetchRoutineName } from "../../context/api/routines";
 import { useRouter } from "expo-router";
+import { DeleteIcon } from "../../utils/Icons";
+import { deleteWorkout } from "../../context/api/trainings";
+import Toast from "react-native-toast-message";
 
 const routineNameCache = {};
 
-export function TrainingCard({ workout, history }) {
+export function TrainingCard({ workout, history, setTrainings }) {
   const StyledPresable = styled(Pressable);
   const router = useRouter();
 
@@ -31,6 +34,42 @@ export function TrainingCard({ workout, history }) {
 
     getRoutineName();
   }, [workout.routine_id]);
+
+  const handleDelete = async () => {
+    try {
+      const [data, res] = await deleteWorkout(workout.id);
+
+      if (res) {
+        console.log("Error al obtener los entrenamientos", data.message);
+        Toast.show({
+          type: "error",
+          text1: "Error",
+          text2: data.message,
+          text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
+          text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
+          position: "top",
+          animation: true,
+          visibilityTime: 2000,
+        });
+        return;
+      }
+
+      setTrainings((prev) => prev.filter((item) => item.id !== workout.id));
+
+      Toast.show({
+        type: "success",
+        text1: "Éxito",
+        text2: data.message,
+        text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
+        text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
+        position: "top",
+        animation: true,
+        visibilityTime: 2000,
+      });
+    } catch (e) {
+      console.error("Error: ", e);
+    }
+  };
 
   return (
     <View className="w-full">
@@ -64,16 +103,31 @@ export function TrainingCard({ workout, history }) {
               className="text-white text-xs pt-1"
               style={{ fontFamily: "Inter-SemiBold" }}
             >
-              {name || "Rutina..."}
+              {history
+                ? `${name || "Rutina..."} - ${workout.date}`
+                : name || "Rutina..."}
             </Text>
           </View>
 
-          <Text
-            className="text-white text-md"
-            style={{ fontFamily: "Inter-SemiBold" }}
-          >
-            {workout.date}
-          </Text>
+          {history ? (
+            <Pressable
+              onPress={(e) => {
+                e.stopPropagation();
+                handleDelete();
+              }}
+              className="bg-red-500 rounded-md p-1 justify-center items-center"
+              style={{ fontFamily: "Inter-SemiBold" }}
+            >
+              <DeleteIcon />
+            </Pressable>
+          ) : (
+            <Text
+              className="text-white text-md"
+              style={{ fontFamily: "Inter-SemiBold" }}
+            >
+              {workout.date}
+            </Text>
+          )}
         </View>
       </StyledPresable>
     </View>
