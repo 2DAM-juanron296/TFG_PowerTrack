@@ -65,12 +65,13 @@ export function HistoryTraining() {
     getData();
   }, []);
 
-  const filteredTrainings =
+  const filteredTrainings = (
     searchText.trim() === ""
       ? trainings
       : trainings.filter((item) =>
-          item.name.toLowerCase().includes(searchText.toLowerCase()),
-        );
+          (item.name || "").toLowerCase().includes(searchText.toLowerCase()),
+        )
+  ).sort((a, b) => new Date(b.date) - new Date(a.date));
 
   return (
     <Screen>
