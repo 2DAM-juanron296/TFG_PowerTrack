@@ -3,6 +3,7 @@ import { Screen } from "../../components/Screen";
 import { BackIcon } from "../../utils/Icons";
 import { useRouter } from "expo-router";
 import { useState } from "react";
+import { Logout } from "../../components/auth/Logout";
 
 export default function Settings() {
   const router = useRouter();
@@ -92,16 +93,7 @@ export default function Settings() {
             Cuenta
           </Text>
 
-          <Pressable className="py-3 border-b border-[#333]">
-            <Text
-              className="text-white"
-              style={{
-                fontFamily: "Inter-SemiBold",
-              }}
-            >
-              Cerrar sesión
-            </Text>
-          </Pressable>
+          <Logout />
 
           <Pressable className="py-3 border-b border-[#333]">
             <Text

@@ -1,7 +1,6 @@
 import { Stack, useRouter } from "expo-router";
 import { Pressable, View, Image } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { Logout } from "../../components/auth/Logout";
 
 export default function MainLayout() {
   const router = useRouter();
@@ -21,15 +20,7 @@ export default function MainLayout() {
           contentStyle: { backgroundColor: "black" },
           headerTitleAlign: "center",
           headerTitle: "PowerTrack",
-          headerRight: () => (
-            <View className="w-8 justify-center items-center">
-              <Logout
-                onSuccess={() => {
-                  router.replace("/login");
-                }}
-              />
-            </View>
-          ),
+          headerRight: () => "",
           headerLeft: () => (
             <Pressable
               onPress={() => {

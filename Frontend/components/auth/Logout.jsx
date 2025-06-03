@@ -1,4 +1,4 @@
-import { Pressable } from "react-native";
+import { Pressable, Text } from "react-native";
 import { styled } from "nativewind";
 import { useAuth } from "../../context/AuthContext";
 import { LogoutIcon } from "../../utils/Icons";
@@ -52,8 +52,15 @@ export function Logout({ onSuccess }) {
   };
 
   return (
-    <StyledPressable onPress={handleLogout}>
-      <LogoutIcon />
-    </StyledPressable>
+    <Pressable onPress={handleLogout} className="py-3 border-b border-[#333]">
+      <Text
+        className="text-white"
+        style={{
+          fontFamily: "Inter-SemiBold",
+        }}
+      >
+        Cerrar sesión
+      </Text>
+    </Pressable>
   );
 }

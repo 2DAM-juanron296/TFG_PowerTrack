@@ -18,6 +18,9 @@ export function Login({ onSuccess }) {
   const [password, setPassword] = useState("");
 
   const handleLogin = async () => {
+    //await AsyncStorage.clear();
+    //return;
+
     setIsDisabled(true);
 
     if (!username || !password) {
