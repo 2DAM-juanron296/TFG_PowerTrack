@@ -48,4 +48,8 @@ class User extends Authenticatable
     public function routines() {
         return $this->hasMany(Routine::class, 'user_id');
     }
+
+    public function progress() {
+        return $this->hasOne(Progress::class, 'user_id');
+    }
 }
