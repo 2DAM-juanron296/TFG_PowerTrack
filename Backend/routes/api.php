@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\MuscleGroupController;
+use App\Http\Controllers\ProgressController;
 use App\Http\Controllers\RoutineController;
 use App\Http\Controllers\RoutineExerciseController;
 use App\Http\Controllers\RoutineExerciseSetController;
@@ -51,6 +52,12 @@ Route::middleware('auth:sanctum')->group(function() {
         Route::post('/createUser', 'store');
 
         Route::delete('/deleteUser/{id}', 'delete');
+    });
+
+    Route::controller(ProgressController::class)->group(function() {
+        Route::get('/progress', 'index');
+
+        Route::put('/updateProgress/{idProgress}', 'update');
     });
 
     // Routines
