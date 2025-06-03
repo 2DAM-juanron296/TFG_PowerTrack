@@ -1,5 +1,5 @@
 import { Stack, useRouter } from "expo-router";
-import { Pressable, View, Image } from "react-native";
+import { Pressable, Image } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 export default function MainLayout() {
