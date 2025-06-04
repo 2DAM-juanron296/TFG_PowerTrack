@@ -1,5 +1,5 @@
 import { Tabs } from "expo-router";
-import { ChatIcon, HomeIcon } from "../../../utils/Icons";
+import { HomeIcon } from "../../../utils/Icons";
 import { TrainingIcon } from "../../../utils/Icons";
 import { ProfileIcon } from "../../../utils/Icons";
 import { useState } from "react";
@@ -10,14 +10,13 @@ export default function TabsLayout() {
   const tabs = {
     home: <HomeIcon />,
     training: <TrainingIcon />,
-    chat: <ChatIcon />,
     profile: <ProfileIcon />,
   };
 
   const getTabStyle = (tabName) => {
     const isFocused = focusedTab === tabName;
     return {
-      marginHorizontal: 12,
+      marginHorizontal: 25,
       backgroundColor: isFocused ? "#222" : "transparent",
       borderTopWidth: isFocused ? 0.5 : 0,
       borderLeftWidth: isFocused ? 0.5 : 0,
