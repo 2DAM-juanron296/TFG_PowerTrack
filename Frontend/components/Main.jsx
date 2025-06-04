@@ -110,7 +110,7 @@ export function Main() {
             <View className="flex-1 justify-center items-center">
               <NotIcon />
               <Text
-                className="text-[#505050] text-md text-center"
+                className="text-[#505050] text-md text-center mb-20"
                 style={{ fontFamily: "Inter-Bold" }}
               >
                 Sin entrenos
