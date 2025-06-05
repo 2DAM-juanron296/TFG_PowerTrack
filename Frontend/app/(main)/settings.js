@@ -2,16 +2,66 @@ import { Pressable, Text, View } from "react-native";
 import { Screen } from "../../components/Screen";
 import { BackIcon } from "../../utils/Icons";
 import { useRouter } from "expo-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Logout } from "../../components/auth/Logout";
+import { fetchUserProgress } from "../../context/api/user";
+import Toast from "react-native-toast-message";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Settings() {
   const router = useRouter();
 
-  const [bodyFat, setBodyFat] = useState(0);
   const [username, setUsername] = useState("");
-  const [weight, setWeight] = useState(0);
-  const [height, setHeight] = useState(0);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [weight, setWeight] = useState(null);
+  const [height, setHeight] = useState(null);
+  const [bodyFat, setBodyFat] = useState(null);
+
+  useEffect(() => {
+    const getUserProgress = async () => {
+      const user = await AsyncStorage.getItem("username");
+      const [data, res] = await fetchUserProgress();
+
+      if (res) {
+        console.error("Error, ", data.message);
+        Toast.show({
+          type: "error",
+          text1: "Error",
+          text2: data.message,
+          text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
+          text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
+          position: "top",
+          animation: true,
+          visibilityTime: 2000,
+        });
+        return;
+      }
+
+      Toast.show({
+        type: "success",
+        text1: "Éxito",
+        text2: data.message,
+        text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
+        text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
+        position: "top",
+        animation: true,
+        visibilityTime: 2000,
+      });
+
+      console.log("Datos user", data.user);
+      console.log("Datos progress", data.progress);
+
+      setName(data.user.name);
+      setUsername(user);
+      setEmail(data.user.email);
+      setWeight(data.progress.weight);
+      setHeight(data.progress.height);
+      setBodyFat(data.progress.body_fat);
+    };
+
+    getUserProgress();
+  }, []);
 
   return (
     <Screen>
@@ -28,38 +78,41 @@ export default function Settings() {
             Mi Perfil
           </Text>
 
-          <Pressable className="py-3 border-b border-[#333]">
-            <Text
-              className="text-white"
-              style={{
-                fontFamily: "Inter-SemiBold",
-              }}
-            >
-              Nombre de usuario: {username}
-            </Text>
-          </Pressable>
+          <Text
+            className="text-white py-3 border-b border-[#333]"
+            style={{
+              fontFamily: "Inter-SemiBold",
+            }}
+          >
+            Nombre Completo: {name ?? ""}
+          </Text>
 
-          <Pressable className="py-3 border-b border-[#333]">
-            <Text
-              className="text-white"
-              style={{
-                fontFamily: "Inter-SemiBold",
-              }}
-            >
-              Peso corporal: {weight} kg
-            </Text>
-          </Pressable>
+          <Text
+            className="text-white py-3 border-b border-[#333]"
+            style={{
+              fontFamily: "Inter-SemiBold",
+            }}
+          >
+            Nombre de usuario: {username ?? ""}
+          </Text>
 
-          <Pressable className="py-3 border-b border-[#333]">
-            <Text
-              className="text-white"
-              style={{
-                fontFamily: "Inter-SemiBold",
-              }}
-            >
-              Altura: {height} cm
-            </Text>
-          </Pressable>
+          <Text
+            className="text-white py-3 border-b border-[#333]"
+            style={{
+              fontFamily: "Inter-SemiBold",
+            }}
+          >
+            Peso corporal: {weight ?? 0} kg
+          </Text>
+
+          <Text
+            className="text-white py-3 border-b border-[#333]"
+            style={{
+              fontFamily: "Inter-SemiBold",
+            }}
+          >
+            Altura: {height ?? 0} cm
+          </Text>
 
           <View className="py-3 border-b border-[#333]">
             <Text
@@ -68,7 +121,7 @@ export default function Settings() {
                 fontFamily: "Inter-SemiBold",
               }}
             >
-              Grasa corporal: {bodyFat}%
+              Grasa corporal: {bodyFat ?? 0} %
             </Text>
           </View>
         </View>
@@ -92,6 +145,32 @@ export default function Settings() {
           >
             Cuenta
           </Text>
+
+          <Pressable
+            onPress={() =>
+              router.push({
+                pathname: "/(main)/userData",
+                params: {
+                  username: username,
+                  name: name,
+                  email: email,
+                  weight: weight,
+                  height: height,
+                  bodyFat: bodyFat,
+                },
+              })
+            }
+            className="py-3 border-b border-[#333]"
+          >
+            <Text
+              className="text-white"
+              style={{
+                fontFamily: "Inter-Bold",
+              }}
+            >
+              Actualizar datos
+            </Text>
+          </Pressable>
 
           <Logout />
 
