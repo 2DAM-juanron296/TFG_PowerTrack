@@ -58,6 +58,33 @@ class UserController extends Controller
         }
     }
 
+    // Actualizar datos de usuario - App
+    public function update(Request $request) 
+    {
+        try 
+        {
+            $request->validate([
+                'name' => 'required|string',
+                'username' => 'required|string',
+                'email' => 'required|string'
+            ]);
+
+            $user = User::findOrFail($request->user()->id);
+
+            $user->update($request->only(['name', 'username', 'email']));
+            
+            return response()->json([
+                'message' => 'Usuario actualizado',
+                'user' => $user
+            ], 200);
+
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Error: '.$e->getMessage()
+            ], 400);
+        }
+    }
+
     // Eliminar un usuario - Web
     public function delete($id_user) {
 
@@ -107,6 +134,7 @@ class UserController extends Controller
         }
     }
 
+    // Obtener información del usuario - App
     public function getData(Request $request)
     {
         try 
@@ -169,6 +197,7 @@ class UserController extends Controller
         }
     }
 
+    // Obtener Top 3 ejercicios de usuario
     protected function getUserTop($userId)
     {
         $topSets = DB::table('workout_exercise_sets as wes')

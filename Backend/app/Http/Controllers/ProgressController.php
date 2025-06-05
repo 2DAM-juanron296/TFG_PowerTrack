@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Progress;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 
 class ProgressController extends Controller
 {
+    // Obtener progreso e info de un usuario - App
     public function index(Request $request)
     {
         try 
@@ -20,11 +22,17 @@ class ProgressController extends Controller
                 ], 400);
             }
 
-            $progress = Progress::where('user_id', $idUser)->get();
+            $progress = Progress::where('user_id', $idUser)->latest()->first();
+            $user = User::findOrFail($idUser);
+            $history = Progress::where('user_id', $idUser)
+                               ->orderBy('created_at', 'asc')
+                               ->get(['weight', 'created_at']);
 
             return response()->json([
                 'message' => 'Progreso obtenido',
-                'progress' => $progress
+                'progress' => $progress,
+                'user' => $user,
+                'history' => $history
             ], 200);
 
         } catch (Exception $e) {
@@ -34,25 +42,24 @@ class ProgressController extends Controller
         }
     }
 
-    public function update(Request $request, $idProgress) 
+    // Actualizar progreso de un usuario - App
+    public function store(Request $request) 
     {
         try 
         {
             $request->validate([
-                'weight' => 'nullable|double',
-                'height' => 'nullable|double',
-                'body_fat' => 'nullable|double'
+                'weight' => 'nullable|numeric',
+                'height' => 'nullable|numeric',
+                'body_fat' => 'nullable|numeric'
             ]);
 
-            $progress = Progress::findOrFail($idProgress);
+            $progress = new Progress();
+            $progress->user_id = $request->user()->id;
+            $progress->weight = $request->input('weight');
+            $progress->height = $request->input('height');
+            $progress->body_fat = $request->input('body_fat');
 
-            if ($progress->user_id !== $request->user()->id) {
-                return response()->json([
-                    'message' => 'No tienes permiso para modificar este progreso.'
-                ], 403);
-            }
-
-            $progress->update($request->only(['weight, height, body_fat']));
+            $progress->save();
 
             return response()->json([
                 'message' => 'Progreso actualizado correctamente',
