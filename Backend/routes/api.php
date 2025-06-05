@@ -52,12 +52,14 @@ Route::middleware('auth:sanctum')->group(function() {
         Route::post('/createUser', 'store');
 
         Route::delete('/deleteUser/{id}', 'delete');
+        Route::put('updateUser', 'update');
     });
 
+    // Progress
     Route::controller(ProgressController::class)->group(function() {
         Route::get('/progress', 'index');
 
-        Route::put('/updateProgress/{idProgress}', 'update');
+        Route::post('/createProgress', 'store');
     });
 
     // Routines
