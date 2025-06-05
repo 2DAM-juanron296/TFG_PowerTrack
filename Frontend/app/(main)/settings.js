@@ -1,4 +1,4 @@
-import { Pressable, Text, View } from "react-native";
+import { Pressable, Text, View, Dimensions, ScrollView } from "react-native";
 import { Screen } from "../../components/Screen";
 import { BackIcon } from "../../utils/Icons";
 import { useRouter } from "expo-router";
@@ -7,6 +7,24 @@ import { Logout } from "../../components/auth/Logout";
 import { fetchUserProgress } from "../../context/api/user";
 import Toast from "react-native-toast-message";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { LineChart } from "react-native-chart-kit";
+
+const screenWidth = Dimensions.get("window").width;
+
+const monthNames = [
+  "Ene",
+  "Feb",
+  "Mar",
+  "Abr",
+  "May",
+  "Jun",
+  "Jul",
+  "Ago",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dic",
+];
 
 export default function Settings() {
   const router = useRouter();
@@ -17,6 +35,9 @@ export default function Settings() {
   const [weight, setWeight] = useState(null);
   const [height, setHeight] = useState(null);
   const [bodyFat, setBodyFat] = useState(null);
+
+  const [history, setHistory] = useState([]);
+  const [weightData, setWeightData] = useState(null);
 
   useEffect(() => {
     const getUserProgress = async () => {
@@ -49,76 +70,115 @@ export default function Settings() {
         visibilityTime: 2000,
       });
 
-      console.log("Datos user", data.user);
-      console.log("Datos progress", data.progress);
-
       setName(data.user.name);
       setUsername(user);
       setEmail(data.user.email);
       setWeight(data.progress.weight);
       setHeight(data.progress.height);
       setBodyFat(data.progress.body_fat);
+
+      setHistory(data.history);
     };
 
     getUserProgress();
   }, []);
 
+  useEffect(() => {
+    if (history.length === 0) return;
+
+    const sortedHistory = [...history].sort(
+      (a, b) => new Date(a.created_at) - new Date(b.created_at),
+    );
+
+    const labels = [];
+    const dataset = [];
+
+    sortedHistory.forEach(({ created_at, weight }) => {
+      const date = new Date(created_at);
+      const day = date.getDate();
+      const month = date.getMonth() + 1;
+      const year = date.getFullYear().toString().slice(-2);
+
+      labels.push(`${day}/${month}/${year}`); // una etiqueta por peso
+      const w = Number(weight) || 0;
+      dataset.push(Math.min(Math.max(w, 50), 120));
+    });
+
+    setWeightData({
+      labels,
+      datasets: [
+        {
+          data: dataset,
+          strokeWidth: 2,
+          color: (opacity = 1) => `rgba(37, 174, 166, ${opacity})`,
+          withDots: true,
+        },
+      ],
+      legend: ["Peso corporal"],
+    });
+  }, [history]);
+
   return (
     <Screen>
-      <View className="mx-10">
+      <ScrollView
+        contentContainerStyle={{ paddingBottom: 15 }}
+        className="px-5"
+      >
         <Pressable onPress={() => router.push("/(main)/(tabs)/home")}>
           <BackIcon />
         </Pressable>
 
-        <View className="mb-6 mt-4">
+        <View className="mt-5 mb-6">
           <Text
-            className="text-xl text-[#25AEA6] mb-2"
-            style={{ fontFamily: "Inter-Bold" }}
+            className="text-[#25AEA6] text-2xl mb-2"
+            style={{
+              fontFamily: "Inter-Bold",
+            }}
           >
             Mi Perfil
           </Text>
 
           <Text
-            className="text-white py-3 border-b border-[#333]"
+            className="text-white py-3 border-b border-gray-800"
             style={{
-              fontFamily: "Inter-SemiBold",
+              fontFamily: "Inter-Bold",
             }}
           >
             Nombre Completo: {name ?? ""}
           </Text>
 
           <Text
-            className="text-white py-3 border-b border-[#333]"
+            className="text-white py-3 border-b border-gray-800"
             style={{
-              fontFamily: "Inter-SemiBold",
+              fontFamily: "Inter-Bold",
             }}
           >
             Nombre de usuario: {username ?? ""}
           </Text>
 
           <Text
-            className="text-white py-3 border-b border-[#333]"
+            className="text-white py-3 border-b border-gray-800"
             style={{
-              fontFamily: "Inter-SemiBold",
+              fontFamily: "Inter-Bold",
             }}
           >
             Peso corporal: {weight ?? 0} kg
           </Text>
 
           <Text
-            className="text-white py-3 border-b border-[#333]"
+            className="text-white py-3 border-b border-gray-800"
             style={{
-              fontFamily: "Inter-SemiBold",
+              fontFamily: "Inter-Bold",
             }}
           >
             Altura: {height ?? 0} cm
           </Text>
 
-          <View className="py-3 border-b border-[#333]">
+          <View className="py-3 border-b border-gray-800">
             <Text
               className="text-white"
               style={{
-                fontFamily: "Inter-SemiBold",
+                fontFamily: "Inter-Bold",
               }}
             >
               Grasa corporal: {bodyFat ?? 0} %
@@ -126,22 +186,62 @@ export default function Settings() {
           </View>
         </View>
 
-        <View className="my-20">
-          <Text
-            className="text-white text-lg"
-            style={{
-              fontFamily: "Inter-SemiBold",
-            }}
-          >
-            GRÁFICO
-          </Text>
+        <View>
+          {weightData ? (
+            <LineChart
+              data={weightData}
+              width={screenWidth - 40}
+              height={300}
+              yAxisSuffix=" kg"
+              fromZero={false}
+              yLabelsOffset={10}
+              yAxisInterval={10}
+              formatXLabel={(label) => label}
+              verticalLabelRotation={45}
+              chartConfig={{
+                backgroundGradientFrom: "#1E2923",
+                backgroundGradientTo: "#08130D",
+                decimalPlaces: 1,
+                color: (opacity = 1) => `rgba(37, 174, 166, ${opacity})`,
+                labelColor: () => "#fff",
+                style: {
+                  borderRadius: 16,
+                },
+                propsForDots: {
+                  r: "4",
+                  strokeWidth: "2",
+                  stroke: "#25AEA6",
+                },
+                propsForLabels: {
+                  fontSize: 10,
+                },
+              }}
+              style={{
+                marginVertical: 8,
+                borderRadius: 16,
+                alignSelf: "center",
+              }}
+              yAxisLabel=""
+              segments={10}
+            />
+          ) : (
+            <Text
+              className="text-white text-center"
+              style={{
+                fontFamily: "Inter-Bold",
+              }}
+            >
+              Cargando gráfico...
+            </Text>
+          )}
         </View>
 
-        {/* Cuenta */}
-        <View className="mb-6 mt-3">
+        <View className="mt-6 mb-6">
           <Text
-            className="text-xl text-[#25AEA6] mb-2"
-            style={{ fontFamily: "Inter-Bold" }}
+            className="text-[#25AEA6] text-2xl mb-2"
+            style={{
+              fontFamily: "Inter-Bold",
+            }}
           >
             Cuenta
           </Text>
@@ -160,7 +260,7 @@ export default function Settings() {
                 },
               })
             }
-            className="py-3 border-b border-[#333]"
+            className="py-3 border-b border-gray-800"
           >
             <Text
               className="text-white"
@@ -174,9 +274,9 @@ export default function Settings() {
 
           <Logout />
 
-          <Pressable className="py-3 border-b border-[#333]">
+          <Pressable className="py-3 border-b border-gray-800">
             <Text
-              className="text-red-500"
+              className="text-red-600"
               style={{
                 fontFamily: "Inter-Bold",
               }}
@@ -185,7 +285,7 @@ export default function Settings() {
             </Text>
           </Pressable>
         </View>
-      </View>
+      </ScrollView>
     </Screen>
   );
 }
