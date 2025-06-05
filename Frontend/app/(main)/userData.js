@@ -5,6 +5,7 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { updateUserData, updateUserProgress } from "../../context/api/user";
 import Toast from "react-native-toast-message";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function UserData() {
   const router = useRouter();
@@ -74,6 +75,7 @@ export default function UserData() {
       visibilityTime: 2000,
     });
 
+    await AsyncStorage.setItem("username", username);
     console.log("Usuario actualizado: ", data.user);
   };
 
