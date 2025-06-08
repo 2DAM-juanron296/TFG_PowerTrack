@@ -382,7 +382,7 @@ export function CreateRoutine() {
 
           {/* Contenedor para los ejercicios y la rutina */}
           <View className="w-full">
-            <View className="justify-center items-start mt-10 mx-10">
+            <View className="justify-center items-start mt-6 mx-10">
               <Text
                 className="text-[#25AEA6] text-xl"
                 style={{ fontFamily: "Inter-Bold" }}
@@ -412,7 +412,12 @@ export function CreateRoutine() {
               />
             </View>
 
-            <ScrollView className="flex-1 mt-4 pb-72">
+            <ScrollView
+              className="flex-1 mt-4"
+              style={{
+                paddingBottom: 298,
+              }}
+            >
               {selectedExercises.map((ex) => {
                 const exerciseSets = sets.filter(
                   (set) => set.routine_exercise_id === ex.id,
@@ -423,18 +428,18 @@ export function CreateRoutine() {
                     key={ex.id}
                     className="mx-4 mb-4 bg-[#0f0f0f] rounded-lg p-4 border border-[#222]"
                   >
-                    <View className="flex-row justify-between items-center mb-4 pb-2 border-b border-[#25AEA6]">
+                    <View className="flex-row justify-between items-start mb-4 pb-2 border-b border-[#25AEA6] flex-wrap gap-y-2">
                       <Text
-                        className="text-white text-lg"
+                        className="text-white text-lg flex-1 pr-2"
                         style={{ fontFamily: "Inter-Bold" }}
                       >
                         {ex.order}. {ex.name}
                       </Text>
 
-                      <View className="flex-row gap-x-2">
+                      <View className="flex-row gap-x-2 flex-wrap">
                         <Pressable
                           onPress={() => addSet(ex.id)}
-                          className="bg-green-500 justify-center items-center px-3 py-1 rounded-md"
+                          className="bg-green-500 justify-center items-center px-2 py-1 rounded-md"
                         >
                           <Text
                             className="text-black text-sm"
@@ -446,20 +451,20 @@ export function CreateRoutine() {
 
                         <Pressable
                           onPress={() => handleDeleteExercise(ex.id)}
-                          className="bg-red-500 justify-center items-center px-3 py-1 rounded-md"
+                          className="bg-red-500 justify-center items-center px-2 py-1 rounded-md"
                         >
                           <Text
                             className="text-black text-sm"
                             style={{ fontFamily: "Inter-Bold" }}
                           >
-                            Eliminar
+                            Quitar
                           </Text>
                         </Pressable>
                       </View>
                     </View>
 
                     <View className="w-full flex-row mb-1 justify-center">
-                      {["Set", "Reps", "Peso", "Acc"].map((col, i) => (
+                      {["Set", "Reps", "Peso", "Acciones"].map((col, i) => (
                         <Text
                           key={i}
                           style={{ fontFamily: "Inter-SemiBold" }}
@@ -515,7 +520,7 @@ export function CreateRoutine() {
                             className="text-black text-sm"
                             style={{ fontFamily: "Inter-Bold" }}
                           >
-                            X
+                            Eliminar
                           </Text>
                         </Pressable>
                       </View>
@@ -525,7 +530,7 @@ export function CreateRoutine() {
               })}
             </ScrollView>
 
-            <View className="justify-center items-center pt-2">
+            <View className="justify-center items-center pt-3">
               <Pressable
                 className="bg-[#25AEA6] rounded-md px-4 py-2 items-center"
                 onPress={handleSubmit}
