@@ -232,20 +232,20 @@ export function Routines() {
                   <td className="px-6 py-4 border-b border-[#333] text-center">
                     <div className="flex flex-wrap justify-center gap-2">
                       <button
-                        className="bg-[#FF9811] text-black px-3 py-2 rounded-md text-sm"
+                        className="bg-[#FF9811] text-black px-3 py-2 rounded-md text-sm cursor-pointer"
                         style={{ fontWeight: 600 }}
                       >
                         Editar
                       </button>
                       <button
-                        className="bg-red-600 text-black px-3 py-2 rounded-md text-sm"
+                        className="bg-red-600 text-black px-3 py-2 rounded-md text-sm cursor-pointer"
                         style={{ fontWeight: 600 }}
                         onClick={handleDelete(routine.id)}
                       >
                         Eliminar
                       </button>
                       <button
-                        className="bg-[#1a8783] text-black px-3 py-2 rounded-md text-sm"
+                        className="bg-[#1a8783] text-black px-3 py-2 rounded-md text-sm cursor-pointer"
                         style={{ fontWeight: 600 }}
                         onClick={handleSeeExercises(routine.id)}
                       >
