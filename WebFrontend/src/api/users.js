@@ -74,3 +74,27 @@ export async function createUser(request) {
     return [{ data: error }, true];
   }
 }
+
+export async function fetchUserRoutine(userId) {
+  try {
+    const token = getToken();
+    let res = false;
+    let info = [];
+
+    const response = await fetch(`${API_BASE}/user/${userId}/routines`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const data = await response.json();
+    !response.ok ? (res = true) : (res = false);
+    info = [data, res];
+    return info;
+  } catch (error) {
+    return [{ data: error }, true];
+  }
+}
