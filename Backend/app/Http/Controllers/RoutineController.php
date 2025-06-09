@@ -14,7 +14,9 @@ class RoutineController extends Controller
 
         try
         {
-            $routines = Routine::with('user:id,username')->get()
+            $routines = Routine::with('user:id,username')
+                ->where('user_id', 1)
+                ->get()
                 ->map(function ($routine) {
                     return [
                         ...$routine->toArray(), 
