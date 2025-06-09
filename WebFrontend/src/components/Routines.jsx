@@ -232,7 +232,7 @@ export function Routines() {
                   <td className="px-6 py-4 border-b border-[#333] text-center">
                     <div className="flex flex-wrap justify-center gap-2">
                       <button
-                        className="bg-[#FF9811] text-black px-3 py-2 rounded-md text-sm cursor-pointer"
+                        className="bg-[#0982d3] text-black px-3 py-2 rounded-md text-sm cursor-pointer"
                         style={{ fontWeight: 600 }}
                       >
                         Editar
