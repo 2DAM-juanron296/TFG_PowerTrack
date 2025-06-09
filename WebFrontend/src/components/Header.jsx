@@ -10,6 +10,7 @@ export function Header() {
   const [isDisabled, setIsDisabled] = useState(false);
   const location = useLocation();
 
+  const isDashboardActive = location.pathname === "/home/dashboard";
   const isUsersActive =
     location.pathname === "/home" ||
     location.pathname === "/home/users" ||
@@ -68,7 +69,14 @@ export function Header() {
         </div>
 
         {/* NAVEGACIÓN */}
-        <nav className="flex justify-center gap-30 pt-2">
+        <nav className="flex justify-center gap-24 pt-2">
+          <NavLink
+            to="/home/dashboard"
+            className={`text-lg transition-colors ${isDashboardActive ? "text-[#25AEA6]" : "text-white hover:text-[#25AEA6]"}`}
+            style={{ fontWeight: 600 }}
+          >
+            Dashboard
+          </NavLink>
           <NavLink
             to="/home/users"
             className={`text-lg transition-colors ${isUsersActive ? "text-[#25AEA6]" : "text-white hover:text-[#25AEA6]"}`}
