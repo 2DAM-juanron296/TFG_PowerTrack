@@ -6,6 +6,7 @@ import { Users } from "./components/Users";
 import { Routines } from "./components/Routines";
 import { CreateUser } from "./components/CreateUser";
 import { CreateRoutine } from "./components/CreateRoutine";
+import { UserRoutines } from "./components/UserRoutines";
 //import { useEffect } from "react";
 
 export default function App() {
@@ -39,6 +40,7 @@ export default function App() {
           <Route path="routines/create" element={<CreateRoutine />} />
           <Route path="users" element={<Users />} />
           <Route path="users/create" element={<CreateUser />} />
+          <Route path="users/routines" element={<UserRoutines />} />
         </Route>
         <Route
           path="*"
