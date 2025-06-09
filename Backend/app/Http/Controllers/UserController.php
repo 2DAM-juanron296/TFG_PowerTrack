@@ -108,7 +108,7 @@ class UserController extends Controller
         }
     }
 
-    // Obtener rutinas de un usuario - App
+    // Obtener rutinas de un usuario - App/Web
     public function getRoutines($id_user) {
 
         try
