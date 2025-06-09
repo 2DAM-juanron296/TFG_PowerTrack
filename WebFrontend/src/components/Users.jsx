@@ -188,10 +188,15 @@ export function Users() {
                   <td className="px-6 py-4 border-b border-[#333] text-center">
                     <div className="flex flex-wrap justify-center gap-2">
                       <button
-                        className="bg-[#FF9811] text-black text-sm px-3 py-2 rounded-md cursor-pointer"
+                        className="bg-[#1a8783] text-black text-sm px-3 py-2 rounded-md cursor-pointer"
                         style={{ fontWeight: 600 }}
+                        onClick={() => {
+                          navigate("/home/users/routines", {
+                            state: { userId: user.id },
+                          });
+                        }}
                       >
-                        Editar
+                        Ver Rutinas
                       </button>
                       <button
                         className="bg-red-600 text-black text-sm p-2 rounded-md cursor-pointer"
