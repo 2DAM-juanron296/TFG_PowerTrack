@@ -11,7 +11,9 @@ export function Header() {
   const location = useLocation();
 
   const isUsersActive =
-    location.pathname === "/home" || location.pathname === "/home/users";
+    location.pathname === "/home" ||
+    location.pathname === "/home/users" ||
+    location.pathname === "/home/users/routines";
   const isRoutinesActive = location.pathname === "/home/routines";
 
   const handleLogout = async () => {
