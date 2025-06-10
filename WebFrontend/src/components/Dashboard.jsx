@@ -1,17 +1,36 @@
 import { useEffect, useState } from "react";
 import { fetchTopExercises } from "../api/exercises";
 import toast from "react-hot-toast";
+import { ClipLoader } from "react-spinners";
 
 export function Dashboard() {
   const [top, setTop] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const getData = async () => {
+      setLoading(true);
       try {
-        const [data, res] = await fetchTopExercises();
+        const storedTop = localStorage.getItem("top");
 
-        if (res) {
-          toast.error(data.message, {
+        if (storedTop && storedTop.length !== 0) {
+          setTop(JSON.parse(storedTop));
+        } else {
+          const [data, res] = await fetchTopExercises();
+
+          if (res) {
+            toast.error(data.message, {
+              style: {
+                background: "#333",
+                color: "#fff",
+                fontFamily: "Inter",
+                fontWeight: 400,
+              },
+            });
+            return;
+          }
+
+          toast.success(data.message, {
             style: {
               background: "#333",
               color: "#fff",
@@ -19,20 +38,11 @@ export function Dashboard() {
               fontWeight: 400,
             },
           });
-          return;
+
+          console.log("Ejercicios: ", data.top);
+          setTop(data.top);
+          localStorage.setItem("top", JSON.stringify(data.top));
         }
-
-        toast.success(data.message, {
-          style: {
-            background: "#333",
-            color: "#fff",
-            fontFamily: "Inter",
-            fontWeight: 400,
-          },
-        });
-
-        console.log("Ejercicios: ", data.top);
-        setTop(data.top);
       } catch (error) {
         console.error("Error al obtener los ejercicios más usados", error);
         toast.error("Error al obtener los ejercicios más usados", {
@@ -43,6 +53,8 @@ export function Dashboard() {
             fontWeight: 400,
           },
         });
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -66,7 +78,12 @@ export function Dashboard() {
           >
             Ejercicios más usados
           </div>
-          {top.length !== 0 ? (
+          {loading ? (
+            <div className="flex justify-center items-center gap-4 py-4">
+              <ClipLoader color="#25AEA6" size={35} />
+              <span className="text-white text-lg">Cargando ejercicios...</span>
+            </div>
+          ) : top.length !== 0 ? (
             <ul>
               {top.map((ex, index) => (
                 <li key={index} className="text-white mb-2">
