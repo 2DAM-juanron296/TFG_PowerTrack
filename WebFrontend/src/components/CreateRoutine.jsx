@@ -202,16 +202,13 @@ export function CreateRoutine() {
 
   return (
     <div className="p-8">
-      {/* Título centrado */}
       <div className="flex justify-center items-center mb-10">
         <h2 className="text-[#25AEA6] text-3xl font-extrabold">
           Crear Nueva Rutina
         </h2>
       </div>
 
-      {/* Contenedor principal de dos columnas */}
       <div className="flex flex-col md:flex-row gap-8 max-w-7xl mx-auto">
-        {/* Columna izquierda - Formulario */}
         <div className="w-full md:w-1/2">
           <form
             onSubmit={(e) => {
@@ -220,7 +217,6 @@ export function CreateRoutine() {
             }}
             className="space-y-6"
           >
-            {/* Campo Nombre */}
             <div>
               <label className="text-white text-sm font-medium">Nombre</label>
               <input
@@ -230,7 +226,6 @@ export function CreateRoutine() {
               />
             </div>
 
-            {/* Campo Descripción */}
             <div>
               <label className="text-white text-sm font-medium">
                 Descripción
@@ -242,7 +237,6 @@ export function CreateRoutine() {
               />
             </div>
 
-            {/* Botones */}
             <div className="flex justify-center items-center gap-3">
               <button
                 type="submit"
@@ -263,7 +257,6 @@ export function CreateRoutine() {
           </form>
         </div>
 
-        {/* Columna derecha - Tabla de ejercicios */}
         <div className="w-full md:w-1/2">
           <ExercisesTable
             exercises={exercises}
