@@ -120,6 +120,7 @@ Route::middleware('auth:sanctum')->group(function() {
     // Exercises
     Route::controller(ExerciseController::class)->group(function() {
         Route::get('/exercises', 'index');
+        Route::get('/topExercises', 'getMostUsed');
 
         Route::post('/createExercise', 'store');
     });

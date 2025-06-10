@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Exercise;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ExerciseController extends Controller
 {
@@ -38,6 +39,31 @@ class ExerciseController extends Controller
                 'message' => 'Ejercicio añadido correctamente',
                 'exercise' => $exercise
             ], 201);
+            
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Error: '.$e->getMessage()
+            ], 500);
+        }
+    }
+
+    // Método para obtener 10 ejercicios más usados en las rutinas
+    public function getMostUsed()
+    {
+        try 
+        {
+            $topExercises = DB::table('routine_exercises')
+                              ->join('exercises', 'routine_exercises.exercise_id', '=', 'exercises.id')
+                              ->select('exercises.name', DB::raw('COUNT(*) as usage_count'))
+                              ->groupBy('routine_exercises.exercise_id', 'exercises.name')
+                              ->orderByDesc('usage_count')
+                              ->limit(10)
+                              ->get();
+
+            return response()->json([
+                'message' => 'Ejercicios más utilizados recogidos',
+                'top' => $topExercises
+            ], 200);            
             
         } catch (Exception $e) {
             return response()->json([
