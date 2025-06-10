@@ -202,71 +202,69 @@ export function CreateRoutine() {
 
   return (
     <div className="p-8">
+      {/* Título centrado */}
       <div className="flex justify-center items-center mb-10">
         <h2 className="text-[#25AEA6] text-3xl font-extrabold">
           Crear Nueva Rutina
         </h2>
       </div>
-      <button
-        className="bg-[#FF9811] text-black px-2 py-2 mb-4 rounded-md font-semibold hover:bg-[#e68a0f] cursor-pointer"
-        onClick={() => {
-          console.log("Ejercicios seleccionados", selectedExercises),
-            console.log("Sets", sets);
-        }}
-      >
-        Ver ejercicios seleccionados
-      </button>
 
-      <div className="grid-rows-2 gap-10 max-w-5xl mx-auto">
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleSubmit();
-          }}
-          className="space-y-6"
-        >
-          {/* Campo Nombre */}
-          <div>
-            <label className="text-white text-sm font-medium">Nombre</label>
-            <input
-              type="text"
-              className="w-full px-4 py-2 mt-1 rounded-md bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#25AEA6]"
-              onChange={(e) => setName(e.target.value)}
-            />
-          </div>
+      {/* Contenedor principal de dos columnas */}
+      <div className="flex flex-col md:flex-row gap-8 max-w-7xl mx-auto">
+        {/* Columna izquierda - Formulario */}
+        <div className="w-full md:w-1/2">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSubmit();
+            }}
+            className="space-y-6"
+          >
+            {/* Campo Nombre */}
+            <div>
+              <label className="text-white text-sm font-medium">Nombre</label>
+              <input
+                type="text"
+                className="w-full px-4 py-2 mt-1 rounded-md bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#25AEA6]"
+                onChange={(e) => setName(e.target.value)}
+              />
+            </div>
 
-          {/* Campo Descripción */}
-          <div>
-            <label className="text-white text-sm font-medium">
-              Descripción
-            </label>
-            <input
-              type="text"
-              className="w-full px-4 py-2 mt-1 rounded-md bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#25AEA6]"
-              onChange={(e) => setDescription(e.target.value)}
-            />
-          </div>
+            {/* Campo Descripción */}
+            <div>
+              <label className="text-white text-sm font-medium">
+                Descripción
+              </label>
+              <input
+                type="text"
+                className="w-full px-4 py-2 mt-1 rounded-md bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#25AEA6]"
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            </div>
 
-          {/* Botones */}
-          <div className="flex justify-center items-center gap-3">
-            <button
-              type="submit"
-              className="bg-[#FF9811] text-black px-4 py-2 rounded-md font-semibold hover:bg-[#e68a0f] cursor-pointer"
-            >
-              Crear Rutina
-            </button>
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                handleCancel();
-              }}
-              className="bg-[#FF9811] text-black px-4 py-2 rounded-md font-semibold hover:bg-[#e68a0f] cursor-pointer"
-            >
-              Cancelar
-            </button>
-          </div>
-        </form>
-        <div className="mt-15">
+            {/* Botones */}
+            <div className="flex justify-center items-center gap-3">
+              <button
+                type="submit"
+                className="bg-[#FF9811] text-black px-4 py-2 rounded-md font-semibold hover:bg-[#e68a0f] cursor-pointer"
+              >
+                Crear Rutina
+              </button>
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleCancel();
+                }}
+                className="bg-[#FF9811] text-black px-4 py-2 rounded-md font-semibold hover:bg-[#e68a0f] cursor-pointer"
+              >
+                Cancelar
+              </button>
+            </div>
+          </form>
+        </div>
+
+        {/* Columna derecha - Tabla de ejercicios */}
+        <div className="w-full md:w-1/2">
           <ExercisesTable
             exercises={exercises}
             selectedExercises={selectedExercises}
