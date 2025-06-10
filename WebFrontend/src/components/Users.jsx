@@ -199,7 +199,7 @@ export function Users() {
                         Ver Rutinas
                       </button>
                       <button
-                        className="bg-red-600 text-black text-sm p-2 rounded-md cursor-pointer"
+                        className="bg-red-500 text-black text-sm p-2 rounded-md cursor-pointer"
                         style={{ fontWeight: 600 }}
                         onClick={handleDelete(user.id)}
                       >

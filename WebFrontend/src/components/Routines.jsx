@@ -238,7 +238,7 @@ export function Routines() {
                         Editar
                       </button>
                       <button
-                        className="bg-red-600 text-black px-3 py-2 rounded-md text-sm cursor-pointer"
+                        className="bg-red-500 text-black px-3 py-2 rounded-md text-sm cursor-pointer"
                         style={{ fontWeight: 600 }}
                         onClick={handleDelete(routine.id)}
                       >
