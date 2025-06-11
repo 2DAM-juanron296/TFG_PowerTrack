@@ -17,6 +17,7 @@ import {
 import Toast from "react-native-toast-message";
 import {
   createExercisesWorkout,
+  fetchMuscle,
   fetchRoutineExercises,
 } from "../../context/api/exercises";
 import { PauseIcon, PlayIcon, RestartIcon } from "../../utils/Icons";
@@ -38,6 +39,8 @@ export default function TrainingSession() {
   const [loading, setLoading] = useState(false);
   const [finished, setFinished] = useState(false);
 
+  const [muscles, setMuscles] = useState([]);
+
   const formatTime = (secs) => {
     const min = Math.floor(secs / 60)
       .toString()
@@ -58,7 +61,7 @@ export default function TrainingSession() {
 
   useEffect(() => {
     if (routine_id) {
-      const getRoutineExercises = async () => {
+      const loadData = async () => {
         const [data, res] = await fetchRoutineExercises(routine_id);
 
         if (res) {
@@ -118,8 +121,34 @@ export default function TrainingSession() {
         console.log("Rutina", data.exercises);
         console.log("Ejercicios de la rutina", data.exercises[0].exercise.name);
         console.log("Sets: ", setsResponse);
+
+        //console.log("EJERCICIOS: ", exercises);
+        //console.log("Ejercicios enriquecidos: ", enrichedExercises);
+        const exerciseIds = enrichedExercises.map((ex) => ex.exercise.id);
+        const [dataMuscle, resMuscle] = await fetchMuscle({
+          exercise_ids: exerciseIds,
+        });
+
+        if (resMuscle) {
+          console.error("Error: ", dataMuscle.message);
+          Toast.show({
+            type: "error",
+            text1: "Error",
+            text2: dataMuscle.message,
+            text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
+            text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
+            position: "top",
+            animation: true,
+            visibilityTime: 2000,
+          });
+          return;
+        }
+
+        //console.log(dataMuscle.muscles);
+        setMuscles(dataMuscle.muscles);
       };
-      getRoutineExercises();
+
+      loadData();
     }
   }, [routine_id]);
 
@@ -334,7 +363,7 @@ export default function TrainingSession() {
           setName={setName}
           volume={getTotalVolume()}
           seconds={seconds}
-          routine_id={routine_id}
+          muscles={muscles}
           formatTime={formatTime}
           handleSubmit={handleSubmit}
         />
