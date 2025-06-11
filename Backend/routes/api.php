@@ -46,6 +46,7 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::controller(UserController::class)->group(function() {
         Route::get('/users', 'index');
         Route::get('/userData', 'getData');
+        Route::get('/topUsers', 'getTopUser');
         
         Route::get('/user/{id_user}/routines', 'getRoutines');
     
@@ -91,6 +92,7 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::controller(WorkoutController::class)->group(function() {
         Route::get('/workouts', 'index');
         Route::get('/workoutsLast', 'getLastWorkouts');
+        Route::get('/workoutsToday', 'getWorkoutsToday');
 
         Route::post('/createWorkout', 'store');
         Route::delete('/deleteWorkout/{idWorkout}', 'delete');
