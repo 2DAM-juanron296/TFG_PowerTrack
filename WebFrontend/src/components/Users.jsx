@@ -188,22 +188,38 @@ export function Users() {
                   <td className="px-6 py-4 border-b border-[#333] text-center">
                     <div className="flex flex-wrap justify-center gap-2">
                       <button
-                        className="bg-[#1a8783] text-black text-sm px-3 py-2 rounded-md cursor-pointer"
-                        style={{ fontWeight: 600 }}
+                        className="bg-[#1a8783] text-black text-sm px-3 py-2 rounded-md cursor-pointer hover:bg-[#1d8d87] hover:opacity-80 transition-all"
+                        style={{
+                          fontWeight: 600,
+                          transition: "opacity 0.3s ease",
+                        }}
                         onClick={() => {
                           navigate("/home/users/routines", {
                             state: { userId: user.id },
                           });
                         }}
                       >
-                        Ver Rutinas
+                        <img
+                          width="24"
+                          height="24"
+                          src="https://img.icons8.com/material-outlined/24/visible--v1.png"
+                          alt="visible--v1"
+                        />
                       </button>
                       <button
-                        className="bg-red-500 text-black text-sm p-2 rounded-md cursor-pointer"
-                        style={{ fontWeight: 600 }}
+                        className="bg-red-500 text-black text-sm px-3 py-2 rounded-md cursor-pointer hover:bg-red-600 hover:opacity-80 transition-all"
+                        style={{
+                          fontWeight: 600,
+                          transition: "opacity 0.3s ease",
+                        }}
                         onClick={handleDelete(user.id)}
                       >
-                        Eliminar
+                        <img
+                          width="24"
+                          height="24"
+                          src="https://img.icons8.com/fluency-systems-regular/24/filled-trash.png"
+                          alt="filled-trash"
+                        />
                       </button>
                     </div>
                   </td>
