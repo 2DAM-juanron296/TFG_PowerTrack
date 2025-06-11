@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Exercise;
+use App\Models\MuscleGroup;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
 class ExerciseController extends Controller
@@ -65,6 +67,36 @@ class ExerciseController extends Controller
                 'top' => $topExercises
             ], 200);            
             
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Error: '.$e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function getMuscleByExercise(Request $request)
+    {
+        try 
+        {
+            $request->validate([
+                'exercise_ids' => 'required|array',
+                'exercise_ids.*' => 'required|exists:exercises,id',
+            ]);
+
+            $exerciseIds = Arr::flatten($request->input('exercise_ids'));
+
+            $muscles = MuscleGroup::whereIn('id', function ($query) use ($exerciseIds) {
+                $query->select('muscle_group_id')
+                      ->from('exercises')
+                      ->whereIn('id', $exerciseIds)
+                      ->whereNotNull('muscle_group_id');
+                })->get();
+
+            return response()->json([
+                'message' => 'Grupos Musculares recogido',
+                'muscles' => $muscles
+            ], 200);  
+
         } catch (Exception $e) {
             return response()->json([
                 'message' => 'Error: '.$e->getMessage()
