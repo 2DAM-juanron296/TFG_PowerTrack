@@ -9,54 +9,78 @@ export function CreateWorkout({
   handleSubmit,
 }) {
   return (
-    <View className="justify-center items-center mt-3 mx-10">
-      <View className="w-full">
-        <Text className="text-white mb-1" style={{ fontFamily: "Inter-Bold" }}>
+    <View className="justify-center items-center mt-16 mx-5">
+      <View className="w-full bg-[#0f0f0f] p-4 rounded-xl shadow-md mb-5">
+        <Text
+          className="text-white mb-2 text-md"
+          style={{ fontFamily: "Inter-Bold" }}
+        >
           Nombre
         </Text>
         <TextInput
-          className="rounded-md p-2 text-left text-black bg-white"
+          className="rounded-md p-3 text-black bg-white"
           style={{ fontFamily: "Inter-SemiBold" }}
+          placeholder="Introduce el nombre"
           onChangeText={setName}
         />
       </View>
 
-      <View className="w-full mt-10">
+      <View className="w-full bg-[#0f0f0f] p-4 rounded-xl shadow-md mb-5 space-y-2">
         <Text
-          className="text-white mb-4 text-start text-lg"
+          className="text-[#25AEA6] mb-4 text-xl"
           style={{ fontFamily: "Inter-Bold" }}
         >
           Resumen del entrenamiento
         </Text>
-        <Text
-          className="text-white mb-1 text-start"
-          style={{ fontFamily: "Inter-Bold" }}
-        >
-          Duración: {formatTime(seconds)}
-        </Text>
-        <Text
-          className="text-white mb-1 text-start"
-          style={{ fontFamily: "Inter-Bold" }}
-        >
-          Volumen de entrenamiento: {volume} kg
-        </Text>
-        <Text
-          className="text-white mb-1 text-start"
-          style={{ fontFamily: "Inter-Bold" }}
-        >
-          Fecha: {new Date().toISOString().split("T")[0]}
-        </Text>
-        <Text
-          className="text-white mb-1 text-start"
-          style={{ fontFamily: "Inter-Bold" }}
-        >
-          Rutina id: {routine_id}
-        </Text>
+
+        <View className="mb-2">
+          <Text
+            className="text-white text-sm"
+            style={{ fontFamily: "Inter-SemiBold" }}
+          >
+            Duración:
+          </Text>
+          <Text
+            className="text-white text-lg"
+            style={{ fontFamily: "Inter-Bold" }}
+          >
+            {formatTime(seconds)}
+          </Text>
+        </View>
+
+        <View className="mb-2">
+          <Text
+            className="text-white text-sm"
+            style={{ fontFamily: "Inter-SemiBold" }}
+          >
+            Volumen de entrenamiento:
+          </Text>
+          <Text
+            className="text-white text-lg"
+            style={{ fontFamily: "Inter-Bold" }}
+          >
+            {volume} kg
+          </Text>
+        </View>
+
+        <View className="mb-2">
+          <Text
+            className="text-white text-sm"
+            style={{ fontFamily: "Inter-SemiBold" }}
+          >
+            Fecha:
+          </Text>
+          <Text
+            className="text-white text-lg"
+            style={{ fontFamily: "Inter-Bold" }}
+          >
+            {new Date().toISOString().split("T")[0]}
+          </Text>
+        </View>
       </View>
 
-      {/* Botón Finalizar */}
       <Pressable
-        className="mt-10 bg-[#25AEA6] px-5 py-3 rounded-md"
+        className="mt-5 bg-[#25AEA6] px-6 py-3 rounded-md"
         onPress={handleSubmit}
       >
         <Text
