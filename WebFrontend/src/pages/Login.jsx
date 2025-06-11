@@ -110,7 +110,7 @@ export function Login() {
 
             {/* Login Button */}
             <button
-              className={`bg-[#25AEA6] text-black hover:bg-[#1d8d87] transition-colors rounded-md mt-8 w-96 py-3 flex justify-center items-center text-lg cursor-pointer ${isDisabled ? "opacity-50" : ""}`}
+              className={`bg-[#25AEA6] text-black hover:bg-[#1d8d87] hover:opacity:80 transition-all rounded-md mt-8 w-96 py-3 flex justify-center items-center text-lg cursor-pointer ${isDisabled ? "opacity-50" : ""}`}
               style={{
                 fontWeight: 800,
                 transition: "opacity 0.3s ease",

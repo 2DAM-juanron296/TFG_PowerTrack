@@ -96,7 +96,7 @@ export function Header() {
         {/* Botón LOGOUT */}
         <div className="flex justify-end">
           <button
-            className={`bg-[#25AEA6] text-black rounded-md px-6 py-2 text-lg cursor-pointer hover:bg-[#1d8d87] transition-colors  ${isDisabled ? "opacity-50" : ""}`}
+            className={`bg-[#25AEA6] text-black rounded-md px-6 py-2 text-lg cursor-pointer hover:bg-[#1d8d87] hover:opacity-80 transition-all  ${isDisabled ? "opacity-50" : ""}`}
             style={{ fontWeight: 800, transition: "opacity 0.3s ease" }}
             onClick={handleLogout}
             disabled={isDisabled}
