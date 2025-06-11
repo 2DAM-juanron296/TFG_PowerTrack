@@ -78,3 +78,28 @@ export async function deleteRoutine(id) {
     return [{ data: error }, true];
   }
 }
+
+export async function fetchWorkoutsToday() {
+  try {
+    const token = getToken();
+
+    let res = false;
+    let info = [];
+
+    const response = await fetch(`${API_BASE}/workoutsToday`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const data = await response.json();
+    !response.ok ? (res = true) : (res = false);
+    info = [data, res];
+    return info;
+  } catch (error) {
+    return [{ data: error }, true];
+  }
+}
