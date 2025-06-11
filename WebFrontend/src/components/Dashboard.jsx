@@ -70,10 +70,10 @@ export function Dashboard() {
         Dashboard
       </div>
 
-      <div className="flex justify-center">
+      <main className="flex justify-center mt-10 gap-20">
         <div className="rounded-lg bg-[#0f0f0f] p-5">
           <div
-            className="text-[#25AEA6] text-lg mb-3"
+            className="text-[#25AEA6] text-xl mb-3"
             style={{ fontWeight: 800 }}
           >
             Ejercicios más usados
@@ -99,7 +99,25 @@ export function Dashboard() {
             </div>
           )}
         </div>
-      </div>
+
+        <div className="rounded-lg bg-[#0f0f0f] p-5">
+          <div
+            className="text-[#25AEA6] text-xl mb-3"
+            style={{ fontWeight: 800 }}
+          >
+            Usuarios más activos (semana / mes / año)
+          </div>
+        </div>
+
+        <div className="rounded-lg bg-[#0f0f0f] p-5">
+          <div
+            className="text-[#25AEA6] text-xl mb-3"
+            style={{ fontWeight: 800 }}
+          >
+            Nº entrenos realizados
+          </div>
+        </div>
+      </main>
     </div>
   );
 }
