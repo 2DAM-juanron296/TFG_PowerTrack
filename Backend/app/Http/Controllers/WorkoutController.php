@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Workout;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class WorkoutController extends Controller
 {
@@ -36,6 +38,7 @@ class WorkoutController extends Controller
         }
     }
 
+    // Método para obtener últimos entrenos de un usuario - App
     public function getLastWorkouts(Request $request) 
     {
         try
@@ -132,7 +135,30 @@ class WorkoutController extends Controller
                 'message' => 'Entrenamiento eliminado correctamente'
             ], 200);
 
-        }  catch (Exception $e) {
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Error: '.$e->getMessage()
+            ], 500);
+        }
+    }
+
+    // Método para obtener nº de entrenos realizados en el día - Web
+    public function getWorkoutsToday()
+    {
+        try 
+        {            
+            $today = Carbon::today();
+
+            $workouts_today = DB::table('workouts')
+                ->whereDate('date', $today)
+                ->count();
+
+            return response()->json([
+                'message' => 'Número de entrenos recogidos',
+                'workouts' => $workouts_today
+            ], 200);
+
+        } catch (Exception $e) {
             return response()->json([
                 'message' => 'Error: '.$e->getMessage()
             ], 500);
