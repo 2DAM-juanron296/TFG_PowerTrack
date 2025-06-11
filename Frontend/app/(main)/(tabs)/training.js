@@ -85,7 +85,7 @@ export default function Index() {
       <View className="flex flex-row justify-center items-center w-full">
         <StyledPresable
           onPress={() => router.push("/(main)/createRoutine")}
-          className="flex-1 justify-center items-center border bg-[#0f0f0f] rounded-lg p-4 ml-10"
+          className="flex-1 justify-center items-center bg-[#0f0f0f] rounded-lg p-4 ml-10"
         >
           <Text
             className="text-white text-lg"
@@ -97,7 +97,7 @@ export default function Index() {
 
         <StyledPresable
           onPress={() => router.push("/(main)/exploreRoutine")}
-          className="flex-1 justify-center items-center border bg-[#0f0f0f] rounded-lg p-4 ml-6 mr-10"
+          className="flex-1 justify-center items-center bg-[#0f0f0f] rounded-lg p-4 ml-6 mr-10"
         >
           <Text
             className="text-white text-lg"
