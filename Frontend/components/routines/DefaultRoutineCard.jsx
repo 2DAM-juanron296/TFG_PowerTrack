@@ -9,15 +9,29 @@ export function DefaultRoutineCard({ name, description, id }) {
   const StyledPresable = styled(Pressable);
 
   const handleSaveRoutine = async (id) => {
-    const id_user = await AsyncStorage.getItem("id_user");
-    const request = { id_user: id_user, id_routine: id };
+    try {
+      const id_user = await AsyncStorage.getItem("id_user");
+      const request = { id_user: id_user, id_routine: id };
 
-    const [data, res] = await saveDefaultRoutinetoUser(request);
+      const [data, res] = await saveDefaultRoutinetoUser(request);
 
-    if (res) {
+      if (res) {
+        Toast.show({
+          type: "error",
+          text1: "Error",
+          text2: data.message,
+          text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
+          text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
+          position: "top",
+          animation: true,
+          visibilityTime: 2000,
+        });
+        return;
+      }
+
       Toast.show({
-        type: "error",
-        text1: "Error",
+        type: "success",
+        text1: "Éxito",
         text2: data.message,
         text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
         text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
@@ -25,19 +39,19 @@ export function DefaultRoutineCard({ name, description, id }) {
         animation: true,
         visibilityTime: 2000,
       });
-      return;
+    } catch (error) {
+      console.error("Error: ", error);
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: error,
+        text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
+        text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
+        position: "top",
+        animation: true,
+        visibilityTime: 2000,
+      });
     }
-
-    Toast.show({
-      type: "success",
-      text1: "Éxito",
-      text2: data.message,
-      text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
-      text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
-      position: "top",
-      animation: true,
-      visibilityTime: 2000,
-    });
   };
 
   return (

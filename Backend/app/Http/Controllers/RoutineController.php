@@ -145,6 +145,16 @@ class RoutineController extends Controller
                 ], status: 404);
             }
 
+            $exists = Routine::where('user_id', $user->id)
+                             ->where('name', $routine->name)
+                             ->exists();
+
+            if ($exists) {
+                return response()->json([
+                    'message' => 'Ya tienes esta rutina guardada'
+                ], 409);
+            }
+
             $newRoutine = $routine->replicate();
             $newRoutine->user_id = $request->id_user;
             $newRoutine->save();
