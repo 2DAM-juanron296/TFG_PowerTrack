@@ -36,13 +36,13 @@ export default function App() {
           path="/home"
           element={isLoggedIn ? <Layout /> : <Navigate to="/login" replace />}
         >
-          <Route index element={<Users />} />
+          <Route index element={<Navigate to="dashboard" replace />} />
+          <Route path="dashboard" element={<Dashboard />} />
           <Route path="routines" element={<Routines />} />
           <Route path="routines/create" element={<CreateRoutine />} />
           <Route path="users" element={<Users />} />
           <Route path="users/create" element={<CreateUser />} />
           <Route path="users/routines" element={<UserRoutines />} />
-          <Route path="dashboard" element={<Dashboard />} />
         </Route>
         <Route
           path="*"
