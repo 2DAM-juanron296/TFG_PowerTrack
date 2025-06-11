@@ -41,6 +41,15 @@ export function Users() {
 
         setUsers(data.users);
         localStorage.setItem("users", JSON.stringify(data.users));
+
+        toast.success(data.message, {
+          style: {
+            background: "#333",
+            color: "#fff",
+            fontFamily: "Inter",
+            fontWeight: 400,
+          },
+        });
       }
     } catch (error) {
       console.error("Error al obtener los usuarios", error);
@@ -122,8 +131,8 @@ export function Users() {
 
       <div className="flex justify-end mb-2 me-2">
         <button
-          className="bg-[#FF9811] text-black px-3 py-2 rounded-md cursor-pointer"
-          style={{ fontWeight: 600 }}
+          className="bg-[#FF9811] text-black px-3 py-2 rounded-md cursor-pointer hover:bg-[#E67F00] hover:opacity-80 transition-all"
+          style={{ fontWeight: 600, transition: "opacity 0.3s ease" }}
           onClick={(e) => {
             e.preventDefault();
             navigate("/home/users/create");

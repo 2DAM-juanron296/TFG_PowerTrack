@@ -42,6 +42,15 @@ export function Routines() {
 
         setRoutines(data.routines);
         localStorage.setItem("routines", JSON.stringify(data.routines));
+
+        toast.success(data.message, {
+          style: {
+            background: "#333",
+            color: "#fff",
+            fontFamily: "Inter",
+            fontWeight: 400,
+          },
+        });
       }
     } catch (error) {
       console.error("Error al obtener las rutinas", error);
@@ -166,8 +175,8 @@ export function Routines() {
 
       <div className="flex justify-end mb-2 me-2">
         <button
-          className="bg-[#FF9811] text-black px-3 py-2 rounded-md cursor-pointer"
-          style={{ fontWeight: 600 }}
+          className="bg-[#FF9811] text-black px-3 py-2 rounded-md cursor-pointer hover:bg-[#E67F00] hover:opacity-80 transition-all"
+          style={{ fontWeight: 600, transition: "opacity 0.3s ease" }}
           onClick={(e) => {
             e.preventDefault();
             navigate("/home/routines/create");
@@ -232,24 +241,48 @@ export function Routines() {
                   <td className="px-6 py-4 border-b border-[#333] text-center">
                     <div className="flex flex-wrap justify-center gap-2">
                       <button
-                        className="bg-[#0982d3] text-black px-3 py-2 rounded-md text-sm cursor-pointer"
-                        style={{ fontWeight: 600 }}
-                      >
-                        Editar
-                      </button>
-                      <button
-                        className="bg-red-500 text-black px-3 py-2 rounded-md text-sm cursor-pointer"
-                        style={{ fontWeight: 600 }}
-                        onClick={handleDelete(routine.id)}
-                      >
-                        Eliminar
-                      </button>
-                      <button
-                        className="bg-[#1a8783] text-black px-3 py-2 rounded-md text-sm cursor-pointer"
-                        style={{ fontWeight: 600 }}
+                        className="bg-[#1a8783] text-black text-sm px-3 py-2 rounded-md cursor-pointer hover:bg-[#1d8d87] hover:opacity-80 transition-all"
+                        style={{
+                          fontWeight: 600,
+                          transition: "opacity 0.3s ease",
+                        }}
                         onClick={handleSeeExercises(routine.id)}
                       >
-                        Ver ejercicios
+                        <img
+                          width="24"
+                          height="24"
+                          src="https://img.icons8.com/material-outlined/24/visible--v1.png"
+                          alt="visible--v1"
+                        />
+                      </button>
+                      <button
+                        className="bg-[#0982d3] text-black px-3 py-2 rounded-md text-sm cursor-pointer hover:bg-[#086cb3] hover:opacity-80 transition-all"
+                        style={{
+                          fontWeight: 600,
+                          transition: "opacity 0.3s ease",
+                        }}
+                      >
+                        <img
+                          width="24"
+                          height="24"
+                          src="https://img.icons8.com/material-sharp/24/pencil.png"
+                          alt="pencil"
+                        />
+                      </button>
+                      <button
+                        className="bg-red-500 text-black text-sm px-3 py-2 rounded-md cursor-pointer hover:bg-red-600 hover:opacity-80 transition-all"
+                        style={{
+                          fontWeight: 600,
+                          transition: "opacity 0.3s ease",
+                        }}
+                        onClick={handleDelete(routine.id)}
+                      >
+                        <img
+                          width="24"
+                          height="24"
+                          src="https://img.icons8.com/fluency-systems-regular/24/filled-trash.png"
+                          alt="filled-trash"
+                        />
                       </button>
                     </div>
                   </td>
