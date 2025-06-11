@@ -232,4 +232,46 @@ class UserController extends Controller
 
         return $topSets;
     }
+
+    // Método para obtener usuarios más activos - Web
+    public function getTopUser() 
+    {
+        try 
+        {
+            $startOfWeek = Carbon::now()->startOfWeek();
+            $endOfWeek = Carbon::now()->endOfWeek();
+
+            $topUsersWeek = DB::table('workouts')
+                              ->join('users', 'workouts.user_id', '=', 'users.id')
+                              ->select('users.username', DB::raw('COUNT(*) as total'))
+                              ->whereBetween('workouts.date', [$startOfWeek, $endOfWeek])
+                              ->groupBy('users.username')
+                              ->orderByDesc('total')
+                              ->limit(10)
+                              ->get();
+                              
+            $startOfMonth = Carbon::now()->startOfMonth();
+            $endOfMonth = Carbon::now()->endOfMonth();
+
+            $topUsersMonth = DB::table('workouts')
+                              ->join('users', 'workouts.user_id', '=', 'users.id')
+                              ->select('users.username', DB::raw('COUNT(*) as total'))
+                              ->whereBetween('workouts.date', [$startOfMonth, $endOfMonth])
+                              ->groupBy('users.username')
+                              ->orderByDesc('total')
+                              ->limit(10)
+                              ->get();
+
+            return response()->json([
+                'message' => 'Usuarios más activos recogidos',
+                'topWeek' => $topUsersWeek,
+                'topMonth' => $topUsersMonth
+            ], 200);
+
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Error: '.$e->getMessage()
+            ], 500);
+        }
+    }
 }
