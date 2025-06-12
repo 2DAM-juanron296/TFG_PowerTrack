@@ -90,6 +90,8 @@ export function Dashboard() {
 
           setTopUsersWeek(data.topWeek);
           setTopUsersMonth(data.topMonth);
+          localStorage.setItem("topUsersWeek", JSON.stringify(data.topWeek));
+          localStorage.setItem("topUsersMonth", JSON.stringify(data.topMonth));
         }
 
         const storedCountWorkouts = localStorage.getItem("workouts_today");
@@ -122,6 +124,7 @@ export function Dashboard() {
 
           console.log("Entrenos realizados en el día: ", data.workouts);
           setCountWorkoutsToday(data.workouts);
+          localStorage.setItem("workouts_today", JSON.stringify(data.workouts));
         }
       } catch (error) {
         console.error("Error al obtener los ejercicios más usados", error);
