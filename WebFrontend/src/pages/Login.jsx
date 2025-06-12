@@ -75,7 +75,7 @@ export function Login() {
           <img
             src="/images/PowerTrackIcon.png"
             alt="PowerTrack Logo"
-            className="w-24 h-24"
+            className="w-28 h-26"
           />
         </div>
 
