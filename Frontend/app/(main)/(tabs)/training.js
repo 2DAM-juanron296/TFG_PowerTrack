@@ -73,7 +73,7 @@ export default function Index() {
 
   return (
     <Screen>
-      <View className="justify-start items-start mx-10 mt-16">
+      <View className="justify-start items-start mx-10 mt-10">
         <Text
           className="text-2xl mb-8 text-[#25AEA6]"
           style={{ fontFamily: "Inter-SemiBold" }}
