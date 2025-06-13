@@ -12,7 +12,7 @@ export function RoutineCard({ name, description, id }) {
         onPress={() =>
           router.push({
             pathname: `/(main)/${id}`,
-            params: { from: "training" },
+            params: { from: "training", routineName: name },
           })
         }
         className="border border-[#222] mb-4 bg-[#0f0f0f] rounded-lg p-3"
