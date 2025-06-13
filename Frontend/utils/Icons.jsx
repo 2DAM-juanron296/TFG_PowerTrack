@@ -40,3 +40,6 @@ export const SettingsIcon = () => (
 export const DeleteIcon = () => (
   <MaterialCommunityIcons name="delete" size={24} color="black" />
 );
+export const DownloadIcon = () => (
+  <AntDesign name="download" size={24} color="black" />
+);
