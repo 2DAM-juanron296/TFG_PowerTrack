@@ -110,7 +110,16 @@ export function CreateRoutine() {
   };
 
   const handleDeleteExercise = (idExercise) => {
-    setSelectedExercises((prev) => prev.filter((ex) => ex.id !== idExercise));
+    setSelectedExercises((prev) => {
+      const filtered = prev.filter((ex) => ex.id !== idExercise);
+      const reordered = filtered.map((ex, index) => ({
+        ...ex,
+        order: index + 1,
+      }));
+
+      return reordered;
+    });
+
     setSets((prev) =>
       prev.filter((set) => set.routine_exercise_id !== idExercise),
     );
