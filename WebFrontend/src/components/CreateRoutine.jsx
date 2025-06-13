@@ -208,8 +208,8 @@ export function CreateRoutine() {
         </h2>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-8 max-w-7xl mx-auto">
-        <div className="w-full md:w-1/2">
+      <div className="flex flex-col md:flex-row gap-8 max-w-6xl mx-auto px-4">
+        <div className="w-full md:w-[40%]">
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -257,7 +257,7 @@ export function CreateRoutine() {
           </form>
         </div>
 
-        <div className="w-full">
+        <div className="w-full md:w-[60%]">
           <ExercisesTable
             exercises={exercises}
             selectedExercises={selectedExercises}
