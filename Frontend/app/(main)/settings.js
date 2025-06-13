@@ -257,7 +257,11 @@ export default function Settings() {
             </Text>
           </Pressable>
 
-          <Logout />
+          <Logout
+            onSuccess={() => {
+              router.replace("/login");
+            }}
+          />
 
           <Pressable className="py-3 border-b border-gray-800">
             <Text
