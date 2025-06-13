@@ -86,11 +86,12 @@ class UserController extends Controller
     }
 
     // Eliminar un usuario - Web
-    public function delete($id_user) {
+    public function delete(Request $request) {
 
         try
         {
-            $deleted = User::where('id', $id_user)->delete();            
+            $idUser = $request->user()->id;
+            $deleted = User::where('id', $idUser)->delete();            
 
             if (!$deleted)
                 return response()->json([
