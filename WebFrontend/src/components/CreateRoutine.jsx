@@ -34,8 +34,8 @@ export function CreateRoutine() {
 
         setExercises(data.exercises);
       } catch (error) {
-        console.error("Error al obtener los usuarios", error);
-        toast.error("Error al obtener los usuarios", {
+        console.error("Error al obtener los ejercicios", error);
+        toast.error("Error al obtener los ejercicios", {
           style: {
             background: "#333",
             color: "#fff",
