@@ -4,15 +4,18 @@ import { BackIcon } from "../../utils/Icons";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { Logout } from "../../components/auth/Logout";
-import { fetchUserProgress } from "../../context/api/user";
+import { deleteUser, fetchUserProgress } from "../../context/api/user";
 import Toast from "react-native-toast-message";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LineChart } from "react-native-chart-kit";
+import { useAuth } from "../../context/AuthContext";
+import { logoutUser } from "../../context/api/auth";
 
 const screenWidth = Dimensions.get("window").width;
 
 export default function Settings() {
   const router = useRouter();
+  const { logout } = useAuth();
 
   const [username, setUsername] = useState("");
   const [name, setName] = useState("");
@@ -102,6 +105,47 @@ export default function Settings() {
       legend: ["Peso corporal"],
     });
   }, [history]);
+
+  const handleDeleteUser = async () => {
+    try {
+      const [data, res] = await deleteUser();
+
+      if (res) {
+        Toast.show({
+          type: "error",
+          text1: "Error",
+          text2: data.message,
+          text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
+          text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
+          position: "top",
+          animation: true,
+          visibilityTime: 2000,
+        });
+        return;
+      }
+
+      const [dataLog, resLog] = await logoutUser();
+
+      if (resLog) {
+        Toast.show({
+          type: "error",
+          text1: "Error",
+          text2: dataLog.message,
+          text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
+          text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
+          position: "top",
+          animation: true,
+          visibilityTime: 2000,
+        });
+        return;
+      }
+
+      await AsyncStorage.clear();
+      router.replace("/login");
+    } catch (error) {
+      console.error("Error al eliminar el usuario: ", error);
+    }
+  };
 
   return (
     <Screen>
@@ -263,7 +307,10 @@ export default function Settings() {
             }}
           />
 
-          <Pressable className="py-3 border-b border-gray-800">
+          <Pressable
+            onPress={handleDeleteUser}
+            className="py-3 border-b border-gray-800"
+          >
             <Text
               className="text-red-600"
               style={{
