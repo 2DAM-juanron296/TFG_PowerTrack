@@ -9,7 +9,7 @@ import {
 import { Screen } from "../Screen";
 import { useRouter } from "expo-router";
 import { styled } from "nativewind";
-import { BackIcon } from "../../utils/Icons";
+import { BackIcon, DeleteIcon } from "../../utils/Icons";
 import { useEffect, useState } from "react";
 import Toast from "react-native-toast-message";
 import {
@@ -466,7 +466,7 @@ export function CreateRoutine() {
                             className="text-black text-sm"
                             style={{ fontFamily: "Inter-Bold" }}
                           >
-                            Quitar
+                            Eliminar
                           </Text>
                         </Pressable>
                       </View>
@@ -529,7 +529,7 @@ export function CreateRoutine() {
                             className="text-black text-sm"
                             style={{ fontFamily: "Inter-Bold" }}
                           >
-                            Eliminar
+                            <DeleteIcon />
                           </Text>
                         </Pressable>
                       </View>

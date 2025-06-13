@@ -142,8 +142,10 @@ export function ExercisesTable({
             ))}
           </select>
           <button
-            className="px-4 py-2 bg-[#25AEA6] text-black rounded font-semibold hover:bg-[#1f978f]
-    cursor-pointer"
+            className="px-4 py-2 bg-[#25AEA6] text-black rounded font-semibold cursor-pointer hover:bg-[#1d8d87] hover:opacity-80 transition-all"
+            style={{
+              transition: "opacity 0.3s ease",
+            }}
             onClick={setExercise(selectedExerciseId)}
           >
             Añadir Ejercicio
@@ -175,13 +177,19 @@ export function ExercisesTable({
                     </h3>
                     <div className="flex gap-2 justify-end items-end">
                       <button
-                        className="bg-green-400 p-2 ml-2 text-black rounded-md font-bold cursor-pointer"
+                        className="bg-green-400 p-2 ml-2 text-black rounded-md font-bold cursor-pointer hover:bg-green-500 hover:opacity-80 transition-all"
+                        style={{
+                          transition: "opacity 0.3s ease",
+                        }}
                         onClick={() => addSet(ex.id)}
                       >
-                        Añadir Set
+                        + Set
                       </button>
                       <button
-                        className="bg-red-400 p-2 text-black rounded-md font-bold cursor-pointer"
+                        className="bg-red-500 p-2 text-black rounded-md font-bold cursor-pointer hover:bg-red-600 hover:opacity-80 transition-all"
+                        style={{
+                          transition: "opacity 0.3s ease",
+                        }}
                         onClick={() => handleDeleteExercise(ex.id)}
                       >
                         Eliminar
@@ -245,10 +253,18 @@ export function ExercisesTable({
                           {/* Acciones */}
                           <td className="px-4 py-2">
                             <button
-                              className="bg-red-400 p-2 text-black rounded-md font-bold cursor-pointer"
+                              className="bg-red-500 p-2 text-black rounded-md font-bold cursor-pointer hover:bg-red-600 hover:opacity-80 transition-all"
+                              style={{
+                                transition: "opacity 0.3s ease",
+                              }}
                               onClick={() => deleteSet(ex.id, set.order)}
                             >
-                              Eliminar Set
+                              <img
+                                width="24"
+                                height="24"
+                                src="https://img.icons8.com/fluency-systems-regular/24/filled-trash.png"
+                                alt="filled-trash"
+                              />
                             </button>
                           </td>
                         </tr>

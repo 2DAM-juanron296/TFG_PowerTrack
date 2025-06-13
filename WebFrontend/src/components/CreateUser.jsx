@@ -140,15 +140,21 @@ export function CreateUser() {
             {/* Botón de Submit */}
             <button
               type="submit"
-              className="bg-[#FF9811] text-black px-3 py-2 rounded-md cursor-pointer hover:bg-[#e68a0f] transition-colors"
-              style={{ fontWeight: 600 }}
+              className="bg-[#25AEA6] text-black px-3 py-2 rounded-md cursor-pointer hover:bg-[#1d8d87] hover:opacity-80 transition-all"
+              style={{
+                fontWeight: 600,
+                transition: "opacity 0.3s ease",
+              }}
             >
               Crear Usuario
             </button>
             {/* Botón de Cancelar */}
             <button
-              className="bg-[#FF9811] text-black px-3 py-2 rounded-md cursor-pointer hover:bg-[#e68a0f] transition-colors"
-              style={{ fontWeight: 600 }}
+              className="bg-red-500 text-black px-3 py-2 rounded-md cursor-pointer hover:bg-red-600 hover:opacity-80 transition-all"
+              style={{
+                fontWeight: 600,
+                transition: "opacity 0.3s ease",
+              }}
               onClick={(e) => {
                 e.preventDefault();
                 handleCancel();

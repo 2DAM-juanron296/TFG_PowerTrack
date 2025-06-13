@@ -240,7 +240,11 @@ export function CreateRoutine() {
             <div className="flex justify-center items-center gap-3">
               <button
                 type="submit"
-                className="bg-[#FF9811] text-black px-4 py-2 rounded-md font-semibold hover:bg-[#e68a0f] cursor-pointer"
+                className="bg-[#25AEA6] text-black px-3 py-2 rounded-md cursor-pointer hover:bg-[#1d8d87] hover:opacity-80 transition-all"
+                style={{
+                  fontWeight: 600,
+                  transition: "opacity 0.3s ease",
+                }}
               >
                 Crear Rutina
               </button>
@@ -249,7 +253,11 @@ export function CreateRoutine() {
                   e.preventDefault();
                   handleCancel();
                 }}
-                className="bg-[#FF9811] text-black px-4 py-2 rounded-md font-semibold hover:bg-[#e68a0f] cursor-pointer"
+                className="bg-red-500 text-black px-3 py-2 rounded-md cursor-pointer hover:bg-red-600 hover:opacity-80 transition-all"
+                style={{
+                  fontWeight: 600,
+                  transition: "opacity 0.3s ease",
+                }}
               >
                 Cancelar
               </button>
