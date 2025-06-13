@@ -3,9 +3,11 @@ import { Screen } from "../../../components/Screen";
 import { DownloadIcon, SettingsIcon, UserIcon } from "../../../utils/Icons";
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { fetchDataUser } from "../../../context/api/user";
+import { fetchDataUser, getInform } from "../../../context/api/user";
 import Toast from "react-native-toast-message";
 import { useRouter } from "expo-router";
+import * as Print from "expo-print";
+import * as Sharing from "expo-sharing";
 
 export default function Profile() {
   const router = useRouter();
@@ -22,6 +24,10 @@ export default function Profile() {
   const [totalWorkouts, setTotalWorkouts] = useState(0);
 
   const [top, setTop] = useState([]);
+
+  const [user, setUser] = useState([]);
+  const [favExercises, setFavExercises] = useState([]);
+  const [favMuscles, setFavMuscles] = useState([]);
 
   useEffect(() => {
     const getData = async () => {
@@ -77,6 +83,144 @@ export default function Profile() {
     return hrs !== "00" ? `${hrs}:${min}:${sec}` : `${min}:${sec}`;
   };
 
+  const handleDownloadInform = async () => {
+    try {
+      const [data, res] = await getInform();
+
+      if (res) {
+        Toast.show({
+          type: "error",
+          text1: "Error",
+          text2: data.message,
+          text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
+          text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
+          position: "top",
+          animation: true,
+          visibilityTime: 2000,
+        });
+        return;
+      }
+
+      Toast.show({
+        type: "success",
+        text1: "Éxito",
+        text2: data.message,
+        text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
+        text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
+        position: "top",
+        animation: true,
+        visibilityTime: 2000,
+      });
+
+      console.log("Datos: ", data);
+
+      generatePDF(data);
+    } catch (error) {
+      console.error("Error al descargar el informe", error);
+      Toast.show({
+        type: "error",
+        text1: "Error al descargar el informe",
+        text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
+        text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
+        position: "top",
+        animation: true,
+        visibilityTime: 2000,
+      });
+    }
+  };
+
+  const generatePDF = async (data) => {
+    const { user, exercises: favExercises, muscle_groups: favMuscles } = data;
+
+    const html = `
+      <html>
+      <head>
+        <style>
+          body { font-family: Arial, sans-serif; padding: 20px; color: #333; }
+          h1, h2 { color: #25AEA6; }
+          table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+          th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+          th { background-color: #25AEA6; color: white; }
+          .section { margin-bottom: 25px; }
+        </style>
+      </head>
+      <body>
+        <h1>Informe de ${user.username}</h1>
+
+        <div class="section">
+          <h2>Datos Generales</h2>
+          <p><strong>Tiempo de entreno (semana):</strong> ${formatTime(durationWeek)}</p>
+          <p><strong>Tiempo de entreno (mes):</strong> ${formatTime(durationMonth)}</p>
+          <p><strong>Tiempo de entreno (año):</strong> ${formatTime(durationYear)}</p>
+          <p><strong>Total entrenamientos:</strong> ${totalWorkouts}</p>
+        </div>
+
+        <div class="section">
+          <h2>Usuario</h2>
+          <p><strong>Nombre Completo:</strong> ${user.name}</p>
+          <p><strong>Nombre de Usuario:</strong> ${user.username}</p>
+          <p><strong>Email:</strong> ${user.email}</p>
+          <p><strong>Registrado desde:</strong> ${new Date(
+            user.created_at,
+          ).toLocaleDateString()}</p>
+        </div>
+
+        <div class="section">
+          <h2>Ejercicios favoritos</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${favExercises
+                .map(
+                  (ex) => `
+                <tr>
+                  <td>${ex.name}</td>
+                  <td>${ex.total}</td>
+                </tr>
+              `,
+                )
+                .join("")}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="section">
+          <h2>Grupos Musculares favoritos</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Grupo Muscular</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${favMuscles
+                .map(
+                  (mg) => `
+                <tr>
+                  <td>${mg.muscle_group}</td>
+                  <td>${mg.total}</td>
+                </tr>
+              `,
+                )
+                .join("")}
+            </tbody>
+          </table>
+        </div>
+      </body>
+      </html>
+    `;
+
+    const { uri } = await Print.printToFileAsync({ html });
+
+    await Sharing.shareAsync(uri);
+  };
+
   return (
     <Screen>
       <View className="mx-10">
@@ -122,7 +266,10 @@ export default function Profile() {
             Estadísticas
           </Text>
 
-          <Pressable className="bg-[#25AEA6] px-2 py-1 items-center rounded">
+          <Pressable
+            className="bg-[#25AEA6] px-2 py-1 items-center rounded"
+            onPress={handleDownloadInform}
+          >
             <DownloadIcon />
           </Pressable>
         </View>
