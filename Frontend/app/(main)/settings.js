@@ -84,7 +84,7 @@ export default function Settings() {
       const month = date.getMonth() + 1;
       const year = date.getFullYear().toString().slice(-2);
 
-      labels.push(`${day}/${month}/${year}`); // una etiqueta por peso
+      labels.push(`${day}/${month}/${year}`);
       const w = Number(weight) || 0;
       dataset.push(Math.min(Math.max(w, 50), 120));
     });
