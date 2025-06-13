@@ -1,6 +1,6 @@
 import { View, Text, Pressable } from "react-native";
 import { Screen } from "../../../components/Screen";
-import { SettingsIcon, UserIcon } from "../../../utils/Icons";
+import { DownloadIcon, SettingsIcon, UserIcon } from "../../../utils/Icons";
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { fetchDataUser } from "../../../context/api/user";
@@ -114,13 +114,17 @@ export default function Profile() {
           </View>
         </View>
 
-        <View className="justify-start items-start mb-2 mt-6">
+        <View className="flex-row justify-between items-center mb-2 mt-6">
           <Text
             className="text-2xl text-[#25AEA6]"
             style={{ fontFamily: "Inter-Bold" }}
           >
             Estadísticas
           </Text>
+
+          <Pressable className="bg-[#25AEA6] px-2 py-1 items-center rounded">
+            <DownloadIcon />
+          </Pressable>
         </View>
 
         <View className="mt-2">
