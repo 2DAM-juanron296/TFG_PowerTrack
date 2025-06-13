@@ -209,7 +209,6 @@ export default function UserData() {
             Progreso
           </Text>
 
-          {/* Peso y Altura en la misma fila */}
           <View className="flex-row justify-between mt-4 space-x-2">
             <View className="flex-1">
               <Text
@@ -244,7 +243,6 @@ export default function UserData() {
             </View>
           </View>
 
-          {/* IMC */}
           <View className="mt-4">
             <Text
               editable={false}
