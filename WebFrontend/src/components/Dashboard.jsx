@@ -255,7 +255,7 @@ export function Dashboard() {
           ) : (
             <div className="ustify-center items-center py-4">
               <span className="text-white font-bold text-lg">
-                No hay usuarios actualmente
+                No hay datos actualmente
               </span>
             </div>
           )}
