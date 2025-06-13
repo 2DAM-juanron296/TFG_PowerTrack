@@ -22,6 +22,7 @@ export default function Detail() {
     idWork,
     from,
     routineName,
+    idRoutine,
     work,
     date,
     type,
@@ -190,9 +191,36 @@ export default function Detail() {
     return `${day} de ${month} de ${year}`;
   };
 
-  const handleDeleteRoutine = async (id) => {
+  const handleDeleteRoutine = async () => {
     try {
-      const [data, res] = await deleteRoutine(id);
+      const [data, res] = await deleteRoutine(idRoutine);
+
+      if (res) {
+        Toast.show({
+          type: "error",
+          text1: "Error",
+          text2: data.message,
+          text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
+          text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
+          position: "top",
+          animation: true,
+          visibilityTime: 2000,
+        });
+        return;
+      }
+
+      Toast.show({
+        type: "success",
+        text1: "Éxito",
+        text2: data.message,
+        text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
+        text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
+        position: "top",
+        animation: true,
+        visibilityTime: 2000,
+      });
+
+      router.push("(main)/(tabs)/training");
     } catch (error) {
       console.error("Error al eliminar la rutina: ", error);
     }
