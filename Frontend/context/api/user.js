@@ -166,14 +166,14 @@ export async function updateUserProgress(reqProgress) {
   }
 }
 
-export async function fetchInform() {
+export async function getInform() {
   try {
     const token = await getToken();
 
     let res = false;
     let info = [];
 
-    const response = await fetch(`${API_BASE}/getInform`, {
+    const response = await fetch(`${API_BASE}/user/inform`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
