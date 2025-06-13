@@ -53,7 +53,7 @@ Route::middleware('auth:sanctum')->group(function() {
     
         Route::post('/createUser', 'store');
 
-        Route::delete('/deleteUser/{id}', 'delete');
+        Route::delete('/deleteUser', 'delete');
         Route::put('updateUser', 'update');
     });
 
