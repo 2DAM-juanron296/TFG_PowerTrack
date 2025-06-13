@@ -216,7 +216,7 @@ export default function Settings() {
                 fontFamily: "Inter-Bold",
               }}
             >
-              Cargando gráfico...
+              - No hay datos todavía -
             </Text>
           )}
         </View>
