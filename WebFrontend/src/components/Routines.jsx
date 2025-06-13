@@ -259,20 +259,6 @@ export function Routines() {
                           />
                         </button>
                         <button
-                          className="bg-[#0982d3] text-black px-3 py-2 rounded-md text-sm cursor-pointer hover:bg-[#086cb3] hover:opacity-80 transition-all"
-                          style={{
-                            fontWeight: 600,
-                            transition: "opacity 0.3s ease",
-                          }}
-                        >
-                          <img
-                            width="24"
-                            height="24"
-                            src="https://img.icons8.com/material-sharp/24/pencil.png"
-                            alt="pencil"
-                          />
-                        </button>
-                        <button
                           className="bg-red-500 text-black text-sm px-3 py-2 rounded-md cursor-pointer hover:bg-red-600 hover:opacity-80 transition-all"
                           style={{
                             fontWeight: 600,
