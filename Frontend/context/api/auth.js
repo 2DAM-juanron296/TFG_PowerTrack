@@ -46,10 +46,6 @@ export async function logoutUser() {
       },
     });
 
-    //const datat = await response.text();
-    //console.log("Text: ", datat);
-    //return;
-
     const data = await response.json();
 
     if (!response.ok) {
@@ -62,7 +58,6 @@ export async function logoutUser() {
 
     return info;
   } catch (error) {
-    console.error("Error during logout request:", error);
     return [{ data: error.message || error }, true];
   }
 }
@@ -71,9 +66,6 @@ export async function registerUser(username, password, email, name) {
   try {
     let res = false;
     let info = [];
-
-    console.log("URL de la petición:", `${API_BASE}/register`); // Verifica la URL
-    console.log("Datos enviados:", { username, password, email, name });
 
     const response = await fetch(`${API_BASE}/register`, {
       method: "POST",
@@ -84,19 +76,12 @@ export async function registerUser(username, password, email, name) {
       body: JSON.stringify({ username, password, email, name }),
     });
 
-    console.log("Respuesta HTTP recibida. Status:", response.status);
-
-    console.log("Hola");
     const data = await response.json();
-
-    console.log("Data: ", data.message);
 
     if (!response.ok) {
       res = true;
-      console.log("Hola 2");
     } else {
       res = false;
-      console.log("Todo bien");
     }
 
     info = [data, res];
