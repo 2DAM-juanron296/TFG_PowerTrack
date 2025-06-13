@@ -14,12 +14,14 @@ import {
 } from "../../context/api/sets";
 import { ExerciseImages } from "../../utils/ExerciseImages";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { deleteRoutine } from "../../context/api/routines";
 
 export default function Detail() {
   const StyledPresable = styled(Pressable);
   const {
     idWork,
     from,
+    routineName,
     work,
     date,
     type,
@@ -188,6 +190,14 @@ export default function Detail() {
     return `${day} de ${month} de ${year}`;
   };
 
+  const handleDeleteRoutine = async (id) => {
+    try {
+      const [data, res] = await deleteRoutine(id);
+    } catch (error) {
+      console.error("Error al eliminar la rutina: ", error);
+    }
+  };
+
   const handleBack = () => {
     if (from === "training" && work !== "workout" && parsedHistory === false) {
       router.push("/(main)/(tabs)/training");
@@ -212,7 +222,13 @@ export default function Detail() {
             className="text-2xl text-white mt-5"
             style={{ fontFamily: "Inter-Bold" }}
           >
-            {type} - {workoutName}
+            {workoutName}
+          </Text>
+          <Text
+            className="text-md text-white mt-1"
+            style={{ fontFamily: "Inter-Bold" }}
+          >
+            {type}
           </Text>
           <Text
             className="text-md text-[#999] mt-2 mb-3"
@@ -220,14 +236,40 @@ export default function Detail() {
           >
             {formatDate(date)}
           </Text>
+          <View className="mb-3 border-b border-gray-600" />
         </View>
       ) : (
-        <Text
-          className="text-2xl text-[#25AEA6] mt-7 mb-5"
-          style={{ fontFamily: "Inter-Bold" }}
-        >
-          Ejercicios
-        </Text>
+        <>
+          <View className="flex-row justify-between items-center mt-7 mb-4">
+            <Text
+              className="text-2xl text-white"
+              style={{ fontFamily: "Inter-Bold" }}
+            >
+              {routineName}
+            </Text>
+
+            <Pressable
+              className="bg-red-500 justify-center items-center px-2 py-1 rounded-md"
+              onPress={handleDeleteRoutine}
+            >
+              <Text
+                className="text-black text-md"
+                style={{ fontFamily: "Inter-Bold" }}
+              >
+                Eliminar
+              </Text>
+            </Pressable>
+          </View>
+
+          <View className="mb-4 border-b border-gray-600 pb-2">
+            <Text
+              className="text-xl text-white"
+              style={{ fontFamily: "Inter-Bold" }}
+            >
+              Ejercicios
+            </Text>
+          </View>
+        </>
       )}
 
       {work === "workout" ? (
