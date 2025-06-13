@@ -70,9 +70,9 @@ class AuthController extends Controller
             'name' => 'required'
         ]);
 
-        $user = User::where('username', $request->username)->first();
+        $u = User::where('username', $request->username)->first();
 
-        if (!$user ) {
+        if (!$u ) {
 
             $user = User::create([
                 'name' => $request->name,
