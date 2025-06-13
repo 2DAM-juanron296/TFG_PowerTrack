@@ -71,7 +71,6 @@ export function Main() {
   return (
     <Screen>
       <View className="flex-1 justify-between">
-        {/* Header usuario */}
         <View className="justify-center items-center text-center pb-12 mt-10">
           <UserDefaultIcon />
           <View>
@@ -84,7 +83,6 @@ export function Main() {
           </View>
         </View>
 
-        {/* Título */}
         <View className="justify-start items-start mx-10 mb-4">
           <Text
             className="text-2xl text-[#25AEA6]"
@@ -94,7 +92,6 @@ export function Main() {
           </Text>
         </View>
 
-        {/* Aquí va la sección que cambia (loading, vacío o lista) */}
         <View className="flex-1 mx-10">
           {loading ? (
             <View className="flex-1 justify-center items-center">
