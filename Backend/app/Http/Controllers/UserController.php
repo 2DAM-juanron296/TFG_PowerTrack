@@ -274,4 +274,51 @@ class UserController extends Controller
             ], 500);
         }
     }
+
+    public function getInform(Request $request) 
+    {
+        try 
+        {
+            $userId = $request->user()->id;
+
+            // Datos del usuario
+            $user = $request->user();
+
+            // Ejercicios favoritos
+            $exercises = DB::table('routine_exercises as re')
+                           ->join('routines as r', 're.routine_id', '=', 'r.id')
+                           ->join('exercises as e', 're.exercise_id', '=', 'e.id')
+                           ->where('r.user_id', $userId)
+                           ->select('e.name', 'e.id', DB::raw('COUNT(*) as total'))
+                           ->groupBy('e.id', 'e.name')
+                           ->orderByDesc('total')
+                           ->limit(5)
+                           ->get();
+
+            // Grupos musculares favoritos
+            $muscle_groups = DB::table('routine_exercises as re')
+                               ->join('routines as r', 're.routine_id', '=', 'r.id')
+                               ->join('exercises as e', 're.exercise_id', '=', 'e.id')
+                               ->join('muscle_groups as mg', 'e.muscle_group_id', '=', 'mg.id')
+                               ->where('r.user_id', $userId)
+                               ->select('mg.name as muscle_group', 'mg.id', DB::raw('COUNT(*) as total'))
+                               ->groupBy('mg.id', 'mg.name')
+                               ->orderByDesc('total')
+                               ->limit(5)
+                               ->get();
+
+             return response()->json([
+                'message' => 'Datos recogidos',
+                'user' => $user,
+                'exercises' => $exercises,
+                'muscle_groups' => $muscle_groups
+            ], 200);
+
+
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Error: '.$e->getMessage()
+            ], 500);
+        }
+    }
 }

@@ -47,7 +47,8 @@ Route::middleware('auth:sanctum')->group(function() {
         Route::get('/users', 'index');
         Route::get('/userData', 'getData');
         Route::get('/topUsers', 'getTopUser');
-        
+        Route::get('user/inform', 'getInform');
+
         Route::get('/user/{id_user}/routines', 'getRoutines');
     
         Route::post('/createUser', 'store');
