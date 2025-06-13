@@ -25,10 +25,6 @@ export default function Profile() {
 
   const [top, setTop] = useState([]);
 
-  const [user, setUser] = useState([]);
-  const [favExercises, setFavExercises] = useState([]);
-  const [favMuscles, setFavMuscles] = useState([]);
-
   useEffect(() => {
     const getData = async () => {
       const user = await AsyncStorage.getItem("username");
