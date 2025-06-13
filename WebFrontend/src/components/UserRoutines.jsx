@@ -8,7 +8,7 @@ import { fetchRoutineExercises } from "../api/exercises";
 
 export function UserRoutines() {
   const location = useLocation();
-  const { userId } = location.state || {};
+  const { userId, username } = location.state || {};
 
   const [routines, setRoutines] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -122,81 +122,88 @@ export function UserRoutines() {
   };
 
   return (
-    <div className="p-8">
-      <div
-        className="text-[#25AEA6] text-3xl mb-6 text-center"
-        style={{ fontWeight: 800 }}
-      >
-        Lista de Rutinas
-      </div>
+    <>
+      <div className="p-8">
+        <div
+          className="text-[#25AEA6] text-3xl mb-6 text-center"
+          style={{ fontWeight: 800 }}
+        >
+          Rutinas de {username}
+        </div>
 
-      <div className="flex justify-center">
-        <table className="w-4xl mx-auto text-white border border-[#fff] rounded-md overflow-hidden">
-          <thead>
-            <tr className="bg-[#0F0F0F]">
-              <th className="px-6 py-4 border-b border-[#333] text-center">
-                Nombre
-              </th>
-              <th className="px-6 py-4 border-b border-[#333] text-center">
-                Descripción
-              </th>
-              <th className="px-6 py-4 border-b border-[#333] text-center">
-                Acciones
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {loading ? (
-              <tr>
-                <td colSpan="4" className="text-center py-4">
-                  <div className="flex justify-center items-center gap-4 py-4">
-                    <ClipLoader color="#25AEA6" size={35} />
-                    <span className="text-white text-lg">
-                      Cargando rutinas...
-                    </span>
-                  </div>
-                </td>
+        <div className="flex justify-center">
+          <table className="w-4xl mx-auto text-white border border-[#fff] rounded-md overflow-hidden">
+            <thead>
+              <tr className="bg-[#0F0F0F]">
+                <th className="px-6 py-4 border-b border-[#333] text-center">
+                  Nombre
+                </th>
+                <th className="px-6 py-4 border-b border-[#333] text-center">
+                  Descripción
+                </th>
+                <th className="px-6 py-4 border-b border-[#333] text-center">
+                  Acciones
+                </th>
               </tr>
-            ) : routines.length === 0 ? (
-              <tr>
-                <td colSpan="4" className="text-center py-4">
-                  <div className="flex justify-center items-center py-4">
-                    <span className="text-white font-bold text-lg">
-                      No hay rutinas actualmente
-                    </span>
-                  </div>
-                </td>
-              </tr>
-            ) : (
-              routines.map((routine) => (
-                <tr key={routine.id} className="hover:bg-[#1d1d1d]">
-                  <td className="px-6 py-4 border-b border-[#333] text-center">
-                    {routine.name}
-                  </td>
-                  <td className="px-6 py-4 border-b border-[#333] text-center">
-                    {routine.description}
-                  </td>
-                  <td className="px-6 py-4 border-b border-[#333] text-center">
-                    <div className="flex flex-wrap justify-center gap-2">
-                      <button
-                        className="bg-[#1a8783] text-black px-3 py-2 rounded-md text-sm cursor-pointer"
-                        style={{ fontWeight: 600 }}
-                        onClick={handleSeeExercises(routine.id)}
-                      >
-                        Ver ejercicios
-                      </button>
+            </thead>
+            <tbody>
+              {loading ? (
+                <tr>
+                  <td colSpan="4" className="text-center py-4">
+                    <div className="flex justify-center items-center gap-4 py-4">
+                      <ClipLoader color="#25AEA6" size={35} />
+                      <span className="text-white text-lg">
+                        Cargando rutinas...
+                      </span>
                     </div>
                   </td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+              ) : routines.length === 0 ? (
+                <tr>
+                  <td colSpan="4" className="text-center py-4">
+                    <div className="flex justify-center items-center py-4">
+                      <span className="text-white font-bold text-lg">
+                        No hay rutinas actualmente
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+              ) : (
+                routines.map((routine) => (
+                  <tr key={routine.id} className="hover:bg-[#1d1d1d]">
+                    <td className="px-6 py-4 border-b border-[#333] text-center">
+                      {routine.name}
+                    </td>
+                    <td className="px-6 py-4 border-b border-[#333] text-center">
+                      {routine.description}
+                    </td>
+                    <td className="px-6 py-4 border-b border-[#333] text-center">
+                      <div className="flex flex-wrap justify-center gap-2">
+                        <button
+                          className="bg-[#1a8783] text-black px-3 py-2 rounded-md text-sm cursor-pointer"
+                          style={{ fontWeight: 600 }}
+                          onClick={handleSeeExercises(routine.id)}
+                        >
+                          Ver ejercicios
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50">
-          <div className="relative bg-[#1e1e1e]/90 text-white p-6 rounded-lg max-w-xl w-full overflow-y-auto max-h-[90vh]">
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div
+            className="fixed inset-0 bg-black/70"
+            onClick={() => setShowModal(false)}
+          ></div>
+
+          <div className="relative z-50 bg-[#1e1e1e] text-white p-6 rounded-lg max-w-xl w-full max-h-[70vh] overflow-y-auto">
             <button
               className="absolute top-4 right-4 text-white font-bold text-lg cursor-pointer"
               onClick={() => setShowModal(false)}
@@ -238,6 +245,6 @@ export function UserRoutines() {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }
