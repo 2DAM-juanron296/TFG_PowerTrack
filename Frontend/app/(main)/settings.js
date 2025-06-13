@@ -141,6 +141,7 @@ export default function Settings() {
       }
 
       await AsyncStorage.clear();
+      logout();
       router.replace("/login");
     } catch (error) {
       console.error("Error al eliminar el usuario: ", error);
