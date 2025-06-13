@@ -316,13 +316,14 @@ export function CreateRoutine() {
       router.push("/(main)/(tabs)/training");
     } catch (error) {
       console.error("Error al crear la rutina", error);
-      Toast.error("Error al crear la rutina", {
-        style: {
-          background: "#333",
-          color: "#fff",
-          fontFamily: "Inter",
-          fontWeight: 400,
-        },
+      Toast.show({
+        type: "error",
+        text1: "Error al crear la rutina",
+        text1Style: { fontFamily: "Inter-Bold", fontSize: 12 },
+        text2Style: { fontFamily: "Inter-SemiBold", fontSize: 11 },
+        position: "top",
+        animation: true,
+        visibilityTime: 2000,
       });
       setIsCreating(false);
     }
