@@ -13,6 +13,7 @@ export function Routines() {
 
   const [showModal, setShowModal] = useState(false);
   const [modalExercises, setModalExercises] = useState([]);
+  const [nameRoutine, setNameRoutine] = useState("");
 
   useEffect(() => {
     getRoutines();
@@ -107,7 +108,7 @@ export function Routines() {
     }
   };
 
-  const handleSeeExercises = (id) => async () => {
+  const handleSeeExercises = (id, name) => async () => {
     try {
       const [data, res] = await fetchRoutineExercises(id);
 
@@ -150,6 +151,7 @@ export function Routines() {
       });
 
       setModalExercises(enrichedExercises);
+      setNameRoutine(name);
       setShowModal(true);
     } catch (error) {
       console.error("Error al obtener los ejercicios de la rutina", error);
@@ -247,7 +249,7 @@ export function Routines() {
                             fontWeight: 600,
                             transition: "opacity 0.3s ease",
                           }}
-                          onClick={handleSeeExercises(routine.id)}
+                          onClick={handleSeeExercises(routine.id, routine.name)}
                         >
                           <img
                             width="24"
@@ -309,7 +311,9 @@ export function Routines() {
             >
               ✕
             </button>
-            <h2 className="text-xl font-bold mb-4">Ejercicios de la Rutina</h2>
+            <h2 className="text-xl text-white font-bold mb-4">
+              Ejercicios de {nameRoutine}
+            </h2>
             {modalExercises.map((exercise) => (
               <div key={exercise.id} className="mt-8">
                 <h3 className="text-lg font-semibold mb-2">
