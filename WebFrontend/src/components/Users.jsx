@@ -204,7 +204,7 @@ export function Users() {
                         }}
                         onClick={() => {
                           navigate("/home/users/routines", {
-                            state: { userId: user.id },
+                            state: { userId: user.id, username: user.username },
                           });
                         }}
                       >
